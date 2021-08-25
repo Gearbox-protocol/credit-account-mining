@@ -213,5 +213,15 @@ export const terminal = (opts) => {
   output(banner, true);
   focus();
 
-  return { focus, parse, clear, print: output };
+  const destroy = () => {
+    $element.removeEventListener('focus', () => setSelectionRange($element));
+    $element.removeEventListener('blur', focus);
+    $element.removeEventListener('keypress', input);
+    $element.removeEventListener('keydown', input);
+    window.removeEventListener('focus', focus);
+    $root.removeEventListener('click', focus);
+    $root.innerHtml = '';
+  };
+
+  return { focus, parse, clear, print: output, destroy };
 };
