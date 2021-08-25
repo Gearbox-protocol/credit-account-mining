@@ -1,45 +1,56 @@
-import React, { useRef, useEffect, useState } from 'react';
-
+import React, { useEffect } from 'react';
 import { terminal } from 'components/TerminalLib/terminal';
 import * as Styled from './Terminal.styled';
 
-interface ITerminalPropsTypes {}
+interface ITerminalProps {
+  banner: string;
+  onCommand: (c: string) => void;
+  setTerminalCallback: (t: ITerminalObject) => void;
+}
 
-const Terminal: React.FC<ITerminalPropsTypes> = () => {
-  const terminalRef = useRef(null);
-  const [state, setState] = useState<any>({});
+interface ITerminalObject {
+  focus: () => NodeJS.Timeout;
+  parse: (str: any) => void;
+  clear: () => string;
+  print: (output: any, center: any) => void;
+  destroy: () => void;
+}
 
-  useEffect(() => {
-    const t = terminal({
-      root: terminalRef.current,
-      callback,
-      prompt: () => `$ ${browser.cwd()} > `,
-      banner,
-    });
-    setState(t);
+const Terminal = React.forwardRef<HTMLDivElement, ITerminalProps>(
+  ({ banner, onCommand, setTerminalCallback }, ref) => {
+    useEffect(() => {
+      const terminalRed = ref as React.RefObject<HTMLDivElement>;
 
-    return () => {
-      terminalRef.current.innerHTML = '';
-      setState(null);
-    };
-  }, []);
+      const t: ITerminalObject = terminal({
+        root: terminalRed.current,
+        callback: onCommand,
+        banner,
+      });
 
-  return (
-    <Styled.Terminal>
-      <div id="crt">
-        <div id="screen">
-          <div id="wrapper">
-            <div id="interlace"></div>
-            <div id="scanline"></div>
-            <div id="envelope">
-              <div id="terminal" ref={terminalRef}></div>
+      setTerminalCallback(t);
+
+      return () => {
+        t.destroy();
+      };
+    }, []);
+
+    return (
+      <Styled.Terminal>
+        <div id="crt">
+          <div id="screen">
+            <div id="wrapper">
+              <div id="interlace"></div>
+              <div id="scanline"></div>
+              <div id="envelope">
+                <div id="terminal" ref={ref}></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Styled.Terminal>
-  );
-};
+      </Styled.Terminal>
+    );
+  },
+);
 
+export type { ITerminalObject };
 export default Terminal;
-export type { ITerminalPropsTypes };
