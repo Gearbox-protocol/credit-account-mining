@@ -1,19 +1,11 @@
-import { DefaultRootState } from 'react-redux';
-
-import { ITerminalAppState } from 'redux/terminalApp/terminalAppReducer';
 import { TerminalAppActions } from 'redux/terminalApp/terminalAppAction';
+import { TerminalActions } from 'redux/terminal/terminalAction';
 
 import ActionType from './rootReducerActionTypes';
 
-interface IState extends DefaultRootState {
-  terminalApp: ITerminalAppState;
-}
-
-interface IRootHydration {
+interface IRootHydration<T> {
   type: ActionType.ROOT_HYDRATION;
-  payload: IState;
+  payload: T;
 }
 
-export type RootReducerAction = IRootHydration | TerminalAppActions;
-
-export type { IState };
+export type RootReducerAction<T> = IRootHydration<T> | TerminalAppActions | TerminalActions;

@@ -24,5 +24,4 @@ const makeStore: MakeStore<Store<IState>> = () => {
 const wrapper = createWrapper<Store<IState>>(makeStore, { debug: isDev });
 
 export type { SagaStore };
-
 export default wrapper;
