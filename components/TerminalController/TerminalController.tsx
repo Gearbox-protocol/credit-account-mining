@@ -1,45 +1,42 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import Terminal, { ITerminalObject } from 'components/Terminal/Terminal';
+import { banner, helpText, errorCommandNotFound } from 'utils/messages';
 
-import { terminal } from 'components/TerminalLib/terminal';
-import * as Styled from './Terminal.styled';
+const TerminalController: React.FC = () => {
+  const terminalRoot = useRef<HTMLDivElement>(null);
+  const [terminalObject, setTerminalObject] = useState<ITerminalObject>({});
 
-interface ITerminalPropsTypes {}
+  const print = (s: string): void => {
+    console.log(s, terminalObject);
+    terminalObject.print(s, false);
+  };
 
-const Terminal: React.FC<ITerminalPropsTypes> = () => {
-  const terminalRef = useRef(null);
-  const [state, setState] = useState<any>({});
+  const handleCommand = (c: string): void => {
+    switch (c) {
+      case 'help': {
+        print(helpText);
+        break;
+      }
+      default:
+        print(errorCommandNotFound(c));
+        break;
+    }
+  };
 
-  useEffect(() => {
-    const t = terminal({
-      root: terminalRef.current,
-      callback,
-      prompt: () => `$ ${browser.cwd()} > `,
-      banner,
-    });
-    setState(t);
+  const handleSetTerminal = (c: ITerminalObject): void => {
+    setTerminalObject(c);
+  };
 
-    return () => {
-      terminalRef.current.innerHTML = '';
-      setState(null);
-    };
-  }, []);
+  console.log(terminalObject);
 
   return (
-    <Styled.Terminal>
-      <div id="crt">
-        <div id="screen">
-          <div id="wrapper">
-            <div id="interlace"></div>
-            <div id="scanline"></div>
-            <div id="envelope">
-              <div id="terminal" ref={terminalRef}></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Styled.Terminal>
+    <Terminal
+      banner={banner}
+      ref={terminalRoot}
+      onCommand={handleCommand}
+      setTerminalCallback={handleSetTerminal}
+    />
   );
 };
 
-export default Terminal;
-export type { ITerminalPropsTypes };
+export default TerminalController;
