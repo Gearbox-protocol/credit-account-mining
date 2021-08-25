@@ -1,1 +1,1 @@
-Gearbox-console
+Gearbox-terminal
