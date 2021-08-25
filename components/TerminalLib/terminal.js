@@ -126,7 +126,7 @@ const executor =
   (cmd, ...args) =>
   (cb) => {
     try {
-      cb('');
+      //cb('');
     } catch (e) {
       console.warn(e);
       cb(`Exception: ${e}\n`);
@@ -210,7 +210,7 @@ export const terminal = (opts) => {
   $root.appendChild($element);
 
   render();
-  output(banner, true);
+  output(banner, false);
   focus();
 
   const destroy = () => {

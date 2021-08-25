@@ -6,11 +6,26 @@ interface IActionSetLoading {
   payload: ITerminalObject;
 }
 
+interface IPrintItem {
+  msg: string;
+  center: boolean;
+}
+
+interface IActionPrint {
+  type: ActionType.PRINT;
+  payload: IPrintItem;
+}
+
 const setTerminal = (payload: ITerminalObject): IActionSetLoading => ({
   type: ActionType.SET_TERMINAL,
   payload,
 });
 
-export type TerminalActions = IActionSetLoading;
-export type { IActionSetLoading };
-export { setTerminal };
+const print = (payload: IPrintItem): IActionPrint => ({
+  type: ActionType.PRINT,
+  payload,
+});
+
+export type TerminalActions = IActionSetLoading | IActionPrint;
+export type { IActionSetLoading, IActionPrint };
+export { setTerminal, print };

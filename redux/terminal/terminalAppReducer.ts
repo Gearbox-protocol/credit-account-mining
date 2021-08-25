@@ -17,6 +17,10 @@ const terminalReducer: Reducer<ITerminalState, TerminalActions> = (
   switch (action.type) {
     case ActionType.SET_TERMINAL:
       return { ...state, terminal: action.payload };
+    case ActionType.PRINT: {
+      state.terminal?.print(action.payload.msg, action.payload.center);
+      return state;
+    }
     default:
       return state;
   }
