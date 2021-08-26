@@ -16,6 +16,10 @@ interface IActionPrint {
   payload: IPrintItem;
 }
 
+interface IActionClear {
+  type: ActionType.CLEAR;
+}
+
 const setTerminal = (payload: ITerminalObject): IActionSetLoading => ({
   type: ActionType.SET_TERMINAL,
   payload,
@@ -26,6 +30,10 @@ const print = (payload: IPrintItem): IActionPrint => ({
   payload,
 });
 
-export type TerminalActions = IActionSetLoading | IActionPrint;
-export type { IActionSetLoading, IActionPrint };
-export { setTerminal, print };
+const clear = (): IActionClear => ({
+  type: ActionType.CLEAR,
+});
+
+export type TerminalActions = IActionSetLoading | IActionPrint | IActionClear;
+export type { IActionSetLoading, IActionPrint, IActionClear };
+export { setTerminal, print, clear };

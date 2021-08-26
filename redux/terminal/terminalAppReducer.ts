@@ -21,6 +21,10 @@ const terminalReducer: Reducer<ITerminalState, TerminalActions> = (
       state.terminal?.print(action.payload.msg, action.payload.center);
       return state;
     }
+    case ActionType.CLEAR: {
+      state.terminal?.clear();
+      return state;
+    }
     default:
       return state;
   }

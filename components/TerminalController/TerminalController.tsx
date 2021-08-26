@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { print } from 'redux/terminal/terminalAction';
+import { print, clear } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer/rootReducer';
 import Terminal from 'components/Terminal/Terminal';
 import { banner, helpText, errorCommandNotFound } from 'utils/messages';
