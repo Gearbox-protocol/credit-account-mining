@@ -30,7 +30,7 @@ Please switch to Mainnet and try again.
 `;
 
 const errorMetamaskLogin = `
-You should log in to proceed
+Log in and try again
 `;
 
 const metamaskConnected = `
