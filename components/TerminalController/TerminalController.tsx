@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IState } from 'redux/root/rootReducer';
-import { terminalControllerCommand } from 'redux/terminalController/terminalControllerActions';
+import { controllerCommand } from 'redux/terminalController/terminalControllerActions';
 
 import Terminal from 'components/Terminal/Terminal';
 import { banner } from 'utils/messages';
@@ -16,7 +16,7 @@ const TerminalController: React.FC = () => {
 
   const handleCommand = (c: string): void => {
     if (!c) return;
-    dispatch(terminalControllerCommand(c.trim()));
+    dispatch(controllerCommand(c.trim()));
   };
 
   return <Terminal banner={banner} ref={terminalRoot} onCommand={handleCommand} />;

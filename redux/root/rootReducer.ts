@@ -11,8 +11,8 @@ import terminalReducer, {
   ITerminalState,
 } from 'redux/terminal/terminalAppReducer';
 import terminalControllerReducer, {
-  terminalControllerDefaultState,
-  ITerminalControllerState,
+  controllerDefaultState,
+  IControllerState,
 } from 'redux/terminalController/terminalControllerReducer';
 
 import { RootReducerAction } from './rootReducerActions';
@@ -21,7 +21,7 @@ import ActionType from './rootReducerActionTypes';
 interface IState extends DefaultRootState {
   terminalApp: ITerminalAppState;
   terminal: ITerminalState;
-  terminalController: ITerminalControllerState;
+  terminalController: IControllerState;
 }
 
 const combinedReducer = combineReducers({
@@ -34,7 +34,7 @@ const rootReducer = (
   state: IState = {
     terminalApp: terminalAppDefaultState,
     terminal: terminalDefaultState,
-    terminalController: terminalControllerDefaultState,
+    terminalController: controllerDefaultState,
   },
   action: RootReducerAction<IState>,
 ) => {

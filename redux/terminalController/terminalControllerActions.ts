@@ -1,75 +1,75 @@
 import ActionType from './terminalControllerActionTypes';
 
-interface ITerminalControllerNext {
+interface IControllerNext {
   type: ActionType.NEXT;
 }
 
-interface ITerminalControllerGotoRoot {
+interface IControllerGotoRoot {
   type: ActionType.GOTO_ROOT;
 }
 
-interface ITerminalControllerCommand {
+interface IControllerCommand {
   type: ActionType.COMMAND;
   payload: string;
 }
 
-interface ITerminalControllerHelp {
+interface IControllerHelp {
   type: ActionType.HELP;
 }
 
-interface ITerminalControllerClear {
+interface IControllerClear {
   type: ActionType.C_CLEAR;
 }
 
-interface ITerminalControllerJoin {
+interface IControllerJoin {
   type: ActionType.JOIN;
 }
 
-const terminalControllerNext = (): ITerminalControllerNext => ({
+const controllerNext = (): IControllerNext => ({
   type: ActionType.NEXT,
 });
 
-const terminalControllerGotoRoot = (): ITerminalControllerGotoRoot => ({
+const controllerGotoRoot = (): IControllerGotoRoot => ({
   type: ActionType.GOTO_ROOT,
 });
 
-const terminalControllerCommand = (c: string): ITerminalControllerCommand => ({
+const controllerCommand = (c: string): IControllerCommand => ({
   type: ActionType.COMMAND,
   payload: c,
 });
 
-const terminalControllerHelp = (): ITerminalControllerHelp => ({
+const controllerHelp = (): IControllerHelp => ({
   type: ActionType.HELP,
 });
 
-const terminalControllerClear = (): ITerminalControllerClear => ({
+const controllerClear = (): IControllerClear => ({
   type: ActionType.C_CLEAR,
 });
 
-const terminalControllerJoin = (): ITerminalControllerJoin => ({
+const controllerJoin = (): IControllerJoin => ({
   type: ActionType.JOIN,
 });
 
-export type TerminalControllerActions =
-  | ITerminalControllerNext
-  | ITerminalControllerGotoRoot
-  | ITerminalControllerCommand
-  | ITerminalControllerHelp
-  | ITerminalControllerClear
-  | ITerminalControllerJoin;
+export type ControllerActions =
+  | IControllerNext
+  | IControllerGotoRoot
+  | IControllerCommand
+  | IControllerHelp
+  | IControllerClear
+  | IControllerJoin;
 export type {
-  ITerminalControllerNext,
-  ITerminalControllerGotoRoot,
-  ITerminalControllerCommand,
-  ITerminalControllerHelp,
-  ITerminalControllerClear,
-  ITerminalControllerJoin,
+  IControllerNext,
+  IControllerGotoRoot,
+  IControllerCommand,
+  IControllerHelp,
+  IControllerClear,
+  IControllerJoin,
 };
 export {
-  terminalControllerGotoRoot,
-  terminalControllerNext,
-  terminalControllerCommand,
-  terminalControllerHelp,
-  terminalControllerClear,
-  terminalControllerJoin,
+  controllerGotoRoot,
+  controllerNext,
+  controllerCommand,
+  controllerHelp,
+  controllerClear,
+  controllerJoin,
 };

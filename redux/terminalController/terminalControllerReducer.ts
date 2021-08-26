@@ -1,10 +1,10 @@
 import { Reducer, Action } from 'redux';
 import { DefaultRootState } from 'react-redux';
 import {
-  TerminalControllerActions,
-  terminalControllerHelp,
-  terminalControllerClear,
-  terminalControllerJoin,
+  ControllerActions,
+  controllerHelp,
+  controllerClear,
+  controllerJoin,
 } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
@@ -13,7 +13,7 @@ type Controller = {
   child: Controller | null;
 };
 
-interface ITerminalControllerState extends DefaultRootState {
+interface IControllerState extends DefaultRootState {
   flow: Controller;
   current: Controller | null;
 }
@@ -21,9 +21,9 @@ interface ITerminalControllerState extends DefaultRootState {
 const flow: Controller = {
   userActions: {
     // root
-    help: terminalControllerHelp,
-    clear: terminalControllerClear,
-    join: terminalControllerJoin,
+    help: controllerHelp,
+    clear: controllerClear,
+    join: controllerJoin,
   },
   child: {
     // connect
@@ -31,10 +31,10 @@ const flow: Controller = {
   },
 };
 
-const terminalControllerDefaultState = { flow, current: flow };
+const controllerDefaultState = { flow, current: flow };
 
-const terminalControllerReducer: Reducer<ITerminalControllerState, TerminalControllerActions> = (
-  state = terminalControllerDefaultState,
+const controllerReducer: Reducer<IControllerState, ControllerActions> = (
+  state = controllerDefaultState,
   action,
 ) => {
   switch (action.type) {
@@ -56,6 +56,6 @@ const terminalControllerReducer: Reducer<ITerminalControllerState, TerminalContr
   }
 };
 
-export type { ITerminalControllerState };
-export { terminalControllerDefaultState };
-export default terminalControllerReducer;
+export type { IControllerState };
+export { controllerDefaultState };
+export default controllerReducer;

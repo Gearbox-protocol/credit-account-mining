@@ -1,7 +1,7 @@
 import { ITerminalObject } from 'components/Terminal/Terminal';
 import ActionType from './terminalActionTypes';
 
-interface IActionSetLoading {
+interface IActionSetTerminal {
   type: ActionType.SET_TERMINAL;
   payload: ITerminalObject;
 }
@@ -20,7 +20,12 @@ interface IActionClear {
   type: ActionType.CLEAR;
 }
 
-const setTerminal = (payload: ITerminalObject): IActionSetLoading => ({
+interface IActionLockInput {
+  type: ActionType.LOCK;
+  payload: boolean;
+}
+
+const setTerminal = (payload: ITerminalObject): IActionSetTerminal => ({
   type: ActionType.SET_TERMINAL,
   payload,
 });
@@ -34,6 +39,11 @@ const clear = (): IActionClear => ({
   type: ActionType.CLEAR,
 });
 
-export type TerminalActions = IActionSetLoading | IActionPrint | IActionClear;
-export type { IActionSetLoading, IActionPrint, IActionClear };
-export { setTerminal, print, clear };
+const inputLock = (payload: boolean): IActionLockInput => ({
+  type: ActionType.LOCK,
+  payload,
+});
+
+export type TerminalActions = IActionSetTerminal | IActionPrint | IActionClear | IActionLockInput;
+export type { IActionSetTerminal, IActionPrint, IActionClear, IActionLockInput };
+export { setTerminal, print, clear, inputLock };
