@@ -13,6 +13,15 @@ interface ITerminalControllerCommand {
   payload: string;
 }
 
+interface ITerminalControllerHelp {
+  type: ActionType.HELP;
+  payload: string;
+}
+
+interface ITerminalControllerClear {
+  type: ActionType.C_CLEAR;
+}
+
 const terminalControllerNext = (): ITerminalControllerNext => ({
   type: ActionType.NEXT,
 });
@@ -26,9 +35,32 @@ const terminalControllerCommand = (c: string): ITerminalControllerCommand => ({
   payload: c,
 });
 
+const terminalControllerHelp = (s: string): ITerminalControllerHelp => ({
+  type: ActionType.HELP,
+  payload: s,
+});
+
+const terminalControllerClear = (): ITerminalControllerClear => ({
+  type: ActionType.C_CLEAR,
+});
+
 export type TerminalControllerActions =
   | ITerminalControllerNext
   | ITerminalControllerGotoRoot
-  | ITerminalControllerCommand;
-export type { ITerminalControllerNext, ITerminalControllerGotoRoot, ITerminalControllerCommand };
-export { terminalControllerGotoRoot, terminalControllerNext, terminalControllerCommand };
+  | ITerminalControllerCommand
+  | ITerminalControllerHelp
+  | ITerminalControllerClear;
+export type {
+  ITerminalControllerNext,
+  ITerminalControllerGotoRoot,
+  ITerminalControllerCommand,
+  ITerminalControllerHelp,
+  ITerminalControllerClear,
+};
+export {
+  terminalControllerGotoRoot,
+  terminalControllerNext,
+  terminalControllerCommand,
+  terminalControllerHelp,
+  terminalControllerClear,
+};

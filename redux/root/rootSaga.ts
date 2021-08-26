@@ -1,7 +1,15 @@
-import watchTerminalControllerCommand from 'redux/terminalController/terminalControllerSaga';
+import {
+  watchTerminalControllerCommand,
+  watchTerminalControllerHelpWorker,
+  watchTerminalControllerClearWorker,
+} from 'redux/terminalController/terminalControllerSaga';
 
 import { all } from 'redux-saga/effects';
 
 export default function* rootSaga() {
-  yield all([watchTerminalControllerCommand()]);
+  yield all([
+    watchTerminalControllerCommand(),
+    watchTerminalControllerHelpWorker(),
+    watchTerminalControllerClearWorker(),
+  ]);
 }
