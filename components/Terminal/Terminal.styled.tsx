@@ -6,4 +6,4 @@ const Terminal = styled.div`
   align-items: center;
 `;
 
-export { Terminal };
+export default Terminal;

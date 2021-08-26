@@ -4,6 +4,7 @@ enum ActionType {
   COMMAND = 'COMMAND',
   HELP = 'HELP',
   C_CLEAR = 'C_CLEAR',
+  JOIN = 'JOIN',
 }
 
 export default ActionType;

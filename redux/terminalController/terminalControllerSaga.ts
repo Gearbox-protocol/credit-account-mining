@@ -1,15 +1,16 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { errorCommandNotFound } from 'utils/messages';
+import { errorCommandNotFound, helpText, metamaskConnected } from 'utils/messages';
+import { checkMetamask, connectMetamask, checkNetwork } from 'utils/API/helpers';
 import { print, clear } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import {
   ITerminalControllerCommand,
-  ITerminalControllerHelp,
   terminalControllerGotoRoot,
+  terminalControllerNext,
 } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
-function* terminalControllerCommandWorker({
+function* terminalControllerUserCommandWorker({
   payload,
 }: ITerminalControllerCommand): Generator<any, void, any> {
   const {
@@ -18,22 +19,24 @@ function* terminalControllerCommandWorker({
   try {
     if (!current || !current.userActions) throw new Error('No actions allowed');
     if (!current.userActions[payload]) throw new Error(`Command ${payload} not found`);
-    const { func, arg } = current.userActions[payload];
-    yield put(func(...arg));
+    const func = current.userActions[payload];
+    yield put(func());
   } catch (e) {
-    yield put(terminalControllerGotoRoot());
     yield put(print({ msg: errorCommandNotFound(payload), center: false }));
+    yield put(terminalControllerGotoRoot());
   }
 }
 
-function* watchTerminalControllerCommand() {
-  yield takeEvery(ActionType.COMMAND, terminalControllerCommandWorker);
+function* watchTerminalControllerUserCommandWorker() {
+  yield takeEvery(ActionType.COMMAND, terminalControllerUserCommandWorker);
 }
 
-function* terminalControllerHelpWorker({
-  payload,
-}: ITerminalControllerHelp): Generator<any, void, any> {
-  yield put(print({ msg: payload, center: false }));
+function* terminalControllerHelpWorker(): Generator<any, void, any> {
+  try {
+    yield put(print({ msg: helpText, center: false }));
+  } catch (e) {
+    yield put(print({ msg: e, center: false }));
+  }
 }
 
 function* watchTerminalControllerHelpWorker() {
@@ -41,15 +44,40 @@ function* watchTerminalControllerHelpWorker() {
 }
 
 function* terminalControllerClearWorker(): Generator<any, void, any> {
-  yield put(clear());
+  try {
+    yield put(clear());
+  } catch (e) {
+    yield put(print({ msg: e, center: false }));
+  }
 }
 
 function* watchTerminalControllerClearWorker() {
   yield takeEvery(ActionType.C_CLEAR, terminalControllerClearWorker);
 }
 
+function* terminalControllerJoinWorker(): Generator<any, void, any> {
+  try {
+    yield checkMetamask();
+    yield put(terminalControllerNext());
+    yield connectMetamask();
+    yield checkNetwork();
+    yield put(print({ msg: metamaskConnected, center: false }));
+    yield put(terminalControllerNext());
+
+    yield put(print({ msg: 'hello world', center: false }));
+  } catch (e) {
+    yield put(print({ msg: e.message, center: false }));
+    yield put(terminalControllerGotoRoot());
+  }
+}
+
+function* watchTerminalControllerJoinWorker() {
+  yield takeEvery(ActionType.JOIN, terminalControllerJoinWorker);
+}
+
 export {
-  watchTerminalControllerCommand,
+  watchTerminalControllerUserCommandWorker,
   watchTerminalControllerHelpWorker,
   watchTerminalControllerClearWorker,
+  watchTerminalControllerJoinWorker,
 };

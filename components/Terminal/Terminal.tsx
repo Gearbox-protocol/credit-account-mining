@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTerminal } from 'redux/terminal/terminalAction';
 import { terminal } from 'components/TerminalLib/terminal';
-import * as Styled from './Terminal.styled';
+import StyledTerminal from './Terminal.styled';
 
 interface ITerminalProps {
   banner: string;
@@ -36,7 +36,7 @@ const Terminal = React.forwardRef<HTMLDivElement, ITerminalProps>(({ banner, onC
   }, []);
 
   return (
-    <Styled.Terminal>
+    <StyledTerminal>
       <div id="crt">
         <div id="screen">
           <div id="wrapper">
@@ -48,7 +48,7 @@ const Terminal = React.forwardRef<HTMLDivElement, ITerminalProps>(({ banner, onC
           </div>
         </div>
       </div>
-    </Styled.Terminal>
+    </StyledTerminal>
   );
 });
 

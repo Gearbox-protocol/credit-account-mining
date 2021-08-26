@@ -1,22 +1,15 @@
-import { Reducer } from 'redux';
+import { Reducer, Action } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import { helpText } from 'utils/messages';
-
 import {
   TerminalControllerActions,
   terminalControllerHelp,
   terminalControllerClear,
+  terminalControllerJoin,
 } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
-interface IFunctionToCall {
-  func: (arg?: any) => any;
-  arg: any[];
-}
-
 type Controller = {
-  userActions?: Record<string, IFunctionToCall>;
-  systemActions?: Record<string, IFunctionToCall>;
+  userActions?: Record<string, () => Action<any>>;
   child: Controller | null;
 };
 
@@ -27,11 +20,15 @@ interface ITerminalControllerState extends DefaultRootState {
 
 const flow: Controller = {
   userActions: {
-    help: { func: terminalControllerHelp, arg: [helpText] },
-    clear: { func: terminalControllerClear, arg: [] },
-    join: { func: () => {}, arg: [] },
+    // root
+    help: terminalControllerHelp,
+    clear: terminalControllerClear,
+    join: terminalControllerJoin,
   },
-  child: null,
+  child: {
+    // connect
+    child: null,
+  },
 };
 
 const terminalControllerDefaultState = { flow, current: flow };
