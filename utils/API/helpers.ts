@@ -1,4 +1,3 @@
-import MetaMaskOnboarding from '@metamask/onboarding';
 import {
   errorMetamaskLogin,
   errorMetamaskNotConnected,
@@ -7,7 +6,7 @@ import {
 } from 'utils/messages';
 
 const checkMetamask = (): boolean => {
-  if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+  if (typeof (window as any).ethereum !== 'undefined' && (window as any).ethereum.isMetaMask) {
     return true;
   }
   throw new Error(errorNoMetamask);
