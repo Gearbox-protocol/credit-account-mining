@@ -1,5 +1,6 @@
 import { TerminalAppActions } from 'redux/terminalApp/terminalAppAction';
 import { TerminalActions } from 'redux/terminal/terminalAction';
+import { TerminalControllerActions } from 'redux/terminalController/terminalControllerActions';
 
 import ActionType from './rootReducerActionTypes';
 
@@ -8,4 +9,8 @@ interface IRootHydration<T> {
   payload: T;
 }
 
-export type RootReducerAction<T> = IRootHydration<T> | TerminalAppActions | TerminalActions;
+export type RootReducerAction<T> =
+  | IRootHydration<T>
+  | TerminalAppActions
+  | TerminalActions
+  | TerminalControllerActions;

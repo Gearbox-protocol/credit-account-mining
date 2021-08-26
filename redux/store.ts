@@ -2,8 +2,8 @@ import { createStore, applyMiddleware, Store } from 'redux';
 import { MakeStore, createWrapper } from 'next-redux-wrapper';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createReduxSagaMiddleware, { Task } from 'redux-saga';
-import rootSaga from './root/rootSaga/rootSaga';
-import rootReducer, { IState } from './root/rootReducer/rootReducer';
+import rootSaga from './root/rootSaga';
+import rootReducer, { IState } from './root/rootReducer';
 
 const environment = process.env.NODE_ENV;
 const isDev = environment === 'development';
