@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * AnderShell - Just a small CSS demo
  *
@@ -170,6 +171,7 @@ const keyboard = (parse, callback) => {
 export const terminal = (opts) => {
   let buffer = []; // What will be output to display
   let busy = false; // If we cannot type at the moment
+  let isLocked = false; // Lock input
 
   const { prompt, banner, commands, buflen, tickrate, root, callback } = createOptions(opts);
   const $root = root;
@@ -199,7 +201,8 @@ export const terminal = (opts) => {
   const focus = () => setTimeout(() => $element.focus(), 1);
   const kbd = keyboard(parse, callback);
   const clear = () => ($element.value = '');
-  const input = (ev) => (busy ? ev.preventDefault() : kbd[ev.type](ev));
+  const input = (ev) => (busy || isLocked ? ev.preventDefault() : kbd[ev.type](ev));
+  const inputLock = (lock) => (isLocked = lock);
 
   $element.addEventListener('focus', () => setSelectionRange($element));
   $element.addEventListener('blur', focus);
@@ -223,5 +226,5 @@ export const terminal = (opts) => {
     $root.innerHtml = '';
   };
 
-  return { focus, parse, clear, print: output, destroy };
+  return { focus, parse, clear, print: output, destroy, inputLock };
 };
