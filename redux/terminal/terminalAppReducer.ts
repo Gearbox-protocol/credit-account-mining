@@ -25,6 +25,10 @@ const terminalReducer: Reducer<ITerminalState, TerminalActions> = (
       state.terminal?.clear();
       return state;
     }
+    case ActionType.LOCK: {
+      state.terminal?.inputLock(action.payload);
+      return state;
+    }
     default:
       return state;
   }
