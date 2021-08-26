@@ -3,6 +3,7 @@ enum ActionType {
   PRINT = 'PRINT',
   CLEAR = 'CLEAR',
   LOCK = 'LOCK',
+  TERMINAL_LOADING = 'TERMINAL_LOADING',
 }
 
 export default ActionType;

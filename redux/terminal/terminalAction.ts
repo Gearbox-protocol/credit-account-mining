@@ -25,6 +25,11 @@ interface IActionLockInput {
   payload: boolean;
 }
 
+interface IActionLoading {
+  type: ActionType.TERMINAL_LOADING;
+  payload: boolean;
+}
+
 const setTerminal = (payload: ITerminalObject): IActionSetTerminal => ({
   type: ActionType.SET_TERMINAL,
   payload,
@@ -44,6 +49,16 @@ const inputLock = (payload: boolean): IActionLockInput => ({
   payload,
 });
 
-export type TerminalActions = IActionSetTerminal | IActionPrint | IActionClear | IActionLockInput;
-export type { IActionSetTerminal, IActionPrint, IActionClear, IActionLockInput };
-export { setTerminal, print, clear, inputLock };
+const loading = (payload: boolean): IActionLoading => ({
+  type: ActionType.TERMINAL_LOADING,
+  payload,
+});
+
+export type TerminalActions =
+  | IActionSetTerminal
+  | IActionPrint
+  | IActionClear
+  | IActionLockInput
+  | IActionLoading;
+export type { IActionSetTerminal, IActionPrint, IActionClear, IActionLockInput, IActionLoading };
+export { setTerminal, print, clear, inputLock, loading };

@@ -167,6 +167,57 @@ const keyboard = (parse, callback) => {
   };
 };
 
+class Loader {
+  constructor(target) {
+    this.loading = false;
+    this.target = target;
+    this.count = 0;
+    this._loadingSymbol = '.';
+
+    this.startLoading = this.startLoading.bind(this);
+    this.endLoading = this.endLoading.bind(this);
+    this._clearLoading = this._clearLoading.bind(this);
+    this._addDot = this._addDot.bind(this);
+  }
+
+  _clearLoading() {
+    const value = this.target.value;
+    this.target.value = value.substring(0, value.length - this.count * this._loadingSymbol.length);
+    this.count = 0;
+  }
+
+  _addDot() {
+    this.target.value += this._loadingSymbol;
+    this.count += 1;
+  }
+
+  startLoading() {
+    if (!!this.loading) return;
+    this.loading = true;
+
+    const interval = setInterval(() => {
+      if (!this.loading) {
+        clearInterval(interval);
+        return;
+      }
+
+      if (this.count >= 4) {
+        this._clearLoading();
+      }
+
+      this._addDot();
+    }, 1000);
+  }
+
+  endLoading() {
+    if (!this.loading) return;
+    this.loading = false;
+
+    if (this.count === 0) return;
+    this._clearLoading();
+  }
+}
+
 // Creates the terminal
 export const terminal = (opts) => {
   let buffer = []; // What will be output to display
@@ -226,5 +277,16 @@ export const terminal = (opts) => {
     $root.innerHtml = '';
   };
 
-  return { focus, parse, clear, print: output, destroy, inputLock };
+  const loader = new Loader($element);
+
+  return {
+    focus,
+    parse,
+    clear,
+    print: output,
+    destroy,
+    inputLock,
+    startLoading: loader.startLoading,
+    endLoading: loader.endLoading,
+  };
 };

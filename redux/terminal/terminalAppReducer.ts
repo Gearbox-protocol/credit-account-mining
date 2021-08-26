@@ -29,6 +29,14 @@ const terminalReducer: Reducer<ITerminalState, TerminalActions> = (
       state.terminal?.inputLock(action.payload);
       return state;
     }
+    case ActionType.TERMINAL_LOADING: {
+      if (action.payload) {
+        state.terminal?.startLoading();
+      } else {
+        state.terminal?.endLoading();
+      }
+      return state;
+    }
     default:
       return state;
   }

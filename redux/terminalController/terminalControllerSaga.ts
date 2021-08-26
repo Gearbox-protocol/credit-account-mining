@@ -1,7 +1,7 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { errorCommandNotFound, helpText, metamaskConnected } from 'utils/messages';
 import { checkMetamask, connectMetamask, checkNetwork } from 'utils/API/helpers';
-import { print, clear, inputLock } from 'redux/terminal/terminalAction';
+import { print, clear, inputLock, loading } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import {
   IControllerCommand,
@@ -55,12 +55,13 @@ function* watchControllerClearWorker() {
 function* controllerJoinWorker(): Generator<any, void, any> {
   try {
     yield put(inputLock(true));
-
     yield checkMetamask();
     yield put(controllerNext());
 
+    yield put(loading(true));
     yield connectMetamask();
     yield checkNetwork();
+    yield put(loading(false));
     yield put(print({ msg: metamaskConnected, center: false }));
     yield put(controllerNext());
 
@@ -68,7 +69,10 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
     yield put(print({ msg: 'Finish', center: false }));
   } catch (e) {
+    yield put(loading(false));
+
     yield put(print({ msg: e.message, center: false }));
+
     yield put(controllerGotoRoot());
     yield put(inputLock(false));
   }

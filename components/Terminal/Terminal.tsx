@@ -16,6 +16,8 @@ interface ITerminalObject {
   print: (output: any, center: any) => void;
   destroy: () => void;
   inputLock: (lock: any) => any;
+  startLoading: () => void;
+  endLoading: () => void;
 }
 
 const Terminal = React.forwardRef<HTMLDivElement, ITerminalProps>(({ banner, onCommand }, ref) => {
