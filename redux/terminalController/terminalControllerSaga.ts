@@ -1,7 +1,8 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { errorCommandNotFound, helpText, metamaskConnected } from 'utils/messages';
+import { messages, errors } from 'utils/terminalText';
 import { checkMetamask, connectMetamask, checkNetwork } from 'utils/API/helpers';
 import { print, clear, inputLock, loading } from 'redux/terminal/terminalAction';
+import { playVideo } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {
   IControllerCommand,
@@ -20,7 +21,7 @@ function* controllerUserCommandWorker({ payload }: IControllerCommand): Generato
     const func = current.userActions[payload];
     yield put(func());
   } catch (e) {
-    yield put(print({ msg: errorCommandNotFound(payload), center: false }));
+    yield put(print({ msg: errors.commandNotFound(payload), center: false }));
   }
 }
 
@@ -30,7 +31,7 @@ function* watchControllerUserCommandWorker() {
 
 function* controllerHelpWorker(): Generator<any, void, any> {
   try {
-    yield put(print({ msg: helpText, center: false }));
+    yield put(print({ msg: messages.helpText, center: false }));
   } catch (e) {
     yield put(print({ msg: e, center: false }));
   }
@@ -62,12 +63,13 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield connectMetamask();
     yield checkNetwork();
     yield put(loading(false));
-    yield put(print({ msg: metamaskConnected, center: false }));
+    yield put(print({ msg: messages.metamaskConnected, center: false }));
     yield put(controllerNext());
 
     yield put(inputLock(false));
 
     yield put(print({ msg: 'Finish', center: false }));
+    yield put(playVideo(true));
   } catch (e) {
     yield put(loading(false));
 
