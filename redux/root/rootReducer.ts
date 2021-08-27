@@ -41,7 +41,7 @@ const rootReducer = (
   switch (action.type) {
     case ActionType.ROOT_HYDRATION: {
       const { terminalApp } = state;
-      const isAlreadyHydrated = terminalApp && terminalApp.pageHydrated;
+      const isAlreadyHydrated = terminalApp && terminalApp.appHydrated;
       if (isAlreadyHydrated) {
         return state;
       }
