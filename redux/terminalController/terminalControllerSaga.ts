@@ -1,7 +1,9 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { messages, errors } from 'utils/terminalText';
 import { checkMetamask, connectMetamask, checkNetwork } from 'utils/API/helpers';
-import { print, clear, inputLock, loading } from 'redux/terminal/terminalAction';
+import {
+  print, clear, inputLock, loading,
+} from 'redux/terminal/terminalAction';
 import { playVideo } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {

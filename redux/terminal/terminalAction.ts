@@ -60,5 +60,9 @@ export type TerminalActions =
   | IActionClear
   | IActionLockInput
   | IActionLoading;
-export type { IActionSetTerminal, IActionPrint, IActionClear, IActionLockInput, IActionLoading };
-export { setTerminal, print, clear, inputLock, loading };
+export type {
+  IActionSetTerminal, IActionPrint, IActionClear, IActionLockInput, IActionLoading,
+};
+export {
+  setTerminal, print, clear, inputLock, loading,
+};
