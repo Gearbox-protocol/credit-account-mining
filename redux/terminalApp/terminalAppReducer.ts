@@ -4,11 +4,12 @@ import { TerminalAppActions } from './terminalAppAction';
 import ActionType from './terminalAppActionTypes';
 
 interface ITerminalAppState extends DefaultRootState {
-  pageLoading: boolean;
-  pageHydrated: boolean;
+  appLoading: boolean;
+  playVideo: boolean;
+  appHydrated: boolean;
 }
 
-const terminalAppDefaultState = { pageLoading: false, pageHydrated: false };
+const terminalAppDefaultState = { appLoading: false, appHydrated: false, playVideo: false };
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
   state = terminalAppDefaultState,
@@ -19,6 +20,8 @@ const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
       return { ...state, appLoading: action.payload };
     case ActionType.SET_APP_HYDRATION:
       return { ...state, appHydrated: action.payload };
+    case ActionType.PLAY_VIDEO:
+      return { ...state, playVideo: action.payload };
     default:
       return state;
   }

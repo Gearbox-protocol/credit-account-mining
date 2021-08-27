@@ -10,6 +10,11 @@ interface IActionSetHydration {
   payload: boolean;
 }
 
+interface IActionPlayVideo {
+  type: ActionTypeLoading.PLAY_VIDEO;
+  payload: boolean;
+}
+
 const setPageLoading = (payload: boolean): IActionSetAppLoading => ({
   type: ActionTypeLoading.SET_APP_LOADER,
   payload,
@@ -20,6 +25,11 @@ const setPageHydration = (payload: boolean): IActionSetHydration => ({
   payload,
 });
 
-export type TerminalAppActions = IActionSetAppLoading | IActionSetHydration;
-export type { IActionSetAppLoading, IActionSetHydration };
-export { setPageLoading, setPageHydration };
+const playVideo = (payload: boolean): IActionPlayVideo => ({
+  type: ActionTypeLoading.PLAY_VIDEO,
+  payload,
+});
+
+export type TerminalAppActions = IActionSetAppLoading | IActionSetHydration | IActionPlayVideo;
+export type { IActionSetAppLoading, IActionSetHydration, IActionPlayVideo };
+export { setPageLoading, setPageHydration, playVideo };
