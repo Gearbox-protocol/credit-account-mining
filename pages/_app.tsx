@@ -7,7 +7,7 @@ import Fonts from 'styles/fonts';
 import theme from 'styles/theme';
 import 'components/TerminalLib/styles.scss';
 
-const GearboxTerminal = ({ Component, pageProps }: AppProps) => (
+const GearboxTerminal: React.FC<AppProps> = ({ Component, pageProps }) => (
   <ThemeProvider theme={theme}>
     <Fonts />
     <FixedGlobalStyle />
