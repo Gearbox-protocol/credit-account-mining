@@ -1,9 +1,7 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { messages, errors } from 'utils/terminalText';
-import { checkMetamask, connectMetamask, checkNetwork } from 'utils/API/helpers';
-import {
-  print, clear, inputLock, loading,
-} from 'redux/terminal/terminalAction';
+import { messages, errors } from 'utils/text/terminalText';
+import { checkMetamask, connectMetamask, checkNetwork } from 'utils/API/join';
+import { print, clear, inputLock, loading } from 'redux/terminal/terminalAction';
 import { playVideo } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {
@@ -22,7 +20,7 @@ function* controllerUserCommandWorker({ payload }: IControllerCommand): Generato
     if (!current.userActions[payload]) throw new Error(`Command ${payload} not found`);
     const func = current.userActions[payload];
     yield put(func());
-  } catch (e) {
+  } catch (e: any) {
     yield put(print({ msg: errors.commandNotFound(payload), center: false }));
   }
 }
@@ -34,7 +32,7 @@ function* watchControllerUserCommandWorker() {
 function* controllerHelpWorker(): Generator<any, void, any> {
   try {
     yield put(print({ msg: messages.helpText, center: false }));
-  } catch (e) {
+  } catch (e: any) {
     yield put(print({ msg: e, center: false }));
   }
 }
@@ -46,7 +44,7 @@ function* watchControllerHelpWorker() {
 function* controllerClearWorker(): Generator<any, void, any> {
   try {
     yield put(clear());
-  } catch (e) {
+  } catch (e: any) {
     yield put(print({ msg: e, center: false }));
   }
 }
@@ -72,7 +70,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
     yield put(print({ msg: 'Finish', center: false }));
     yield put(playVideo(true));
-  } catch (e) {
+  } catch (e: any) {
     yield put(loading(false));
 
     yield put(print({ msg: e.message, center: false }));
