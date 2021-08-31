@@ -1,9 +1,13 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { messages, errors } from 'utils/text/terminalText';
-import { checkMetamask, connectMetamask, checkNetwork } from 'utils/API/join';
 import {
-  print, clear, inputLock, loading,
-} from 'redux/terminal/terminalAction';
+  checkMetamask,
+  connectMetamask,
+  checkNetwork,
+  checkPermissions,
+  startMining,
+} from 'utils/API/join';
+import { print, clear, inputLock, loading } from 'redux/terminal/terminalAction';
 import { playVideo } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {
@@ -58,20 +62,24 @@ function* watchControllerClearWorker() {
 function* controllerJoinWorker(): Generator<any, void, any> {
   try {
     yield put(inputLock(true));
+
     yield checkMetamask();
     yield put(controllerNext());
 
     yield put(loading(true));
-    yield connectMetamask();
+    const user: string = yield connectMetamask();
     yield checkNetwork();
     yield put(loading(false));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
-    yield put(controllerNext());
 
+    yield checkPermissions(user);
+    yield startMining(user);
+
+    yield put(controllerNext());
     yield put(inputLock(false));
 
-    yield put(print({ msg: 'Finish', center: false }));
-    yield put(playVideo(true));
+    // yield put(print({ msg: 'Finish', center: false }));
+    // yield put(playVideo(true));
   } catch (e: any) {
     yield put(loading(false));
 

@@ -30,6 +30,9 @@ Failed to connect Metamask
   metamaskWrongNetwork: `
 Please switch to Mainnet and try again.
 `,
+  gearboxNetwork: `
+  Target network not specified
+`,
   metamaskLogin: `
 Log in and try again
 `,
