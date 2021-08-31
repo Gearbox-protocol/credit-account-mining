@@ -19,6 +19,22 @@ const defaultTheme: DefaultTheme = {
       main: '#ea3690',
       contrast: '#ffffff',
     },
+    buttons: {
+      dark: {
+        main: '#656e7b',
+        contrast: '#ffffff',
+      },
+    },
+    hovers: {
+      secondary: {
+        main: 'rgb(185, 4, 111)',
+        contrast: '#ccc',
+      },
+      primary: {
+        main: '#5b6574',
+        contrast: '#757f9e',
+      },
+    },
   },
 };
 

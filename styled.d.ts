@@ -20,6 +20,13 @@ declare module 'styled-components' {
     palette: {
       primary: IPalette;
       secondary: IPalette;
+      hovers: {
+        primary: IPalette;
+        secondary: IPalette;
+      };
+      buttons: {
+        dark: IPalette;
+      };
     };
   }
 }
