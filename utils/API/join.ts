@@ -1,4 +1,4 @@
-import { errors } from 'utils/terminalText';
+import { errors } from 'utils/text/terminalText';
 
 const checkMetamask = (): boolean => {
   if (typeof (window as any).ethereum !== 'undefined' && (window as any).ethereum.isMetaMask) {
@@ -10,7 +10,7 @@ const checkMetamask = (): boolean => {
 const connectMetamask = async () => {
   try {
     await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
-  } catch (e) {
+  } catch (e: any) {
     if (e.code === -32002) {
       throw new Error(errors.metamaskLogin);
     }
