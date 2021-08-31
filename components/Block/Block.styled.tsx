@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { BlockVariants } from 'components/Block/Block';
 
 const Block = styled.section<{ variant?: BlockVariants }>`
+  display: flex;
   height: ${({ variant }) => {
     switch (variant) {
       case 'viewport-sized':
@@ -10,7 +11,6 @@ const Block = styled.section<{ variant?: BlockVariants }>`
         return 'auto';
     }
   }};
-  display: flex;
   justify-content: center;
   align-items: center;
 `;
