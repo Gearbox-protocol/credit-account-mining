@@ -1,3 +1,4 @@
+import { IAccount } from 'utils/API/join';
 import ActionTypeLoading from './terminalAppActionTypes';
 
 interface IActionSetAppLoading {
@@ -15,6 +16,11 @@ interface IActionPlayVideo {
   payload: boolean;
 }
 
+interface IActionSetAccount {
+  type: ActionTypeLoading.SET_ACCOUNT;
+  payload: IAccount | null;
+}
+
 const setPageLoading = (payload: boolean): IActionSetAppLoading => ({
   type: ActionTypeLoading.SET_APP_LOADER,
   payload,
@@ -30,6 +36,15 @@ const playVideo = (payload: boolean): IActionPlayVideo => ({
   payload,
 });
 
-export type TerminalAppActions = IActionSetAppLoading | IActionSetHydration | IActionPlayVideo;
-export type { IActionSetAppLoading, IActionSetHydration, IActionPlayVideo };
-export { setPageLoading, setPageHydration, playVideo };
+const setAccount = (payload: IAccount | null): IActionSetAccount => ({
+  type: ActionTypeLoading.SET_ACCOUNT,
+  payload,
+});
+
+export type TerminalAppActions =
+  | IActionSetAppLoading
+  | IActionSetHydration
+  | IActionPlayVideo
+  | IActionSetAccount;
+export type { IActionSetAppLoading, IActionSetHydration, IActionPlayVideo, IActionSetAccount };
+export { setPageLoading, setPageHydration, playVideo, setAccount };

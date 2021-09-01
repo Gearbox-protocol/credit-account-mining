@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
+import { IAccount } from 'utils/API/join';
 import { TerminalAppActions } from './terminalAppAction';
 import ActionType from './terminalAppActionTypes';
 
@@ -7,9 +8,15 @@ interface ITerminalAppState extends DefaultRootState {
   appLoading: boolean;
   playVideo: boolean;
   appHydrated: boolean;
+  account: IAccount | null;
 }
 
-const terminalAppDefaultState = { appLoading: false, appHydrated: false, playVideo: false };
+const terminalAppDefaultState = {
+  appLoading: false,
+  appHydrated: false,
+  playVideo: false,
+  account: null,
+};
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
   state = terminalAppDefaultState,
@@ -22,6 +29,8 @@ const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
       return { ...state, appHydrated: action.payload };
     case ActionType.PLAY_VIDEO:
       return { ...state, playVideo: action.payload };
+    case ActionType.SET_ACCOUNT:
+      return { ...state, account: action.payload };
     default:
       return state;
   }
