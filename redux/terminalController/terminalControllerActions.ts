@@ -8,6 +8,10 @@ interface IControllerGotoRoot {
   type: ActionType.GOTO_ROOT;
 }
 
+interface IControllerGotoJoin {
+  type: ActionType.GOTO_JOIN;
+}
+
 interface IControllerCommand {
   type: ActionType.COMMAND;
   payload: string;
@@ -25,12 +29,24 @@ interface IControllerJoin {
   type: ActionType.JOIN;
 }
 
+interface IControllerJoinAccepted {
+  type: ActionType.JOIN_ACCEPTED;
+}
+
+interface IControllerJoinDenied {
+  type: ActionType.JOIN_DENIED;
+}
+
 const controllerNext = (): IControllerNext => ({
   type: ActionType.NEXT,
 });
 
 const controllerGotoRoot = (): IControllerGotoRoot => ({
   type: ActionType.GOTO_ROOT,
+});
+
+const controllerGotoJoin = (): IControllerGotoJoin => ({
+  type: ActionType.GOTO_JOIN,
 });
 
 const controllerCommand = (c: string): IControllerCommand => ({
@@ -50,13 +66,24 @@ const controllerJoin = (): IControllerJoin => ({
   type: ActionType.JOIN,
 });
 
+const controllerJoinAccepted = (): IControllerJoinAccepted => ({
+  type: ActionType.JOIN_ACCEPTED,
+});
+
+const controllerJoinDenied = (): IControllerJoinDenied => ({
+  type: ActionType.JOIN_DENIED,
+});
+
 export type ControllerActions =
   | IControllerNext
   | IControllerGotoRoot
   | IControllerCommand
   | IControllerHelp
   | IControllerClear
-  | IControllerJoin;
+  | IControllerJoin
+  | IControllerGotoJoin
+  | IControllerJoinAccepted
+  | IControllerJoinDenied;
 export type {
   IControllerNext,
   IControllerGotoRoot,
@@ -64,6 +91,9 @@ export type {
   IControllerHelp,
   IControllerClear,
   IControllerJoin,
+  IControllerGotoJoin,
+  IControllerJoinAccepted,
+  IControllerJoinDenied,
 };
 export {
   controllerGotoRoot,
@@ -72,4 +102,7 @@ export {
   controllerHelp,
   controllerClear,
   controllerJoin,
+  controllerGotoJoin,
+  controllerJoinAccepted,
+  controllerJoinDenied,
 };

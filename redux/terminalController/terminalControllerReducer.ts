@@ -5,6 +5,8 @@ import {
   controllerHelp,
   controllerClear,
   controllerJoin,
+  controllerJoinAccepted,
+  controllerJoinDenied,
 } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
@@ -14,24 +16,31 @@ type Controller = {
 };
 
 interface IControllerState extends DefaultRootState {
-  flow: Controller;
+  root: Controller;
+  join: Controller;
   current: Controller | null;
 }
 
-const flow: Controller = {
+const root: Controller = {
   userActions: {
-    // root
     help: controllerHelp,
     clear: controllerClear,
     join: controllerJoin,
   },
+  child: null,
+};
+
+const join: Controller = {
   child: {
-    // connect
+    userActions: {
+      y: controllerJoinAccepted,
+      n: controllerJoinDenied,
+    },
     child: null,
   },
 };
 
-const controllerDefaultState = { flow, current: flow };
+const controllerDefaultState = { root, join, current: root };
 
 const controllerReducer: Reducer<IControllerState, ControllerActions> = (
   state = controllerDefaultState,
@@ -48,7 +57,12 @@ const controllerReducer: Reducer<IControllerState, ControllerActions> = (
     case ActionType.GOTO_ROOT:
       return {
         ...state,
-        current: state.flow,
+        current: state.root,
+      };
+    case ActionType.GOTO_JOIN:
+      return {
+        ...state,
+        current: state.join,
       };
     default: {
       return state;
