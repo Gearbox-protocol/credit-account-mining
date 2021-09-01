@@ -2,10 +2,12 @@ import {
   watchControllerUserCommandWorker,
   watchControllerHelpWorker,
   watchControllerClearWorker,
+} from 'redux/terminalController/terminalControllerSaga';
+import {
   watchControllerJoinWorker,
   watchControllerJoinAcceptedWorker,
   watchControllerJoinDeniedWorker,
-} from 'redux/terminalController/terminalControllerSaga';
+} from 'redux/terminalController/terminalControllerJoinSaga';
 
 import { all } from 'redux-saga/effects';
 
