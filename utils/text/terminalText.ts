@@ -15,6 +15,15 @@ const messages = {
   metamaskConnected: `
   Metamask connected
   `,
+  amountOfMineAccounts: (c: number) => `
+  You have ${c} credit accounts to mine
+`,
+  claim: `
+  Do you want to mine credit account? Type y/n.
+`,
+  congratulations: `
+Congratulations! Future of France is coming!
+`,
 };
 
 const errors = {
@@ -25,16 +34,25 @@ const errors = {
  Failed. Please install Metamask
 `,
   metamaskNotConnected: `
-Failed to connect Metamask
+  Failed to connect Metamask
 `,
   metamaskWrongNetwork: `
-Please switch to Mainnet and try again.
+  Please switch to Mainnet and try again.
 `,
   gearboxNetwork: `
   Target network not specified
 `,
   metamaskLogin: `
-Log in and try again
+  Log in and try again
+`,
+  permissionDenied: `
+  Permission to join Gearbox Launch Community is denied
+`,
+  alreadyClaimed: `
+  you already mined your Credit Account. Thanks for joining to Gearbox Launch Community.
+`,
+  denied: `
+  you skip our movement to Freedom.
 `,
 };
 
