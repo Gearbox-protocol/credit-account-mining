@@ -9,6 +9,7 @@ interface IMetamaskError {
 }
 
 const checkMetamask = (): boolean => {
+  /* add subscription !!!!!!!!!!!!! */
   if (typeof (window as any).ethereum === 'undefined' || !(window as any).ethereum.isMetaMask) {
     throw new Error(errors.noMetamask);
   }
@@ -40,16 +41,40 @@ const checkNetwork = (): boolean => {
   return true;
 };
 
-const checkPermissions = (user: string) => {
-  return true;
+const checkPermissions = (user: string): number => {
+  console.log(user);
+  // throw new Error(errors.permissionDenied)  !!!!!!!!!!!!!!!!!!!!!
+  return 1;
 };
 
-const startMining = async (user: string) => {
+interface IAccount {
+  account: AccountMining;
+  provider: ethers.providers.Web3Provider;
+  signer: ethers.providers.JsonRpcSigner;
+}
+
+const isClaimed = async (user: string) => {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = await provider.getSigner();
     const account: AccountMining = await AccountMining__factory.connect(user, signer);
-  } catch (e: any) {}
+
+    const claimed = false; // await account.isClaimed('!!!!!!!!!!');
+    if (claimed) throw new Error(errors.alreadyClaimed);
+
+    return { account, provider, signer };
+  } catch (e: any) {
+    throw new Error(e.message);
+  }
 };
 
-export { checkMetamask, connectMetamask, checkNetwork, checkPermissions, startMining };
+const claim = async (account: IAccount) => {
+  try {
+    // account.account.claim('', user);  !!!!!!!!!!!!
+  } catch (e: any) {
+    throw new Error(e.message);
+  }
+};
+
+export type { IAccount };
+export { checkMetamask, connectMetamask, checkNetwork, checkPermissions, isClaimed, claim };
