@@ -32,8 +32,8 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(loading(false));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
-    const accountsToMine: number = yield checkPermissions(user);
-    yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
+    yield checkPermissions(user);
+    yield put(print({ msg: messages.amountOfMineAccounts(1), center: false }));
 
     const account: IAccount = yield isClaimed(user);
     yield put(setAccount(account));

@@ -2,6 +2,7 @@ import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
 import { errors } from 'utils/text/terminalText';
+import usersList from 'utils/allowedUsers/allowedUsers';
 
 interface IMetamaskError {
   code: number;
@@ -10,7 +11,8 @@ interface IMetamaskError {
 
 const checkMetamask = (): boolean => {
   /* add subscription !!!!!!!!!!!!! */
-  if (typeof !!window.ethereum || window.ethereum!.isMetaMask) {
+  /* accounts enable !!!!!!!!!!! */
+  if (!window.ethereum || !window.ethereum!.isMetaMask) {
     throw new Error(errors.noMetamask);
   }
   return true;
@@ -22,9 +24,9 @@ const connectMetamask = async () => {
     return accounts[0];
   } catch (e: any) {
     const typedError = e as IMetamaskError;
-    if (typedError.code === -32002) {
-      throw new Error(errors.metamaskLogin);
-    }
+
+    if (typedError.code === 4001) throw new Error(errors.metamaskNotConnected);
+    if (typedError.code === -32002) throw new Error(errors.metamaskLogin);
     throw new Error(errors.metamaskNotConnected);
   }
 };
@@ -41,10 +43,9 @@ const checkNetwork = (): boolean => {
   return true;
 };
 
-const checkPermissions = (user: string): number => {
-  console.log(user);
-  // throw new Error(errors.permissionDenied)  !!!!!!!!!!!!!!!!!!!!!
-  return 1;
+const checkPermissions = (user: string): boolean => {
+  if (user in usersList) return true;
+  throw new Error(errors.permissionDenied);
 };
 
 interface IAccount {
@@ -58,8 +59,6 @@ const isClaimed = async (user: string) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum!);
     const signer = await provider.getSigner();
     const account: AccountMining = await AccountMining__factory.connect(user, signer);
-
-    console.log(account);
 
     const claimed = false; // await account.isClaimed();!!!!!!!!!!!!!!!!!!!!
     if (claimed) throw new Error(errors.alreadyClaimed);
