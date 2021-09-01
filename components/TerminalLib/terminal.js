@@ -127,7 +127,7 @@ const executor =
   (cmd, ...args) =>
   (cb) => {
     try {
-      //cb('');
+      // cb(''); !!!!!
     } catch (e) {
       console.warn(e);
       cb(`Exception: ${e}\n`);
