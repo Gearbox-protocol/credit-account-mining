@@ -60,11 +60,16 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
   } = (yield select()) as IState;
   try {
     if (!account) throw new Error(errors.metamaskLogin);
+    yield put(inputLock(true));
+
     yield claim(account);
     // loading !!!!!!!!!!!!!!!!!!!!!
     yield put(print({ msg: messages.congratulations, center: false }));
-    yield put(controllerGotoRoot());
+
     // yield put(playVideo(true)); !!!!!!!!!!!!!!!!!!
+
+    yield put(inputLock(false));
+    yield put(controllerGotoRoot());
   } catch (e: any) {
     yield put(loading(false));
     yield put(controllerGotoRoot());
