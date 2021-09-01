@@ -18,6 +18,7 @@
   },
   "include": [
     "file-types",
+    "react-app",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
