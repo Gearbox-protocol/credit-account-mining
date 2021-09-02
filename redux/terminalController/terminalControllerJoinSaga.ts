@@ -1,14 +1,7 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { messages, errors } from 'utils/text/terminalText';
-import {
-  checkMetamask,
-  connectMetamask,
-  checkNetwork,
-  checkPermissions,
-  isClaimed,
-  claim,
-  IAccount,
-} from 'utils/API/join';
+import { connectMetamask, checkPermissions, isClaimed, claim, IClaimObject } from 'utils/API/join';
+import { IAccount } from 'utils/allowedUsers/allowedUsers';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { playVideo, setAccount } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
@@ -24,19 +17,18 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(inputLock(true));
     yield put(controllerGotoJoin());
 
-    yield checkMetamask();
-
     yield put(loading(true));
-    const user: string = yield connectMetamask();
-    yield checkNetwork();
+    const metamaskAccounts: string[] = yield connectMetamask();
     yield put(loading(false));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
-    yield checkPermissions(user);
-    yield put(print({ msg: messages.amountOfMineAccounts(1), center: false }));
+    const [account, accountsToMine]: [IAccount, number] = yield checkPermissions(
+      metamaskAccounts[0],
+    );
+    yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
-    const account: IAccount = yield isClaimed(user);
-    yield put(setAccount(account));
+    const factoryObject: IClaimObject = yield isClaimed(metamaskAccounts[0], account);
+    yield put(setAccount(factoryObject));
 
     yield put(controllerNext());
     yield put(inputLock(false));
