@@ -36,7 +36,7 @@ const playVideo = (payload: boolean): IActionPlayVideo => ({
   payload,
 });
 
-const setClaimObjec = (payload: IClaimObject | null): IActionSetAccount => ({
+const setClaimObject = (payload: IClaimObject | null): IActionSetAccount => ({
   type: ActionTypeLoading.SET_CLAIM_OBJECT,
   payload,
 });
@@ -50,5 +50,5 @@ export type {
   IActionSetAppLoading, IActionSetHydration, IActionPlayVideo, IActionSetAccount,
 };
 export {
-  setPageLoading, setPageHydration, playVideo, setClaimObjec,
+  setPageLoading, setPageHydration, playVideo, setClaimObject,
 };
