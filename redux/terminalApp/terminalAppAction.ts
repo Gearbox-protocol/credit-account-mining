@@ -1,4 +1,4 @@
-import { IAccount } from 'utils/API/join';
+import { IClaimObject } from 'utils/API/join';
 import ActionTypeLoading from './terminalAppActionTypes';
 
 interface IActionSetAppLoading {
@@ -18,7 +18,7 @@ interface IActionPlayVideo {
 
 interface IActionSetAccount {
   type: ActionTypeLoading.SET_ACCOUNT;
-  payload: IAccount | null;
+  payload: IClaimObject | null;
 }
 
 const setPageLoading = (payload: boolean): IActionSetAppLoading => ({
@@ -36,7 +36,7 @@ const playVideo = (payload: boolean): IActionPlayVideo => ({
   payload,
 });
 
-const setAccount = (payload: IAccount | null): IActionSetAccount => ({
+const setAccount = (payload: IClaimObject | null): IActionSetAccount => ({
   type: ActionTypeLoading.SET_ACCOUNT,
   payload,
 });
