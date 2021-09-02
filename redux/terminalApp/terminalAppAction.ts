@@ -46,5 +46,9 @@ export type TerminalAppActions =
   | IActionSetHydration
   | IActionPlayVideo
   | IActionSetAccount;
-export type { IActionSetAppLoading, IActionSetHydration, IActionPlayVideo, IActionSetAccount };
-export { setPageLoading, setPageHydration, playVideo, setClaimObjec };
+export type {
+  IActionSetAppLoading, IActionSetHydration, IActionPlayVideo, IActionSetAccount,
+};
+export {
+  setPageLoading, setPageHydration, playVideo, setClaimObjec,
+};

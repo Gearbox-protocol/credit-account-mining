@@ -6,12 +6,12 @@ import Button from 'components/Button/Button';
 import Terminal from 'components/Terminal/Terminal';
 import { messages } from 'utils/text/terminalText';
 import goBack from 'utils/text/buttons';
-import isMobile from 'utils/helpers/helpers';
+import { isMobile } from 'utils/helpers/helpers';
 
 const TerminalController: React.FC = () => {
   const dispatch = useDispatch();
   const terminalRoot = useRef<HTMLDivElement>(null);
-  const mobile = /*isMobile() !!!!!!!!!!!!!!!*/ false;
+  const mobile = /* isMobile() !!!!!!!!!!!!!!! */ false;
 
   const handleCommand = (c: string): void => {
     if (!c) return;

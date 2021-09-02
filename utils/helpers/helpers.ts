@@ -1,3 +1,6 @@
+import { ethers } from 'ethers';
+import { errors } from 'utils/text/terminalText';
+
 const isMobile = (): boolean => {
   // eslint-disable-next-line no-useless-escape
   const regexpMobile = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i;
@@ -7,4 +10,30 @@ const isMobile = (): boolean => {
   return regexpMobile.test(agent) || regexpPatterns.test(agent.substr(0, 4));
 };
 
-export default isMobile;
+const getKey = (): string => {
+  const key = process.env.NEXT_PUBLIC_GEARBOX_ENCODING_KEY;
+  if (!key) throw new Error(errors.permissionDenied);
+  return key;
+};
+
+const findNumbers = (address: string) => {
+  const matches = address.match(/\d+/g) || [];
+  return matches.join('');
+};
+
+const transform = (index: bigint, address: bigint) => index + address;
+
+const salt = (index: ethers.BigNumberish, address: string) => {
+  const key = getKey();
+  const addressNumber = BigInt(findNumbers(address));
+  const indexNumber = BigInt(findNumbers(index.toString()));
+
+  const transformed = transform(indexNumber, addressNumber);
+  const enc = new TextEncoder();
+
+  const joindByffer = enc.encode(transformed.toString()).join('');
+
+  return BigInt(joindByffer);
+};
+
+export { isMobile, salt };

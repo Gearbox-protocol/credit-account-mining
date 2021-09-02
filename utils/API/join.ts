@@ -2,6 +2,7 @@ import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
 import { errors } from 'utils/text/terminalText';
+import { salt } from 'utils/helpers/helpers';
 import { usersList, IAccount } from 'utils/allowedUsers/allowedUsers';
 
 interface IMetamaskError {
@@ -17,7 +18,7 @@ const connectMetamask = async () => {
 
     const accounts = await window.ethereum.request!({ method: 'eth_requestAccounts' });
 
-    const [network] = [process.env.NEXT_PUBLIC_GEARBOX_NETWORK];
+    const network = process.env.NEXT_PUBLIC_GEARBOX_NETWORK;
     if (!network) throw new Error(errors.gearboxNetwork);
     if (window.ethereum.networkVersion !== network) throw new Error(errors.metamaskWrongNetwork);
 
@@ -53,7 +54,9 @@ const isClaimed = async (address: string, account: IAccount) => {
     const claimed = await miningAccount.isClaimed(account.index);
     if (claimed) throw new Error(errors.alreadyClaimed);
 
-    const claimObject: IClaimObject = { miningAccount, provider, signer, account, address };
+    const claimObject: IClaimObject = {
+      miningAccount, provider, signer, account, address,
+    };
     return claimObject;
   } catch (e: any) {
     throw new Error(e.message);
@@ -62,7 +65,12 @@ const isClaimed = async (address: string, account: IAccount) => {
 
 const claim = async ({ miningAccount, account, address }: IClaimObject) => {
   try {
-    const res = await miningAccount.claim(account.index, address, 'uniqueSalt', account.merklePath);
+    const res = await miningAccount.claim(
+      account.index,
+      address,
+      salt(account.index, address),
+      account.merklePath,
+    );
     await res.wait();
   } catch (e: any) {
     throw new Error(e.message);
@@ -78,4 +86,6 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
 };
 
 export type { IClaimObject };
-export { connectMetamask, checkPermissions, isClaimed, claim, waitTransactionEnd };
+export {
+  connectMetamask, checkPermissions, isClaimed, claim, waitTransactionEnd,
+};
