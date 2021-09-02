@@ -69,5 +69,13 @@ const claim = async ({ miningAccount, account, address }: IClaimObject) => {
   }
 };
 
+const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
+  try {
+    await transaction.wait();
+  } catch (e: any) {
+    throw new Error(e.message);
+  }
+};
+
 export type { IClaimObject };
-export { connectMetamask, checkPermissions, isClaimed, claim };
+export { connectMetamask, checkPermissions, isClaimed, claim, waitTransactionEnd };

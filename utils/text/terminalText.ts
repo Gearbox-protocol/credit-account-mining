@@ -17,13 +17,18 @@ const messages = {
   `,
   amountOfMineAccounts: (c: number) => `
   You have ${c} credit accounts to mine
-`,
+  `,
   claim: `
   Do you want to mine credit account? Type y/n.
-`,
+  `,
+
+  almostDone: `
+  We're almost done. Now wait till tx is confirmed.
+  `,
+
   congratulations: `
-Congratulations! Future of France is coming!
-`,
+  Congratulations! Future of France is coming!
+  `,
 };
 
 const errors = {

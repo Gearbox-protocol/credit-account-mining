@@ -1,6 +1,14 @@
+import { ethers } from 'ethers';
 import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import { messages, errors } from 'utils/text/terminalText';
-import { connectMetamask, checkPermissions, isClaimed, claim, IClaimObject } from 'utils/API/join';
+import {
+  connectMetamask,
+  checkPermissions,
+  isClaimed,
+  claim,
+  waitTransactionEnd,
+  IClaimObject,
+} from 'utils/API/join';
 import { IAccount } from 'utils/allowedUsers/allowedUsers';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { playVideo, setAccount } from 'redux/terminalApp/terminalAppAction';
@@ -54,13 +62,16 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     if (!claimObject) throw new Error(errors.metamaskLogin);
     yield put(inputLock(true));
 
-    yield claim(claimObject);
+    const transaction: ethers.ContractTransaction = yield claim(claimObject);
+
+    yield put(print({ msg: messages.almostDone, center: false }));
     yield put(loading(true));
+    yield waitTransactionEnd(transaction);
     yield put(loading(false));
 
     yield put(print({ msg: messages.congratulations, center: false }));
 
-    yield delay(1000);
+    yield delay(500);
     yield put(playVideo(true));
 
     yield put(inputLock(false));
