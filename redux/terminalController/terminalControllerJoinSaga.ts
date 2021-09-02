@@ -9,6 +9,8 @@ import {
   isClaimed,
   claim,
   waitTransactionEnd,
+  subscribeChanges,
+  unSubscribeChanges,
   IClaimObject,
 } from 'utils/API/join';
 import { IAccount } from 'utils/allowedUsers/allowedUsers';
@@ -29,6 +31,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
     yield put(loading(true));
     const metamaskAccounts: string[] = yield connectMetamask();
+    yield subscribeChanges();
     yield put(loading(false));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
@@ -44,6 +47,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(inputLock(false));
     yield put(print({ msg: messages.claim, center: false }));
   } catch (e: any) {
+    yield unSubscribeChanges();
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
@@ -71,6 +75,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield waitTransactionEnd(transaction);
     yield put(loading(false));
 
+    yield unSubscribeChanges();
     yield put(print({ msg: messages.congratulations, center: false }));
 
     yield delay(500);
@@ -79,6 +84,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(inputLock(false));
     yield put(controllerGotoRoot());
   } catch (e: any) {
+    yield unSubscribeChanges();
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
@@ -93,9 +99,11 @@ function* watchControllerJoinAcceptedWorker() {
 
 function* controllerJoinDeniedWorker(): Generator<any, void, any> {
   try {
+    yield unSubscribeChanges();
     yield put(controllerGotoRoot());
     yield put(print({ msg: errors.denied, center: false }));
   } catch (e: any) {
+    yield unSubscribeChanges();
     yield put(controllerGotoRoot());
     yield put(print({ msg: e.message, center: false }));
   }

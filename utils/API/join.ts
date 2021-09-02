@@ -10,13 +10,20 @@ interface IMetamaskError {
   message: string;
 }
 
+const handleChange = () => {
+  window.location.reload();
+};
+
 const connectMetamask = async () => {
   try {
-    /* add subscription !!!!!!!!!!!!! */
     /* accounts enable !!!!!!!!!!! */
     if (!window.ethereum || !window.ethereum!.isMetaMask) throw new Error(errors.noMetamask);
 
-    const accounts = await window.ethereum.request!({ method: 'eth_requestAccounts' });
+    let accounts = await window.ethereum.request!({ method: 'eth_requestAccounts' });
+    if (!accounts) {
+      accounts = await window.ethereum.enable!();
+    }
+    if (!accounts) throw new Error(errors.metamaskLogin);
 
     const network = process.env.NEXT_PUBLIC_GEARBOX_NETWORK;
     if (!network) throw new Error(errors.gearboxNetwork);
@@ -30,6 +37,18 @@ const connectMetamask = async () => {
     if (typedError.code === -32002) throw new Error(errors.metamaskLogin);
     throw new Error(typedError.message);
   }
+};
+
+const subscribeChanges = () => {
+  window.ethereum!.on!('connect', handleChange);
+  window.ethereum!.on!('accountsChanged', handleChange);
+  window.ethereum!.on!('chainChanged', handleChange);
+};
+
+const unSubscribeChanges = () => {
+  window.ethereum!.removeListener!('connect', handleChange);
+  window.ethereum!.removeListener!('accountsChanged', handleChange);
+  window.ethereum!.removeListener!('chainChanged', handleChange);
 };
 
 const checkPermissions = (account: string): [IAccount, number] => {
@@ -55,7 +74,11 @@ const isClaimed = async (address: string, account: IAccount) => {
     if (claimed) throw new Error(errors.alreadyClaimed);
 
     const claimObject: IClaimObject = {
-      miningAccount, provider, signer, account, address,
+      miningAccount,
+      provider,
+      signer,
+      account,
+      address,
     };
     return claimObject;
   } catch (e: any) {
@@ -87,5 +110,11 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
 
 export type { IClaimObject };
 export {
-  connectMetamask, checkPermissions, isClaimed, claim, waitTransactionEnd,
+  connectMetamask,
+  checkPermissions,
+  isClaimed,
+  claim,
+  waitTransactionEnd,
+  subscribeChanges,
+  unSubscribeChanges,
 };
