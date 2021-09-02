@@ -1,4 +1,6 @@
 const withPlugins = require('next-compose-plugins');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 require('dotenv').config();
 
 const nextConfig = {
@@ -18,6 +20,16 @@ const nextConfig = {
         },
       },
     );
+
+    config.plugins = config.plugins.filter((p) => p.constructor.name !== 'UglifyJsPlugin');
+    config.plugins.push(
+      new UglifyJsPlugin({
+        test: /\.(ts|tsx|js)(\?.*)?$/i,
+      }),
+    );
+
+    config.optimization.minimizer = [];
+    config.optimization.minimizer.push(new TerserPlugin());
 
     return config;
   },
