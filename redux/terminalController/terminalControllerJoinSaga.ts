@@ -11,7 +11,7 @@ import {
 } from 'utils/API/join';
 import { IAccount } from 'utils/allowedUsers/allowedUsers';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { playVideo, setAccount } from 'redux/terminalApp/terminalAppAction';
+import { playVideo, setClaimObjec } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {
   controllerGotoRoot,
@@ -36,7 +36,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
     const claimObject: IClaimObject = yield isClaimed(metamaskAccounts[0], account);
-    yield put(setAccount(claimObject));
+    yield put(setClaimObjec(claimObject));
 
     yield put(controllerNext());
     yield put(inputLock(false));

@@ -36,7 +36,7 @@ const playVideo = (payload: boolean): IActionPlayVideo => ({
   payload,
 });
 
-const setAccount = (payload: IClaimObject | null): IActionSetAccount => ({
+const setClaimObjec = (payload: IClaimObject | null): IActionSetAccount => ({
   type: ActionTypeLoading.SET_CLAIM_OBJECT,
   payload,
 });
@@ -47,4 +47,4 @@ export type TerminalAppActions =
   | IActionPlayVideo
   | IActionSetAccount;
 export type { IActionSetAppLoading, IActionSetHydration, IActionPlayVideo, IActionSetAccount };
-export { setPageLoading, setPageHydration, playVideo, setAccount };
+export { setPageLoading, setPageHydration, playVideo, setClaimObjec };

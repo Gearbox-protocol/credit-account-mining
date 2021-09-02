@@ -30,7 +30,7 @@ const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
     case ActionType.PLAY_VIDEO:
       return { ...state, playVideo: action.payload };
     case ActionType.SET_CLAIM_OBJECT:
-      return { ...state, account: action.payload };
+      return { ...state, claimObject: action.payload };
     default:
       return state;
   }
