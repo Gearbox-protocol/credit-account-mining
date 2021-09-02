@@ -41,6 +41,7 @@ interface IClaimObject {
   provider: ethers.providers.Web3Provider;
   signer: ethers.providers.JsonRpcSigner;
   account: IAccount;
+  address: string;
 }
 
 const isClaimed = async (address: string, account: IAccount) => {
@@ -52,16 +53,17 @@ const isClaimed = async (address: string, account: IAccount) => {
     const claimed = await miningAccount.isClaimed(account.index);
     if (claimed) throw new Error(errors.alreadyClaimed);
 
-    const result: IClaimObject = { miningAccount, provider, signer, account };
-    return result;
+    const claimObject: IClaimObject = { miningAccount, provider, signer, account, address };
+    return claimObject;
   } catch (e: any) {
     throw new Error(e.message);
   }
 };
 
-const claim = async (account: IClaimObject) => {
+const claim = async ({ miningAccount, account, address }: IClaimObject) => {
   try {
-    // account.account.claim('', user); !!!!!!!!!!!!!!!!!
+    const res = await miningAccount.claim(account.index, address, 'uniqueSalt', account.merklePath);
+    await res.wait();
   } catch (e: any) {
     throw new Error(e.message);
   }

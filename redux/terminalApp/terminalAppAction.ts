@@ -17,7 +17,7 @@ interface IActionPlayVideo {
 }
 
 interface IActionSetAccount {
-  type: ActionTypeLoading.SET_ACCOUNT;
+  type: ActionTypeLoading.SET_CLAIM_OBJECT;
   payload: IClaimObject | null;
 }
 
@@ -37,7 +37,7 @@ const playVideo = (payload: boolean): IActionPlayVideo => ({
 });
 
 const setAccount = (payload: IClaimObject | null): IActionSetAccount => ({
-  type: ActionTypeLoading.SET_ACCOUNT,
+  type: ActionTypeLoading.SET_CLAIM_OBJECT,
   payload,
 });
 

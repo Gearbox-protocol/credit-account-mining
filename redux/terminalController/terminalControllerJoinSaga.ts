@@ -1,4 +1,4 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
+import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import { messages, errors } from 'utils/text/terminalText';
 import { connectMetamask, checkPermissions, isClaimed, claim, IClaimObject } from 'utils/API/join';
 import { IAccount } from 'utils/allowedUsers/allowedUsers';
@@ -27,8 +27,8 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     );
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
-    const factoryObject: IClaimObject = yield isClaimed(metamaskAccounts[0], account);
-    yield put(setAccount(factoryObject));
+    const claimObject: IClaimObject = yield isClaimed(metamaskAccounts[0], account);
+    yield put(setAccount(claimObject));
 
     yield put(controllerNext());
     yield put(inputLock(false));
@@ -48,17 +48,20 @@ function* watchControllerJoinWorker() {
 
 function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
   const {
-    terminalApp: { account },
+    terminalApp: { claimObject },
   } = (yield select()) as IState;
   try {
-    if (!account) throw new Error(errors.metamaskLogin);
+    if (!claimObject) throw new Error(errors.metamaskLogin);
     yield put(inputLock(true));
 
-    yield claim(account);
-    // loading !!!!!!!!!!!!!!!!!!!!!
+    yield claim(claimObject);
+    yield put(loading(true));
+    yield put(loading(false));
+
     yield put(print({ msg: messages.congratulations, center: false }));
 
-    // yield put(playVideo(true)); !!!!!!!!!!!!!!!!!!
+    yield delay(1000);
+    yield put(playVideo(true));
 
     yield put(inputLock(false));
     yield put(controllerGotoRoot());

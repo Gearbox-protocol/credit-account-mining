@@ -8,14 +8,14 @@ interface ITerminalAppState extends DefaultRootState {
   appLoading: boolean;
   playVideo: boolean;
   appHydrated: boolean;
-  account: IClaimObject | null;
+  claimObject: IClaimObject | null;
 }
 
 const terminalAppDefaultState = {
   appLoading: false,
   appHydrated: false,
   playVideo: false,
-  account: null,
+  claimObject: null,
 };
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
@@ -29,7 +29,7 @@ const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
       return { ...state, appHydrated: action.payload };
     case ActionType.PLAY_VIDEO:
       return { ...state, playVideo: action.payload };
-    case ActionType.SET_ACCOUNT:
+    case ActionType.SET_CLAIM_OBJECT:
       return { ...state, account: action.payload };
     default:
       return state;
