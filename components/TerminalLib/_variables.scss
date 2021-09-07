@@ -35,8 +35,14 @@ $interlace-background: linear-gradient(#888 50%, #000 50%);
 $interlace-size: 4px;
 $envelope-background: rgba(#000, 0.25);
 $envelope-margin: 2em;
-$scanline-background: linear-gradient(to bottom, transparent 0%, rgba(255, 250, 250, 1) 50%, rgba(100, 255, 100, 1) 50%, transparent 100%);
-$output-font-family: 'monofont';
+$scanline-background: linear-gradient(
+  to bottom,
+  transparent 0%,
+  rgba(255, 250, 250, 1) 50%,
+  rgba(100, 255, 100, 1) 50%,
+  transparent 100%
+);
+$output-font-family: 'monofont', 'Courier New', Courier, monospace;
 $output-color: #18ff62;
 $output-text-shadow: rgba(10, 255, 10, 0.8);
 $output-line-height: 1.25;

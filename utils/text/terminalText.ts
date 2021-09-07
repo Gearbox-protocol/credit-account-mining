@@ -1,10 +1,21 @@
 const messages = {
   banner: `
-  Hello
-  World!
-  
-  help - prints available commands
+
+
+                        #####  #######    #    ######  ######  ####### #     #
+                      #     # #          # #   #     # #     # #     #  #   # 
+                      #       #         #   #  #     # #     # #     #   # #  
+                      #  #### #####    #     # ######  ######  #     #    #   
+                      #     # #        ####### #   #   #     # #     #   # #  
+                      #     # #        #     # #    #  #     # #     #  #   # 
+                        #####  ####### #     # #     # ######  ####### #     #
+                                                                              
+                        
+                        
+                        
+                             Type "help" to see list of available commands
   `,
+
   helpText: `
   Available commands:
   
