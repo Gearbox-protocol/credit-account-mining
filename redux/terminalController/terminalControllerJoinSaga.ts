@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
-import { put, takeEvery, select, delay } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, delay,
+} from 'redux-saga/effects';
 import { messages, errors } from 'utils/text/terminalText';
 import {
   connectMetamask,

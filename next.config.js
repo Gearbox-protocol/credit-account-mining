@@ -21,15 +21,17 @@ const nextConfig = {
       },
     );
 
-    config.plugins = config.plugins.filter((p) => p.constructor.name !== 'UglifyJsPlugin');
-    config.plugins.push(
-      new UglifyJsPlugin({
-        test: /\.(ts|tsx|js)(\?.*)?$/i,
-      }),
-    );
+    if (process.env.NODE_ENV !== 'development') {
+      config.plugins = config.plugins.filter((p) => p.constructor.name !== 'UglifyJsPlugin');
+      config.plugins.push(
+        new UglifyJsPlugin({
+          test: /\.(ts|tsx|js)(\?.*)?$/i,
+        }),
+      );
 
-    config.optimization.minimizer = [];
-    config.optimization.minimizer.push(new TerserPlugin());
+      config.optimization.minimizer = [];
+      config.optimization.minimizer.push(new TerserPlugin());
+    }
 
     return config;
   },
