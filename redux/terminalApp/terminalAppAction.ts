@@ -1,4 +1,4 @@
-import { IClaimObject } from 'utils/API/join';
+import { IClaimObject, IMetamaskSubscription } from 'utils/API/join';
 import ActionTypeLoading from './terminalAppActionTypes';
 
 interface IActionSetAppLoading {
@@ -16,9 +16,14 @@ interface IActionPlayVideo {
   payload: boolean;
 }
 
-interface IActionSetAccount {
+interface IActionSetClaimObject {
   type: ActionTypeLoading.SET_CLAIM_OBJECT;
   payload: IClaimObject | null;
+}
+
+interface IActionSetSubscriptionObject {
+  type: ActionTypeLoading.SET_SUBSCRIPTION_OBJECT;
+  payload: IMetamaskSubscription | null;
 }
 
 const setPageLoading = (payload: boolean): IActionSetAppLoading => ({
@@ -36,8 +41,15 @@ const playVideo = (payload: boolean): IActionPlayVideo => ({
   payload,
 });
 
-const setClaimObject = (payload: IClaimObject | null): IActionSetAccount => ({
+const setClaimObject = (payload: IClaimObject | null): IActionSetClaimObject => ({
   type: ActionTypeLoading.SET_CLAIM_OBJECT,
+  payload,
+});
+
+const setMetamaskSubscriptionObject = (
+  payload: IMetamaskSubscription | null,
+): IActionSetSubscriptionObject => ({
+  type: ActionTypeLoading.SET_SUBSCRIPTION_OBJECT,
   payload,
 });
 
@@ -45,10 +57,19 @@ export type TerminalAppActions =
   | IActionSetAppLoading
   | IActionSetHydration
   | IActionPlayVideo
-  | IActionSetAccount;
+  | IActionSetClaimObject
+  | IActionSetSubscriptionObject;
 export type {
-  IActionSetAppLoading, IActionSetHydration, IActionPlayVideo, IActionSetAccount,
+  IActionSetAppLoading,
+  IActionSetHydration,
+  IActionPlayVideo,
+  IActionSetClaimObject,
+  IActionSetSubscriptionObject,
 };
 export {
-  setPageLoading, setPageHydration, playVideo, setClaimObject,
+  setPageLoading,
+  setPageHydration,
+  playVideo,
+  setClaimObject,
+  setMetamaskSubscriptionObject,
 };

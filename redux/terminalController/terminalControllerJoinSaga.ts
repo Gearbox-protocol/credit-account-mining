@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
-import {
-  put, takeEvery, select, delay,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import { messages, errors } from 'utils/text/terminalText';
 import {
   connectMetamask,
@@ -9,13 +7,16 @@ import {
   isClaimed,
   claim,
   waitTransactionEnd,
-  subscribeChanges,
-  unSubscribeChanges,
+  MetamaskSubscription,
   IClaimObject,
 } from 'utils/API/join';
 import { IAccount } from 'utils/allowedUsers/allowedUsers';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { playVideo, setClaimObject } from 'redux/terminalApp/terminalAppAction';
+import {
+  playVideo,
+  setClaimObject,
+  setMetamaskSubscriptionObject,
+} from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {
   controllerGotoRoot,
@@ -25,34 +26,40 @@ import {
 import ActionType from './terminalControllerActionTypes';
 
 function* controllerJoinWorker(): Generator<any, void, any> {
+  const subscriptionObject = new MetamaskSubscription();
   try {
     yield put(inputLock(true));
     yield put(controllerGotoJoin());
 
     yield put(loading(true));
     const metamaskAccounts: string[] = yield connectMetamask();
-    yield subscribeChanges();
+    yield subscriptionObject.subscribeChanges();
     yield put(loading(false));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
+    yield subscriptionObject.checkStatus();
     const [account, accountsToMine]: [IAccount, number] = yield checkPermissions(
       metamaskAccounts[0],
     );
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
+    yield subscriptionObject.checkStatus();
     const claimObject: IClaimObject = yield isClaimed(metamaskAccounts[0], account);
     yield put(setClaimObject(claimObject));
+    yield put(setMetamaskSubscriptionObject(subscriptionObject));
 
     yield put(controllerNext());
     yield put(inputLock(false));
     yield put(print({ msg: messages.claim, center: false }));
   } catch (e: any) {
-    yield unSubscribeChanges();
+    yield subscriptionObject.unSubscribeChanges();
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
     yield put(print({ msg: e.message, center: false }));
     yield put(inputLock(false));
+    yield put(setClaimObject(null));
+    yield put(setMetamaskSubscriptionObject(null));
   }
 }
 
@@ -62,12 +69,14 @@ function* watchControllerJoinWorker() {
 
 function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
   const {
-    terminalApp: { claimObject },
+    terminalApp: { claimObject, subscriptionObject },
   } = (yield select()) as IState;
   try {
     if (!claimObject) throw new Error(errors.metamaskLogin);
+    if (!subscriptionObject) throw new Error(errors.metamaskLogin);
     yield put(inputLock(true));
 
+    yield subscriptionObject.checkStatus();
     const transaction: ethers.ContractTransaction = yield claim(claimObject);
 
     yield put(print({ msg: messages.almostDone, center: false }));
@@ -75,7 +84,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield waitTransactionEnd(transaction);
     yield put(loading(false));
 
-    yield unSubscribeChanges();
+    yield subscriptionObject.unSubscribeChanges();
     yield put(print({ msg: messages.congratulations, center: false }));
 
     yield delay(500);
@@ -84,7 +93,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(inputLock(false));
     yield put(controllerGotoRoot());
   } catch (e: any) {
-    yield unSubscribeChanges();
+    yield subscriptionObject?.unSubscribeChanges();
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
@@ -98,14 +107,21 @@ function* watchControllerJoinAcceptedWorker() {
 }
 
 function* controllerJoinDeniedWorker(): Generator<any, void, any> {
+  const {
+    terminalApp: { subscriptionObject },
+  } = (yield select()) as IState;
   try {
-    yield unSubscribeChanges();
+    yield subscriptionObject?.unSubscribeChanges();
     yield put(controllerGotoRoot());
     yield put(print({ msg: errors.denied, center: false }));
+    yield put(setClaimObject(null));
+    yield put(setMetamaskSubscriptionObject(null));
   } catch (e: any) {
-    yield unSubscribeChanges();
+    yield subscriptionObject?.unSubscribeChanges();
     yield put(controllerGotoRoot());
     yield put(print({ msg: e.message, center: false }));
+    yield put(setClaimObject(null));
+    yield put(setMetamaskSubscriptionObject(null));
   }
 }
 

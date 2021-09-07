@@ -59,6 +59,15 @@ const errors = {
   denied: `
   you skip our movement to Freedom.
 `,
+  accountChanged: `
+  you have just changed your account. Please, try again.
+`,
+  chainChanged: `
+  you have just changed your chain. Please, try again.
+`,
+  disconnected: `
+  you have just disconnected. Please, try again.
+`,
 };
 
 export { messages, errors };

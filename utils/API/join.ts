@@ -10,9 +10,67 @@ interface IMetamaskError {
   message: string;
 }
 
-const handleChange = () => {
-  window.location.reload();
-};
+interface IMetamaskSubscription {
+  accountChanged: boolean;
+  chainChanged: boolean;
+  disconnected: boolean;
+  subscribeChanges: () => void;
+  unSubscribeChanges: () => void;
+  checkStatus(): boolean;
+}
+
+class MetamaskSubscription implements IMetamaskSubscription {
+  accountChanged: boolean;
+
+  chainChanged: boolean;
+
+  disconnected: boolean;
+
+  constructor() {
+    this.accountChanged = false;
+    this.chainChanged = false;
+    this.disconnected = false;
+  }
+
+  private handleChainChange = () => {
+    this.chainChanged = true;
+  };
+
+  private handleDisconnect = () => {
+    this.disconnected = true;
+  };
+
+  private handleAccountChange = () => {
+    this.accountChanged = true;
+  };
+
+  private resetStatus = () => {
+    this.accountChanged = false;
+    this.chainChanged = false;
+    this.disconnected = false;
+  };
+
+  checkStatus(): boolean {
+    if (this.accountChanged) throw new Error(errors.accountChanged);
+    if (this.chainChanged) throw new Error(errors.chainChanged);
+    if (this.disconnected) throw new Error(errors.disconnected);
+    return true;
+  }
+
+  subscribeChanges = () => {
+    this.resetStatus();
+    window.ethereum!.on!('disconnect', this.handleDisconnect);
+    window.ethereum!.on!('accountsChanged', this.handleAccountChange);
+    window.ethereum!.on!('chainChanged', this.handleChainChange);
+  };
+
+  unSubscribeChanges = () => {
+    window.ethereum!.removeListener!('connect', this.handleDisconnect);
+    window.ethereum!.removeListener!('accountsChanged', this.handleAccountChange);
+    window.ethereum!.removeListener!('chainChanged', this.handleChainChange);
+    this.resetStatus();
+  };
+}
 
 const connectMetamask = async () => {
   try {
@@ -37,18 +95,6 @@ const connectMetamask = async () => {
     if (typedError.code === -32002) throw new Error(errors.metamaskLogin);
     throw new Error(typedError.message);
   }
-};
-
-const subscribeChanges = () => {
-  window.ethereum!.on!('connect', handleChange);
-  window.ethereum!.on!('accountsChanged', handleChange);
-  window.ethereum!.on!('chainChanged', handleChange);
-};
-
-const unSubscribeChanges = () => {
-  window.ethereum!.removeListener!('connect', handleChange);
-  window.ethereum!.removeListener!('accountsChanged', handleChange);
-  window.ethereum!.removeListener!('chainChanged', handleChange);
 };
 
 const checkPermissions = (account: string): [IAccount, number] => {
@@ -108,13 +154,12 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
   }
 };
 
-export type { IClaimObject };
+export type { IClaimObject, IMetamaskSubscription };
 export {
   connectMetamask,
   checkPermissions,
   isClaimed,
   claim,
   waitTransactionEnd,
-  subscribeChanges,
-  unSubscribeChanges,
+  MetamaskSubscription,
 };
