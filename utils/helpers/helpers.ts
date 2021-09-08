@@ -1,6 +1,4 @@
 import { ethers } from 'ethers';
-import BalanceTree from 'utils/merkle-tree/balance-tree';
-import { AccountsList } from 'utils/accounts/account-types';
 
 const isMobile = (): boolean => {
   // eslint-disable-next-line operator-linebreak
@@ -34,29 +32,4 @@ const salt = (index: ethers.BigNumberish, address: string): ethers.BigNumber => 
   return ethers.BigNumber.from(joinedBuffer);
 };
 
-interface IBalanceTreeData {
-  account: string;
-  amount: ethers.BigNumber;
-}
-
-const constructAccountList = (accounts: string[]): [AccountsList, string] => {
-  const initialData: IBalanceTreeData[] = accounts.map((value, index) => ({
-    account: value,
-    amount: salt(index, value),
-  }));
-  const tree = new BalanceTree(initialData);
-  const root = tree.getHexRoot();
-
-  const accountsList = accounts.reduce((prevSum, value, index) => {
-    const nextSum = { ...prevSum };
-    nextSum[value] = {
-      index,
-      merklePath: tree.getHexProof(index, value, salt(index, value)),
-    };
-    return nextSum;
-  }, <AccountsList>{});
-
-  return [accountsList, root];
-};
-
-export { isMobile, salt, constructAccountList };
+export { isMobile, salt };
