@@ -3,11 +3,19 @@ import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
 import { errors } from 'utils/text/terminalText';
 import { salt } from 'utils/helpers/helpers';
-import { usersList, IAccount } from 'utils/allowedUsers/allowedUsers';
+import { IAccount } from 'utils/accounts/account-types';
 
 interface IMetamaskError {
   code: number;
   message: string;
+}
+
+interface IClaimObject {
+  miningAccount: AccountMining;
+  provider: ethers.providers.Web3Provider;
+  signer: ethers.providers.JsonRpcSigner;
+  account: IAccount;
+  address: string;
 }
 
 interface IMetamaskSubscription {
@@ -74,7 +82,6 @@ class MetamaskSubscription implements IMetamaskSubscription {
 
 const connectMetamask = async () => {
   try {
-    /* accounts enable !!!!!!!!!!! */
     if (!window.ethereum || !window.ethereum!.isMetaMask) throw new Error(errors.noMetamask);
 
     let accounts = await window.ethereum.request!({ method: 'eth_requestAccounts' });
@@ -97,18 +104,11 @@ const connectMetamask = async () => {
   }
 };
 
+// !!!!!!!!!!!!!!
 const checkPermissions = (account: string): [IAccount, number] => {
   if (!(account in usersList)) throw new Error(errors.permissionDenied);
   return [usersList[account], 1];
 };
-
-interface IClaimObject {
-  miningAccount: AccountMining;
-  provider: ethers.providers.Web3Provider;
-  signer: ethers.providers.JsonRpcSigner;
-  account: IAccount;
-  address: string;
-}
 
 const isClaimed = async (address: string, account: IAccount) => {
   try {
