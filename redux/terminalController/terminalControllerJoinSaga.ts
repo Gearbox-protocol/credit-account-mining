@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
-import {
-  put, takeEvery, select, delay,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import { messages, errors } from 'utils/text/terminalText';
 import {
   connectMetamask,
@@ -12,7 +10,7 @@ import {
   MetamaskSubscription,
   IClaimObject,
 } from 'utils/API/join';
-import { IAccount } from 'utils/allowedUsers/allowedUsers';
+import { IAccount } from 'utils/accounts/account-types';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import {
   playVideo,
