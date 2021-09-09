@@ -20,7 +20,7 @@ export interface MerkleDistributorInfo {
   };
 }
 
-const saltFromAddress = (address: string) => BigNumber.from(address);
+export const saltFromAddress = (address: string) => BigNumber.from(address);
 
 export function parseAccounts(balances: Array<string>): MerkleDistributorInfo {
   // if balances are in an old format, process them

@@ -1,5 +1,3 @@
-import { ethers } from 'ethers';
-
 const isMobile = (): boolean => {
   // eslint-disable-next-line operator-linebreak
   const regexpMobile =
@@ -13,23 +11,4 @@ const isMobile = (): boolean => {
   return regexpMobile.test(agent) || regexpPatterns.test(agent.substr(0, 4));
 };
 
-const findNumbers = (address: string) => {
-  const matches = address.match(/\d+/g) || [];
-  return matches.join('');
-};
-
-const transform = (index: bigint, address: bigint) => index + address;
-
-const salt = (index: ethers.BigNumberish, address: string): ethers.BigNumber => {
-  const addressNumber = BigInt(findNumbers(address));
-  const indexNumber = BigInt(findNumbers(index.toString()));
-
-  const transformed = transform(indexNumber, addressNumber);
-  const enc = new TextEncoder();
-
-  const joinedBuffer = enc.encode(transformed.toString()).join('');
-
-  return ethers.BigNumber.from(joinedBuffer);
-};
-
-export { isMobile, salt };
+export { isMobile };
