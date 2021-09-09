@@ -1,10 +1,9 @@
+/* eslint-disable */
 import { bufferToHex, keccak256 } from 'ethereumjs-util';
 
 export default class MerkleTree {
   private readonly elements: Buffer[];
-
   private readonly bufferElementPositionIndex: { [hexElement: string]: number };
-
   private readonly layers: Buffer[][];
 
   constructor(elements: Buffer[]) {
@@ -16,7 +15,6 @@ export default class MerkleTree {
 
     this.bufferElementPositionIndex = this.elements.reduce<{ [hexElement: string]: number }>(
       (memo, el, index) => {
-        // eslint-disable-next-line no-param-reassign
         memo[bufferToHex(el)] = index;
         return memo;
       },
@@ -43,7 +41,6 @@ export default class MerkleTree {
     return layers;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   getNextLayer(elements: Buffer[]): Buffer[] {
     return elements.reduce<Buffer[]>((layer, el, idx, arr) => {
       if (idx % 2 === 0) {
@@ -105,14 +102,12 @@ export default class MerkleTree {
 
     if (pairIdx < layer.length) {
       return layer[pairIdx];
-      // eslint-disable-next-line no-else-return
     } else {
       return null;
     }
   }
 
   private static bufDedup(elements: Buffer[]): Buffer[] {
-    // eslint-disable-next-line arrow-body-style
     return elements.filter((el, idx) => {
       return idx === 0 || !elements[idx - 1].equals(el);
     });
@@ -122,7 +117,7 @@ export default class MerkleTree {
     if (arr.some((el) => !Buffer.isBuffer(el))) {
       throw new Error('Array is not an array of buffers');
     }
-    // eslint-disable-next-line prefer-template
+
     return arr.map((el) => '0x' + el.toString('hex'));
   }
 

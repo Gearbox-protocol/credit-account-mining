@@ -1,14 +1,13 @@
-import { BigNumber, utils } from 'ethers';
+/* eslint-disable */
 import MerkleTree from './merkle-tree';
+import { BigNumber, utils } from 'ethers';
 
 export default class BalanceTree {
   private readonly tree: MerkleTree;
-
-  constructor(balances: { account: string; amount: BigNumber }[]) {
+  constructor(balances: { account: string; salt: BigNumber }[]) {
     this.tree = new MerkleTree(
-      // eslint-disable-next-line arrow-body-style
-      balances.map(({ account, amount }, index) => {
-        return BalanceTree.toNode(index, account, amount);
+      balances.map(({ account, salt }, index) => {
+        return BalanceTree.toNode(index, account, salt);
       }),
     );
   }
@@ -21,7 +20,6 @@ export default class BalanceTree {
     root: Buffer,
   ): boolean {
     let pair = BalanceTree.toNode(index, account, amount);
-    // eslint-disable-next-line no-restricted-syntax
     for (const item of proof) {
       pair = MerkleTree.combinedHash(pair, item);
     }
@@ -43,16 +41,8 @@ export default class BalanceTree {
     return this.tree.getHexRoot();
   }
 
-  public getRoot(): Buffer {
-    return this.tree.getRoot();
-  }
-
   // returns the hex bytes32 values of the proof
-  public getHexProof(index: number | BigNumber, account: string, amount: BigNumber): string[] {
+  public getProof(index: number | BigNumber, account: string, amount: BigNumber): string[] {
     return this.tree.getHexProof(BalanceTree.toNode(index, account, amount));
-  }
-
-  public getProof(index: number | BigNumber, account: string, amount: BigNumber): Buffer[] {
-    return this.tree.getProof(BalanceTree.toNode(index, account, amount));
   }
 }
