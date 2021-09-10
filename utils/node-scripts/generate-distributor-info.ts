@@ -10,7 +10,10 @@ const distributorInfo = parseAccounts(accountsRaw);
 const distributorInfoJson = JSON.stringify(distributorInfo);
 
 const codeStr = `
-const distributorInfo = ${distributorInfoJson}; 
+import { MerkleDistributorInfo } from 'utils/merkle/parse-accounts';
+  
+const distributorInfo: MerkleDistributorInfo = ${distributorInfoJson}; 
+
 export { distributorInfo };
 `;
 
