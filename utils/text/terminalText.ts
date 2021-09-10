@@ -61,6 +61,9 @@ const errors = {
   metamaskLogin: `
   Log in and try again
 `,
+  metamaskAddress: `
+  Failed to get your account address
+`,
   permissionDenied: `
   Permission to join Gearbox Launch Community is denied
 `,
