@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
-import { put, takeEvery, select, delay } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, delay,
+} from 'redux-saga/effects';
 import { messages, errors } from 'utils/text/terminalText';
 import {
   connectMetamask,
@@ -9,8 +11,8 @@ import {
   waitTransactionEnd,
   MetamaskSubscription,
   IClaimObject,
+  Claims,
 } from 'utils/API/join';
-import { IAccount } from 'utils/accounts/account-types';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import {
   playVideo,
@@ -32,19 +34,17 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(controllerGotoJoin());
 
     yield put(loading(true));
-    const metamaskAccounts: string[] = yield connectMetamask();
+    const address: string = yield connectMetamask();
     yield subscriptionObject.subscribeChanges();
     yield put(loading(false));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
     yield subscriptionObject.checkStatus();
-    const [account, accountsToMine]: [IAccount, number] = yield checkPermissions(
-      metamaskAccounts[0],
-    );
+    const [account, accountsToMine]: [Claims, number] = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
     yield subscriptionObject.checkStatus();
-    const claimObject: IClaimObject = yield isClaimed(metamaskAccounts[0], account);
+    const claimObject: IClaimObject = yield isClaimed(address, account);
     yield put(setClaimObject(claimObject));
     yield put(setMetamaskSubscriptionObject(subscriptionObject));
 
