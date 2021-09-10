@@ -2,7 +2,7 @@ import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers, utils } from 'ethers';
 import { errors } from 'utils/text/terminalText';
-import { distributorInfo } from 'utils/accounts/distributor-info';
+import distributorInfo from 'utils/accounts/distributor-info';
 import { MerkleDistributorInfo } from 'utils/merkle/parse-accounts';
 
 const { isAddress, getAddress } = utils;

@@ -14,7 +14,7 @@ import { MerkleDistributorInfo } from 'utils/merkle/parse-accounts';
   
 const distributorInfo: MerkleDistributorInfo = ${distributorInfoJson}; 
 
-export { distributorInfo };
+export default distributorInfo;
 `;
 
 fs.writeFileSync(accountListRoute, codeStr, 'utf8');

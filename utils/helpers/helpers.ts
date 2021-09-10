@@ -11,4 +11,4 @@ const isMobile = (): boolean => {
   return regexpMobile.test(agent) || regexpPatterns.test(agent.substr(0, 4));
 };
 
-export { isMobile };
+export default isMobile;

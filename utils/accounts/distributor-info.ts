@@ -48,4 +48,4 @@ const distributorInfo: MerkleDistributorInfo = {
   },
 };
 
-export { distributorInfo };
+export default distributorInfo;
