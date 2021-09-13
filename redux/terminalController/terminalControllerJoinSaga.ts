@@ -77,9 +77,10 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(inputLock(true));
 
     yield subscriptionObject.checkStatus();
-    const transaction: ethers.ContractTransaction = yield claim(claimObject);
+    const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(claimObject);
 
     yield put(print({ msg: messages.almostDone, center: false }));
+    yield put(print({ msg: messages.yourHash(hash), center: false }));
     yield put(loading(true));
     yield waitTransactionEnd(transaction);
     yield put(loading(false));

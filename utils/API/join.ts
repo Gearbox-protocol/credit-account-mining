@@ -119,8 +119,11 @@ const checkPermissions = (address: string): [User, number] => {
 const isClaimed = async (address: string, user: User) => {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum!);
-    const signer = await provider.getSigner();
-    const miningAccount: AccountMining = AccountMining__factory.connect(address, signer);
+    const signer = provider.getSigner();
+    const miningAccount: AccountMining = AccountMining__factory.connect(
+      distributorInfo.contract,
+      signer,
+    );
 
     const claimed = await miningAccount.isClaimed(user.index);
     if (claimed) throw new Error(errors.alreadyClaimed);
@@ -142,6 +145,7 @@ const claim = async ({ miningAccount, user: { index, salt, proof } }: IClaimObje
   try {
     const res = await miningAccount.claim(index, salt, proof);
     await res.wait();
+    return [res, res.hash];
   } catch (e: any) {
     throw new Error(e.message);
   }

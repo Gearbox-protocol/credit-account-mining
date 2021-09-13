@@ -38,7 +38,9 @@ const messages = {
   almostDone: `
   We're almost done. Now wait till tx is confirmed.
   `,
-
+  yourHash: (h: string) => `
+  Your transaction hash: https://kovan.etherscan.io/tx/${h}
+  `,
   congratulations: `
   Congratulations! Future of France is coming!
   `,
