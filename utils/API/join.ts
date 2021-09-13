@@ -138,9 +138,9 @@ const isClaimed = async (address: string, claims: Claims) => {
   }
 };
 
-const claim = async ({ miningAccount, claims, address }: IClaimObject) => {
+const claim = async ({ miningAccount, claims }: IClaimObject) => {
   try {
-    const res = await miningAccount.claim(claims.index, address, claims.salt, claims.proof);
+    const res = await miningAccount.claim(claims.index, claims.salt, claims.proof);
     await res.wait();
   } catch (e: any) {
     throw new Error(e.message);
