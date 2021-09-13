@@ -11,7 +11,7 @@ import {
   waitTransactionEnd,
   MetamaskSubscription,
   IClaimObject,
-  Claims,
+  User,
 } from 'utils/API/join';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import {
@@ -40,7 +40,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
     yield subscriptionObject.checkStatus();
-    const [account, accountsToMine]: [Claims, number] = yield checkPermissions(address);
+    const [account, accountsToMine]: [User, number] = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
     yield subscriptionObject.checkStatus();

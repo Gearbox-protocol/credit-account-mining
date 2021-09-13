@@ -7,7 +7,7 @@ import { MerkleDistributorInfo } from 'utils/merkle/parse-accounts';
 
 const { isAddress, getAddress } = utils;
 
-type Claims = MerkleDistributorInfo['claims']['string'];
+type User = MerkleDistributorInfo['claims']['string'];
 
 interface IMetamaskError {
   code: number;
@@ -18,7 +18,7 @@ interface IClaimObject {
   miningAccount: AccountMining;
   provider: ethers.providers.Web3Provider;
   signer: ethers.providers.JsonRpcSigner;
-  claims: Claims;
+  user: User;
   address: string;
 }
 
@@ -111,25 +111,25 @@ const connectMetamask = async () => {
   }
 };
 
-const checkPermissions = (address: string): [Claims, number] => {
+const checkPermissions = (address: string): [User, number] => {
   if (!(address in distributorInfo.claims)) throw new Error(errors.permissionDenied);
   return [distributorInfo.claims[address], 1];
 };
 
-const isClaimed = async (address: string, claims: Claims) => {
+const isClaimed = async (address: string, user: User) => {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum!);
-    const signer = provider.getSigner();
-    const miningAccount: AccountMining = await AccountMining__factory.connect(address, signer);
+    const signer = await provider.getSigner();
+    const miningAccount: AccountMining = AccountMining__factory.connect(address, signer);
 
-    const claimed = await miningAccount.isClaimed(claims.index);
+    const claimed = await miningAccount.isClaimed(user.index);
     if (claimed) throw new Error(errors.alreadyClaimed);
 
     const claimObject: IClaimObject = {
       miningAccount,
       provider,
       signer,
-      claims,
+      user,
       address,
     };
     return claimObject;
@@ -138,9 +138,9 @@ const isClaimed = async (address: string, claims: Claims) => {
   }
 };
 
-const claim = async ({ miningAccount, claims }: IClaimObject) => {
+const claim = async ({ miningAccount, user: { index, salt, proof } }: IClaimObject) => {
   try {
-    const res = await miningAccount.claim(claims.index, claims.salt, claims.proof);
+    const res = await miningAccount.claim(index, salt, proof);
     await res.wait();
   } catch (e: any) {
     throw new Error(e.message);
@@ -155,7 +155,7 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
   }
 };
 
-export type { IClaimObject, IMetamaskSubscription, Claims };
+export type { IClaimObject, IMetamaskSubscription, User };
 export {
   connectMetamask,
   checkPermissions,
