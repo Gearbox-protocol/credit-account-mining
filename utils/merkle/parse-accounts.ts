@@ -10,7 +10,7 @@ const { isAddress, getAddress } = utils;
 // and the tree has no additional distributions.
 export interface MerkleDistributorInfo {
   merkleRoot: string;
-  tokenTotal: string;
+  contract: string;
   claims: {
     [account: string]: {
       index: number;
@@ -75,7 +75,7 @@ export function parseAccounts(balances: Array<string>): MerkleDistributorInfo {
 
   return {
     merkleRoot: tree.getHexRoot(),
-    tokenTotal: tokenTotal.toHexString(),
+    contract: tokenTotal.toHexString(),
     claims,
   };
 }
