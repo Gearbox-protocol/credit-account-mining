@@ -15,6 +15,8 @@ interface IClaimObject {
   user: User;
 }
 
+type IsClaimedProps = Partial<Omit<IClaimObject, 'user'>> & { user: User };
+
 const checkPermissions = (address: string): [User, number] => {
   if (!(address in distributorInfo.claims)) {
     throw new TerminalError({ code: TerminalErrorCodes.PERMISSION_DENIED });
@@ -23,14 +25,15 @@ const checkPermissions = (address: string): [User, number] => {
   return [distributorInfo.claims[address], 1];
 };
 
-const isClaimed = async (user: User) => {
+const isClaimed = async (claimObj: IsClaimedProps) => {
   try {
-    const provider = new ethers.providers.Web3Provider(window.ethereum!);
-    const signer = provider.getSigner();
-    const miningAccount: AccountMining = AccountMining__factory.connect(
-      distributorInfo.contract,
-      signer,
-    );
+    const { contract } = distributorInfo;
+    const { user } = claimObj;
+    let { provider, signer, miningAccount } = claimObj;
+
+    provider = provider || new ethers.providers.Web3Provider(window.ethereum!);
+    signer = signer || provider.getSigner();
+    miningAccount = miningAccount || <AccountMining>AccountMining__factory.connect(contract, signer);
 
     const claimed = await miningAccount.isClaimed(user.index);
     if (claimed) {
