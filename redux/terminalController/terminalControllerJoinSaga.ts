@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
-import { put, takeEvery, select, delay } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, delay,
+} from 'redux-saga/effects';
 import { messages } from 'utils/text/terminalText';
 import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
 import connectMetamask from 'utils/API/connect/connect';
@@ -11,7 +13,7 @@ import {
   waitTransactionEnd,
   IClaimObject,
   User,
-} from 'utils/API/join';
+} from 'utils/API/join/join';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import {
   playVideo,
@@ -56,8 +58,8 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
     safeSubscription.checkStatus();
     yield put(controllerNext());
-    yield put(inputLock(false));
     yield put(print({ msg: messages.claim, center: false }));
+    yield put(inputLock(false));
   } catch (e: any) {
     yield safeSubscription.resetStatus();
     yield put(loading(false));
@@ -90,10 +92,12 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(inputLock(true));
 
     subscriptionObject.checkStatus();
+    yield put(loading(true));
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(
       claimObject,
       user,
     );
+    yield put(loading(false));
 
     yield put(print({ msg: messages.almostDone, center: false }));
     yield put(print({ msg: messages.yourHash(hash), center: false }));

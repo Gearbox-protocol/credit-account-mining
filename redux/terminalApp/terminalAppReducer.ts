@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import { IClaimObject, User } from 'utils/API/join';
+import { IClaimObject, User } from 'utils/API/join/join';
 import { IMetamaskSubscription } from 'utils/API/subscription/subscription';
 import { TerminalAppActions } from './terminalAppAction';
 import ActionType from './terminalAppActionTypes';

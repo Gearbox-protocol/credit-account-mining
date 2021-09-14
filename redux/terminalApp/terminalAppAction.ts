@@ -1,4 +1,4 @@
-import { IClaimObject, User } from 'utils/API/join';
+import { IClaimObject, User } from 'utils/API/join/join';
 import { IMetamaskSubscription } from 'utils/API/subscription/subscription';
 import ActionTypeLoading from './terminalAppActionTypes';
 

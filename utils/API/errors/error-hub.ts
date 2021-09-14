@@ -25,7 +25,6 @@ class ErrorHub {
 
   static processMetamaskError = (e: IMetamaskError): TerminalError => {
     const terminalCode = MetamaskDictionary[e.code];
-    console.log(e);
     return terminalCode
       ? new TerminalError({ code: terminalCode, name: 'Metamask error' })
       : new TerminalError({
