@@ -92,6 +92,9 @@ you have just changed your chain. All active actions were aborted.
   [TerminalErrorCodes.DISCONNECTED]: `
 you have just disconnected. Please, connect and try again.
 `,
+  [TerminalErrorCodes.UNEXPECTED_ERROR]: `
+Unexpected Error
+`,
   [TerminalErrorCodes.ACTION_ABORTED]: '',
 } as const;
 
