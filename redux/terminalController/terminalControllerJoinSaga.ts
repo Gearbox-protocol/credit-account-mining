@@ -2,7 +2,8 @@ import { ethers } from 'ethers';
 import {
   put, takeEvery, select, delay,
 } from 'redux-saga/effects';
-import { messages, errors } from 'utils/text/terminalText';
+import { messages } from 'utils/text/terminalText';
+import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
 import {
   connectMetamask,
   checkPermissions,
@@ -44,7 +45,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
     yield subscriptionObject.checkStatus();
-    const claimObject: IClaimObject = yield isClaimed(address, account);
+    const claimObject: IClaimObject = yield isClaimed(account);
     yield put(setClaimObject(claimObject));
     yield put(setMetamaskSubscriptionObject(subscriptionObject));
 
@@ -72,8 +73,12 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     terminalApp: { claimObject, subscriptionObject },
   } = (yield select()) as IState;
   try {
-    if (!claimObject) throw new Error(errors.metamaskLogin);
-    if (!subscriptionObject) throw new Error(errors.metamaskLogin);
+    if (!claimObject) {
+      throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
+    }
+    if (!subscriptionObject) {
+      throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
+    }
     yield put(inputLock(true));
 
     yield subscriptionObject.checkStatus();
@@ -112,11 +117,7 @@ function* controllerJoinDeniedWorker(): Generator<any, void, any> {
     terminalApp: { subscriptionObject },
   } = (yield select()) as IState;
   try {
-    yield subscriptionObject?.unSubscribeChanges();
-    yield put(controllerGotoRoot());
-    yield put(print({ msg: errors.denied, center: false }));
-    yield put(setClaimObject(null));
-    yield put(setMetamaskSubscriptionObject(null));
+    throw new TerminalError({ code: TerminalErrorCodes.DENIED_BY_USER });
   } catch (e: any) {
     yield subscriptionObject?.unSubscribeChanges();
     yield put(controllerGotoRoot());

@@ -1,3 +1,5 @@
+import { TerminalErrorCodes } from 'utils/API/errors/terminal-error';
+
 const messages = {
   banner: `
 
@@ -46,46 +48,53 @@ const messages = {
   `,
 };
 
-const errors = {
-  commandNotFound: (c: string) => `
-  Command ${c} not found
-`,
-  noMetamask: `
- Failed. Please install Metamask
-`,
-  metamaskNotConnected: `
-  Failed to connect Metamask
-`,
-  metamaskWrongNetwork: `
-  Please switch to Mainnet and try again.
-`,
-  gearboxNetwork: `
-  Target network not specified
-`,
-  metamaskLogin: `
-  Log in and try again
-`,
-  metamaskAddress: `
-  Failed to get your account address
-`,
-  permissionDenied: `
-  Permission to join Gearbox Launch Community is denied
-`,
-  alreadyClaimed: `
-  you already mined your Credit Account. Thanks for joining to Gearbox Launch Community.
-`,
-  denied: `
-  you skip our movement to Freedom.
-`,
-  accountChanged: `
-  you have just changed your account. Please, try again.
-`,
-  chainChanged: `
-  you have just changed your chain. Please, try again.
-`,
-  disconnected: `
-  you have just disconnected. Please, try again.
-`,
+type ErrorStrings = {
+  [K in TerminalErrorCodes]: string;
 };
 
-export { messages, errors };
+const errorStrings: ErrorStrings = {
+  [TerminalErrorCodes.COMMAND_NOT_FOUND]: `
+  Command not found
+`,
+  [TerminalErrorCodes.NO_METAMASK]: `
+ Failed. Please install Metamask
+`,
+  [TerminalErrorCodes.METAMASK_NOT_CONNECTED]: `
+  Failed to connect Metamask
+`,
+  [TerminalErrorCodes.METAMASK_WRONG_NETWORK]: `
+  Please switch to Mainnet and try again.
+`,
+  [TerminalErrorCodes.NO_GEARBOX_NETWORK]: `
+  Target network not specified
+`,
+  [TerminalErrorCodes.METAMASK_RELOGIN]: `
+  Log in and try again
+`,
+  [TerminalErrorCodes.GET_ADDRESS_FAILED]: `
+  Failed to get your account address
+`,
+  [TerminalErrorCodes.PERMISSION_DENIED]: `
+  Permission to join Gearbox Launch Community is denied
+`,
+  [TerminalErrorCodes.ALREADY_CLAIMED]: `
+  you already mined your Credit Account. Thanks for joining to Gearbox Launch Community.
+`,
+  [TerminalErrorCodes.DENIED_BY_USER]: `
+  you skip our movement to Freedom.
+`,
+  [TerminalErrorCodes.ACCOUNT_CHANGED]: `
+  you have just changed your account. Please, try again.
+`,
+  [TerminalErrorCodes.CHAIN_CHANGED]: `
+  you have just changed your chain. Please, try again.
+`,
+  [TerminalErrorCodes.DISCONNECTED]: `
+  you have just disconnected. Please, try again.
+`,
+  [TerminalErrorCodes.UNEXPECTED_ERROR]: `
+  Unexpected Error
+`,
+} as const;
+
+export { messages, errorStrings };

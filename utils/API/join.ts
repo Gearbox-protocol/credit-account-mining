@@ -1,7 +1,8 @@
 import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers, utils } from 'ethers';
-import { errors } from 'utils/text/terminalText';
+import { ErrorHub } from 'utils/API/errors/error-hub';
+import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
 import distributorInfo from 'utils/accounts/distributor-info';
 import { MerkleDistributorInfo } from 'utils/merkle/parse-accounts';
 
@@ -9,17 +10,11 @@ const { isAddress, getAddress } = utils;
 
 type User = MerkleDistributorInfo['claims']['string'];
 
-interface IMetamaskError {
-  code: number;
-  message: string;
-}
-
 interface IClaimObject {
   miningAccount: AccountMining;
   provider: ethers.providers.Web3Provider;
   signer: ethers.providers.JsonRpcSigner;
   user: User;
-  address: string;
 }
 
 interface IMetamaskSubscription {
@@ -63,9 +58,15 @@ class MetamaskSubscription implements IMetamaskSubscription {
   };
 
   checkStatus(): boolean {
-    if (this.accountChanged) throw new Error(errors.accountChanged);
-    if (this.chainChanged) throw new Error(errors.chainChanged);
-    if (this.disconnected) throw new Error(errors.disconnected);
+    if (this.accountChanged) {
+      throw new TerminalError({ code: TerminalErrorCodes.ACCOUNT_CHANGED });
+    }
+    if (this.chainChanged) {
+      throw new TerminalError({ code: TerminalErrorCodes.CHAIN_CHANGED });
+    }
+    if (this.disconnected) {
+      throw new TerminalError({ code: TerminalErrorCodes.DISCONNECTED });
+    }
     return true;
   }
 
@@ -86,37 +87,47 @@ class MetamaskSubscription implements IMetamaskSubscription {
 
 const connectMetamask = async () => {
   try {
-    if (!window.ethereum || !window.ethereum!.isMetaMask) throw new Error(errors.noMetamask);
+    if (!window.ethereum || !window.ethereum!.isMetaMask) {
+      throw new TerminalError({ code: TerminalErrorCodes.NO_METAMASK });
+    }
 
     let accounts = await window.ethereum.request!({ method: 'eth_requestAccounts' });
     if (!accounts) {
       accounts = await window.ethereum.enable!();
     }
-    if (!accounts) throw new Error(errors.metamaskLogin);
+    if (!accounts) {
+      throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
+    }
 
     const network = process.env.NEXT_PUBLIC_GEARBOX_NETWORK;
-    if (!network) throw new Error(errors.gearboxNetwork);
-    if (window.ethereum.networkVersion !== network) throw new Error(errors.metamaskWrongNetwork);
+    if (!network) {
+      throw new TerminalError({ code: TerminalErrorCodes.NO_GEARBOX_NETWORK });
+    }
+
+    if (window.ethereum.networkVersion !== network) {
+      throw new TerminalError({ code: TerminalErrorCodes.METAMASK_WRONG_NETWORK });
+    }
 
     const account = accounts[0];
-    if (!isAddress(account)) throw new Error(errors.metamaskAddress);
+    if (!isAddress(account)) {
+      throw new TerminalError({ code: TerminalErrorCodes.GET_ADDRESS_FAILED });
+    }
 
     return getAddress(account);
   } catch (e: any) {
-    const typedError = e as IMetamaskError;
-
-    if (typedError.code === 4001) throw new Error(errors.metamaskNotConnected);
-    if (typedError.code === -32002) throw new Error(errors.metamaskLogin);
-    throw new Error(typedError.message);
+    throw ErrorHub.getTypedError(e);
   }
 };
 
 const checkPermissions = (address: string): [User, number] => {
-  if (!(address in distributorInfo.claims)) throw new Error(errors.permissionDenied);
+  if (!(address in distributorInfo.claims)) {
+    throw new TerminalError({ code: TerminalErrorCodes.PERMISSION_DENIED });
+  }
+
   return [distributorInfo.claims[address], 1];
 };
 
-const isClaimed = async (address: string, user: User) => {
+const isClaimed = async (user: User) => {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum!);
     const signer = provider.getSigner();
@@ -126,18 +137,19 @@ const isClaimed = async (address: string, user: User) => {
     );
 
     const claimed = await miningAccount.isClaimed(user.index);
-    if (claimed) throw new Error(errors.alreadyClaimed);
+    if (claimed) {
+      throw new TerminalError({ code: TerminalErrorCodes.ALREADY_CLAIMED });
+    }
 
     const claimObject: IClaimObject = {
       miningAccount,
       provider,
       signer,
       user,
-      address,
     };
     return claimObject;
   } catch (e: any) {
-    throw new Error(e.message);
+    throw ErrorHub.getTypedError(e);
   }
 };
 
@@ -147,7 +159,7 @@ const claim = async ({ miningAccount, user: { index, salt, proof } }: IClaimObje
     await res.wait();
     return [res, res.hash];
   } catch (e: any) {
-    throw new Error(e.message);
+    throw ErrorHub.getTypedError(e);
   }
 };
 
@@ -155,7 +167,7 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
   try {
     await transaction.wait();
   } catch (e: any) {
-    throw new Error(e.message);
+    throw ErrorHub.getTypedError(e);
   }
 };
 

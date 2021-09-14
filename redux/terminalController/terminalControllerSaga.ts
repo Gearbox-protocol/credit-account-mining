@@ -1,5 +1,6 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { messages, errors } from 'utils/text/terminalText';
+import { messages } from 'utils/text/terminalText';
+import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
 import { print, clear } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import { IControllerCommand } from './terminalControllerActions';
@@ -10,16 +11,16 @@ function* controllerUserCommandWorker({ payload }: IControllerCommand): Generato
     terminalController: { current },
   } = (yield select()) as IState;
   try {
-    if (!current || !current.userActions) throw new Error(payload);
-    if (!current.userActions[payload]) throw new Error(payload);
+    if (!current || !current.userActions) {
+      throw new TerminalError({ code: TerminalErrorCodes.COMMAND_NOT_FOUND });
+    }
+    if (!current.userActions[payload]) {
+      throw new TerminalError({ code: TerminalErrorCodes.COMMAND_NOT_FOUND });
+    }
     const func = current.userActions[payload];
     yield put(func());
   } catch (e: any) {
-    if (e.message === payload) {
-      yield put(print({ msg: errors.commandNotFound(payload), center: false }));
-    } else {
-      yield put(print({ msg: e.message, center: false }));
-    }
+    yield put(print({ msg: e.message, center: false }));
   }
 }
 
