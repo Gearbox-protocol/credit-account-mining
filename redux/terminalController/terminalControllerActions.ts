@@ -38,7 +38,7 @@ interface IControllerJoinDenied {
 }
 
 interface IControllerMined {
-  type: ActionType.COUNT_CLAIMS;
+  type: ActionType.MINED;
 }
 
 const controllerNext = (): IControllerNext => ({
@@ -79,7 +79,7 @@ const controllerJoinDenied = (): IControllerJoinDenied => ({
 });
 
 const controllerMined = (): IControllerMined => ({
-  type: ActionType.COUNT_CLAIMS,
+  type: ActionType.MINED,
 });
 
 export type ControllerActions =

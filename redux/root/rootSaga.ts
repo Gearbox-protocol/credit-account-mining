@@ -9,7 +9,7 @@ import {
   watchControllerJoinDeniedWorker,
 } from 'redux/terminalController/terminalControllerJoinSaga';
 
-import watchControllerCountClaimsWorker from 'redux/terminalController/terminalControllerCountClaimsSaga';
+import watchControllerMinedWorker from 'redux/terminalController/terminalControllerMinedSaga';
 
 import { all } from 'redux-saga/effects';
 
@@ -21,6 +21,6 @@ export default function* rootSaga() {
     watchControllerJoinWorker(),
     watchControllerJoinAcceptedWorker(),
     watchControllerJoinDeniedWorker(),
-    watchControllerCountClaimsWorker(),
+    watchControllerMinedWorker(),
   ]);
 }

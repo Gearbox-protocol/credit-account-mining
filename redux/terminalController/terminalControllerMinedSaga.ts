@@ -10,7 +10,7 @@ import { IState } from 'redux/root/rootReducer';
 import { controllerGotoRoot } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
-function* controllerCountClaimsWorker(): Generator<any, void, any> {
+function* controllerMinedWorker(): Generator<any, void, any> {
   const {
     terminalApp: { subscriptionObject, claimObject },
   } = (yield select()) as IState;
@@ -25,11 +25,11 @@ function* controllerCountClaimsWorker(): Generator<any, void, any> {
     if (!subscriptionObject) yield put(setMetamaskSubscriptionObject(safeSubscription));
     yield put(loading(false));
 
-    yield put(print({ msg: messages.metamaskConnected, center: false }));
-
     safeSubscription.checkStatus();
+    yield put(loading(true));
     const [safeClaim, amount]: [IClaimObject, number] = yield countClaims(claimObject || {});
     if (!claimObject) yield put(setClaimObject(safeClaim));
+    yield put(loading(false));
 
     yield put(print({ msg: messages.accountsMined(amount), center: false }));
     yield put(inputLock(false));
@@ -43,8 +43,8 @@ function* controllerCountClaimsWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchControllerCountClaimsWorker() {
-  yield takeEvery(ActionType.COUNT_CLAIMS, controllerCountClaimsWorker);
+function* watchControllerMinedWorker() {
+  yield takeEvery(ActionType.MINED, controllerMinedWorker);
 }
 
-export default watchControllerCountClaimsWorker;
+export default watchControllerMinedWorker;
