@@ -1,4 +1,5 @@
 import { TerminalErrorCodes } from 'utils/API/errors/terminal-error';
+import { RootControllerActions } from 'redux/terminalController/terminalControllerReducer';
 
 const messages = {
   banner: `
@@ -23,10 +24,10 @@ const messages = {
   helpText: `
   Available commands:
   
-  help - This output
-  join - join gearbox 
-  mined - shows number of mined accounts 
-  clear - clear terminal
+  ${RootControllerActions.HELP} - This output
+  ${RootControllerActions.JOIN} - join gearbox 
+  ${RootControllerActions.MINED} - shows number of mined accounts 
+  ${RootControllerActions.CLEAR} - clear terminal
   `,
   metamaskConnected: `
   Metamask connected

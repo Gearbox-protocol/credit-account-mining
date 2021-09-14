@@ -22,12 +22,19 @@ interface IControllerState extends DefaultRootState {
   current: Controller | null;
 }
 
+enum RootControllerActions {
+  HELP = 'help',
+  CLEAR = 'clear',
+  JOIN = 'join',
+  MINED = 'mined',
+}
+
 const root: Controller = {
   userActions: {
-    help: controllerHelp,
-    clear: controllerClear,
-    join: controllerJoin,
-    mined: controllerMined,
+    [RootControllerActions.HELP]: controllerHelp,
+    [RootControllerActions.CLEAR]: controllerClear,
+    [RootControllerActions.JOIN]: controllerJoin,
+    [RootControllerActions.MINED]: controllerMined,
   },
   child: null,
 };
@@ -73,5 +80,5 @@ const controllerReducer: Reducer<IControllerState, ControllerActions> = (
 };
 
 export type { IControllerState };
-export { controllerDefaultState };
+export { controllerDefaultState, RootControllerActions };
 export default controllerReducer;
