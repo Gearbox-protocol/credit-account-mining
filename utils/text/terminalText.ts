@@ -84,17 +84,15 @@ const errorStrings: ErrorStrings = {
   you skip our movement to Freedom.
 `,
   [TerminalErrorCodes.ACCOUNT_CHANGED]: `
-  you have just changed your account. Please, try again.
+you have just changed your account. All active actions were aborted.
 `,
   [TerminalErrorCodes.CHAIN_CHANGED]: `
-  you have just changed your chain. Please, try again.
+you have just changed your chain. All active actions were aborted.
 `,
   [TerminalErrorCodes.DISCONNECTED]: `
-  you have just disconnected. Please, try again.
+you have just disconnected. Please, connect and try again.
 `,
-  [TerminalErrorCodes.UNEXPECTED_ERROR]: `
-  Unexpected Error
-`,
+  [TerminalErrorCodes.ACTION_ABORTED]: '',
 } as const;
 
 export { messages, errorStrings };
