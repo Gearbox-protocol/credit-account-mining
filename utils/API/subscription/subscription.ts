@@ -1,5 +1,5 @@
 import { store } from 'redux/store';
-import { setClaimObject } from 'redux/terminalApp/terminalAppAction';
+import { setClaimObject, setUser } from 'redux/terminalApp/terminalAppAction';
 import { controllerGotoRoot } from 'redux/terminalController/terminalControllerActions';
 import { print } from 'redux/terminal/terminalAction';
 import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
@@ -31,6 +31,7 @@ class MetamaskSubscription implements IMetamaskSubscription {
   private handleChainChange = () => {
     this.chainChanged = true;
     store.dispatch(setClaimObject(null));
+    store.dispatch(setUser(null));
     store.dispatch(print({ msg: errorStrings.CHAIN_CHANGED, center: false }));
     store.dispatch(controllerGotoRoot());
   };
@@ -38,6 +39,7 @@ class MetamaskSubscription implements IMetamaskSubscription {
   private handleDisconnect = () => {
     this.disconnected = true;
     store.dispatch(setClaimObject(null));
+    store.dispatch(setUser(null));
     store.dispatch(print({ msg: errorStrings.DISCONNECTED, center: false }));
     store.dispatch(controllerGotoRoot());
   };
@@ -45,6 +47,7 @@ class MetamaskSubscription implements IMetamaskSubscription {
   private handleAccountChange = () => {
     this.accountChanged = true;
     store.dispatch(setClaimObject(null));
+    store.dispatch(setUser(null));
     store.dispatch(print({ msg: errorStrings.ACCOUNT_CHANGED, center: false }));
     store.dispatch(controllerGotoRoot());
   };
