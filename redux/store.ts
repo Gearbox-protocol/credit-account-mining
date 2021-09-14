@@ -12,7 +12,7 @@ interface SagaStore extends Store {
   sagaTask?: Task;
 }
 
-const makeStore: MakeStore<Store<IState>> = () => {
+const buildStore = () => {
   const sagaMiddleware = createReduxSagaMiddleware();
   const store: SagaStore = createStore(
     rootReducer,
@@ -21,7 +21,11 @@ const makeStore: MakeStore<Store<IState>> = () => {
   store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;
 };
+
+const store = buildStore();
+
+const makeStore: MakeStore<Store<IState>> = () => store;
 const wrapper = createWrapper<Store<IState>>(makeStore, { debug: isDev });
 
 export type { SagaStore };
-export default wrapper;
+export { wrapper, store };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { AppProps } from 'next/dist/next-server/lib/router/router';
-import wrapper from 'redux/store';
+import { wrapper } from 'redux/store';
 import FixedGlobalStyle from 'styles/global';
 import Fonts from 'styles/fonts';
 import theme from 'styles/theme';
