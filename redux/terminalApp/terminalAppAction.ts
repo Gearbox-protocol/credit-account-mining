@@ -1,4 +1,5 @@
-import { IClaimObject, IMetamaskSubscription } from 'utils/API/join';
+import { IClaimObject } from 'utils/API/join';
+import { IMetamaskSubscription } from 'utils/API/subscription/subscription';
 import ActionTypeLoading from './terminalAppActionTypes';
 
 interface IActionSetAppLoading {
