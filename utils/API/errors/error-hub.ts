@@ -5,13 +5,12 @@ interface IMetamaskError {
   message: string;
 }
 
-type KnownMetamaskErrors =
-  | TerminalErrorCodes.METAMASK_RELOGIN
-  | TerminalErrorCodes.METAMASK_NOT_CONNECTED;
+type KnownMetamaskErrors = TerminalErrorCodes.METAMASK_RELOGIN | TerminalErrorCodes.DENIED_BY_USER;
 
 const MetamaskDictionary: Record<number, KnownMetamaskErrors> = {
   [-32002]: TerminalErrorCodes.METAMASK_RELOGIN,
-  4001: TerminalErrorCodes.METAMASK_NOT_CONNECTED,
+  [-32603]: TerminalErrorCodes.DENIED_BY_USER,
+  4001: TerminalErrorCodes.DENIED_BY_USER,
 };
 
 class ErrorHub {

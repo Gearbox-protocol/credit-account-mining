@@ -4,13 +4,13 @@ import {
 } from 'redux-saga/effects';
 import { messages } from 'utils/text/terminalText';
 import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
+import connectMetamask from 'utils/API/connect/connect';
+import { MetamaskSubscription } from 'utils/API/subscription/subscription';
 import {
-  connectMetamask,
   checkPermissions,
   isClaimed,
   claim,
   waitTransactionEnd,
-  MetamaskSubscription,
   IClaimObject,
   User,
 } from 'utils/API/join';
