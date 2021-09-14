@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import { IClaimObject } from 'utils/API/join';
+import { IClaimObject, User } from 'utils/API/join';
 import { IMetamaskSubscription } from 'utils/API/subscription/subscription';
 import { TerminalAppActions } from './terminalAppAction';
 import ActionType from './terminalAppActionTypes';
@@ -10,6 +10,7 @@ interface ITerminalAppState extends DefaultRootState {
   playVideo: boolean;
   appHydrated: boolean;
   claimObject: IClaimObject | null;
+  user: User | null;
   subscriptionObject: IMetamaskSubscription | null;
 }
 
@@ -18,6 +19,7 @@ const terminalAppDefaultState = {
   appHydrated: false,
   playVideo: false,
   claimObject: null,
+  user: null,
   subscriptionObject: null,
 };
 
@@ -36,6 +38,8 @@ const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
       return { ...state, claimObject: action.payload };
     case ActionType.SET_SUBSCRIPTION_OBJECT:
       return { ...state, subscriptionObject: action.payload };
+    case ActionType.SET_USER:
+      return { ...state, user: action.payload };
     default:
       return state;
   }

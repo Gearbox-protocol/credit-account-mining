@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
-import {
-  put, takeEvery, select, delay,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import { messages } from 'utils/text/terminalText';
 import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
 import connectMetamask from 'utils/API/connect/connect';
@@ -19,6 +17,7 @@ import {
   playVideo,
   setClaimObject,
   setMetamaskSubscriptionObject,
+  setUser,
 } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {
@@ -30,7 +29,7 @@ import ActionType from './terminalControllerActionTypes';
 
 function* controllerJoinWorker(): Generator<any, void, any> {
   const {
-    terminalApp: { subscriptionObject, claimObject },
+    terminalApp: { subscriptionObject, claimObject, user },
   } = (yield select()) as IState;
   const safeSubscription = subscriptionObject || new MetamaskSubscription();
 
@@ -51,8 +50,9 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
     safeSubscription.checkStatus();
-    const safeClaim: IClaimObject = yield isClaimed(claimObject || { user: account });
+    const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, user || account);
     if (!claimObject) yield put(setClaimObject(safeClaim));
+    if (!user) yield put(setUser(account));
 
     safeSubscription.checkStatus();
     yield put(controllerNext());
@@ -74,10 +74,13 @@ function* watchControllerJoinWorker() {
 
 function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
   const {
-    terminalApp: { claimObject, subscriptionObject },
+    terminalApp: { claimObject, subscriptionObject, user },
   } = (yield select()) as IState;
   try {
     if (!claimObject) {
+      throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
+    }
+    if (!user) {
       throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
     }
     if (!subscriptionObject) {
@@ -87,7 +90,10 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(inputLock(true));
 
     subscriptionObject.checkStatus();
-    const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(claimObject);
+    const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(
+      claimObject,
+      user,
+    );
 
     yield put(print({ msg: messages.almostDone, center: false }));
     yield put(print({ msg: messages.yourHash(hash), center: false }));

@@ -12,10 +12,9 @@ interface IClaimObject {
   miningAccount: AccountMining;
   provider: ethers.providers.Web3Provider;
   signer: ethers.providers.JsonRpcSigner;
-  user: User;
 }
 
-type IsClaimedProps = Partial<Omit<IClaimObject, 'user'>> & { user: User };
+type IsClaimedProps = Partial<IClaimObject>;
 
 const checkPermissions = (address: string): [User, number] => {
   if (!(address in distributorInfo.claims)) {
@@ -25,15 +24,15 @@ const checkPermissions = (address: string): [User, number] => {
   return [distributorInfo.claims[address], 1];
 };
 
-const isClaimed = async (claimObj: IsClaimedProps) => {
+const isClaimed = async (claimObj: IsClaimedProps, user: User) => {
   try {
     const { contract } = distributorInfo;
-    const { user } = claimObj;
     let { provider, signer, miningAccount } = claimObj;
 
     provider = provider || new ethers.providers.Web3Provider(window.ethereum!);
     signer = signer || provider.getSigner();
-    miningAccount = miningAccount || <AccountMining>AccountMining__factory.connect(contract, signer);
+    miningAccount =
+      miningAccount || <AccountMining>AccountMining__factory.connect(contract, signer);
 
     const claimed = await miningAccount.isClaimed(user.index);
     if (claimed) {
@@ -44,7 +43,6 @@ const isClaimed = async (claimObj: IsClaimedProps) => {
       miningAccount,
       provider,
       signer,
-      user,
     };
     return claimObject;
   } catch (e: any) {
@@ -52,7 +50,7 @@ const isClaimed = async (claimObj: IsClaimedProps) => {
   }
 };
 
-const claim = async ({ miningAccount, user: { index, salt, proof } }: IClaimObject) => {
+const claim = async ({ miningAccount }: IClaimObject, { index, salt, proof }: User) => {
   try {
     const res = await miningAccount.claim(index, salt, proof);
     await res.wait();
@@ -71,6 +69,4 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
 };
 
 export type { IClaimObject, User };
-export {
-  checkPermissions, isClaimed, claim, waitTransactionEnd,
-};
+export { checkPermissions, isClaimed, claim, waitTransactionEnd };
