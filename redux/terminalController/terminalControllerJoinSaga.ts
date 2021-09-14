@@ -29,38 +29,42 @@ import {
 import ActionType from './terminalControllerActionTypes';
 
 function* controllerJoinWorker(): Generator<any, void, any> {
-  const subscriptionObject = new MetamaskSubscription();
+  const {
+    terminalApp: { subscriptionObject, claimObject },
+  } = (yield select()) as IState;
+  const safeSubscription = subscriptionObject || new MetamaskSubscription();
+
   try {
     yield put(inputLock(true));
     yield put(controllerGotoJoin());
 
     yield put(loading(true));
     const address: string = yield connectMetamask();
-    yield subscriptionObject.subscribeChanges();
+    yield safeSubscription.subscribeChanges();
+    if (!subscriptionObject) yield put(setMetamaskSubscriptionObject(safeSubscription));
     yield put(loading(false));
+
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
-    yield subscriptionObject.checkStatus();
+    safeSubscription.checkStatus();
     const [account, accountsToMine]: [User, number] = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
-    yield subscriptionObject.checkStatus();
-    const claimObject: IClaimObject = yield isClaimed(account);
-    yield put(setClaimObject(claimObject));
-    yield put(setMetamaskSubscriptionObject(subscriptionObject));
+    safeSubscription.checkStatus();
+    const safeClaim: IClaimObject = yield isClaimed(claimObject || { user: account });
+    if (!claimObject) yield put(setClaimObject(safeClaim));
 
+    safeSubscription.checkStatus();
     yield put(controllerNext());
     yield put(inputLock(false));
     yield put(print({ msg: messages.claim, center: false }));
   } catch (e: any) {
-    yield subscriptionObject.unSubscribeChanges();
+    yield safeSubscription.resetStatus();
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
-    yield put(print({ msg: e.message, center: false }));
+    if (e.message) yield put(print({ msg: e.message, center: false }));
     yield put(inputLock(false));
-    yield put(setClaimObject(null));
-    yield put(setMetamaskSubscriptionObject(null));
   }
 }
 
@@ -79,9 +83,10 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     if (!subscriptionObject) {
       throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
     }
+
     yield put(inputLock(true));
 
-    yield subscriptionObject.checkStatus();
+    subscriptionObject.checkStatus();
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(claimObject);
 
     yield put(print({ msg: messages.almostDone, center: false }));
@@ -90,7 +95,6 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield waitTransactionEnd(transaction);
     yield put(loading(false));
 
-    yield subscriptionObject.unSubscribeChanges();
     yield put(print({ msg: messages.congratulations, center: false }));
 
     yield delay(500);
@@ -98,12 +102,13 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
 
     yield put(inputLock(false));
     yield put(controllerGotoRoot());
+    yield subscriptionObject.resetStatus();
   } catch (e: any) {
-    yield subscriptionObject?.unSubscribeChanges();
+    yield subscriptionObject?.resetStatus();
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
-    yield put(print({ msg: e.message, center: false }));
+    if (e.message) yield put(print({ msg: e.message, center: false }));
     yield put(inputLock(false));
   }
 }
@@ -119,11 +124,9 @@ function* controllerJoinDeniedWorker(): Generator<any, void, any> {
   try {
     throw new TerminalError({ code: TerminalErrorCodes.DENIED_BY_USER });
   } catch (e: any) {
-    yield subscriptionObject?.unSubscribeChanges();
+    yield subscriptionObject?.resetStatus();
     yield put(controllerGotoRoot());
-    yield put(print({ msg: e.message, center: false }));
-    yield put(setClaimObject(null));
-    yield put(setMetamaskSubscriptionObject(null));
+    if (e.message) yield put(print({ msg: e.message, center: false }));
   }
 }
 
