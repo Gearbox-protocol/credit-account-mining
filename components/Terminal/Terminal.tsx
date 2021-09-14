@@ -27,6 +27,7 @@ const Terminal = React.forwardRef<HTMLDivElement, ITerminalProps>(({ banner, onC
     const t: ITerminalObject = terminal({
       root: terminalRed.current,
       callback: onCommand,
+      prompt: () => '/gearbox/mining $ ',
       banner,
     });
 
