@@ -7,6 +7,7 @@ import {
   controllerJoin,
   controllerJoinAccepted,
   controllerJoinDenied,
+  controllerMined,
 } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
@@ -26,6 +27,7 @@ const root: Controller = {
     help: controllerHelp,
     clear: controllerClear,
     join: controllerJoin,
+    mined: controllerMined,
   },
   child: null,
 };

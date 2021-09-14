@@ -37,6 +37,10 @@ interface IControllerJoinDenied {
   type: ActionType.JOIN_DENIED;
 }
 
+interface IControllerMined {
+  type: ActionType.COUNT_CLAIMS;
+}
+
 const controllerNext = (): IControllerNext => ({
   type: ActionType.NEXT,
 });
@@ -74,6 +78,10 @@ const controllerJoinDenied = (): IControllerJoinDenied => ({
   type: ActionType.JOIN_DENIED,
 });
 
+const controllerMined = (): IControllerMined => ({
+  type: ActionType.COUNT_CLAIMS,
+});
+
 export type ControllerActions =
   | IControllerNext
   | IControllerGotoRoot
@@ -83,7 +91,8 @@ export type ControllerActions =
   | IControllerJoin
   | IControllerGotoJoin
   | IControllerJoinAccepted
-  | IControllerJoinDenied;
+  | IControllerJoinDenied
+  | IControllerMined;
 export type {
   IControllerNext,
   IControllerGotoRoot,
@@ -94,6 +103,7 @@ export type {
   IControllerGotoJoin,
   IControllerJoinAccepted,
   IControllerJoinDenied,
+  IControllerMined,
 };
 export {
   controllerGotoRoot,
@@ -105,4 +115,5 @@ export {
   controllerGotoJoin,
   controllerJoinAccepted,
   controllerJoinDenied,
+  controllerMined,
 };

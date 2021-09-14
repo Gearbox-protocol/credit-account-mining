@@ -8,6 +8,7 @@ enum ActionType {
   JOIN = 'JOIN',
   JOIN_ACCEPTED = 'JOIN_ACCEPTED',
   JOIN_DENIED = 'JOIN_DENIED',
+  COUNT_CLAIMS = 'COUNT_CLAIMS',
 }
 
 export default ActionType;

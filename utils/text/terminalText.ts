@@ -25,6 +25,7 @@ const messages = {
   
   help - This output
   join - join gearbox 
+  mined - shows number of mined accounts 
   clear - clear terminal
   `,
   metamaskConnected: `
@@ -42,6 +43,9 @@ const messages = {
   `,
   yourHash: (h: string) => `
   Your transaction hash: https://kovan.etherscan.io/tx/${h}
+  `,
+  accountsMined: (n: number) => `
+  Accounts mined: ${n}
   `,
   congratulations: `
   Congratulations! Future of France is coming!
