@@ -2,8 +2,8 @@ import { store } from 'redux/store';
 import { setClaimObject, setUser } from 'redux/terminalApp/terminalAppAction';
 import { controllerGotoRoot } from 'redux/terminalController/terminalControllerActions';
 import { print } from 'redux/terminal/terminalAction';
-import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
-import { errorStrings } from 'utils/text/terminalText';
+import { TerminalError } from 'utils/API/errors/terminal-error';
+import errorStrings from 'utils/API/errors/errors-strings';
 
 interface IMetamaskSubscription {
   resetStatus: () => void;

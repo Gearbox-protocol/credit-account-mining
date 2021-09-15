@@ -1,6 +1,6 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { messages } from 'utils/text/terminalText';
-import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
+import messages from 'utils/API/messages/messages';
+import { TerminalError } from 'utils/API/errors/terminal-error';
 import { print, clear } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import { IControllerCommand } from './terminalControllerActions';

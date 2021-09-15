@@ -2,7 +2,7 @@ import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
 import { ErrorHub } from 'utils/API/errors/error-hub';
-import { TerminalError, TerminalErrorCodes } from 'utils/API/errors/terminal-error';
+import { TerminalError } from 'utils/API/errors/terminal-error';
 import distributorInfo from 'utils/accounts/distributor-info';
 import { MerkleDistributorInfo } from 'utils/merkle/parse-accounts';
 

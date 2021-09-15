@@ -1,5 +1,5 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { messages } from 'utils/text/terminalText';
+import messages from 'utils/API/messages/messages';
 import connectMetamask from 'utils/API/connect/connect';
 import { MetamaskSubscription } from 'utils/API/subscription/subscription';
 import { IClaimObject } from 'utils/API/join/join';

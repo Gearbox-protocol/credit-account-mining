@@ -4,7 +4,7 @@ import { controllerCommand } from 'redux/terminalController/terminalControllerAc
 import Block from 'components/Block/Block';
 import Button from 'components/Button/Button';
 import Terminal from 'components/Terminal/Terminal';
-import { messages } from 'utils/text/terminalText';
+import messages from 'utils/API/messages/messages';
 import goBack from 'utils/text/buttons';
 import isMobile from 'utils/helpers/helpers';
 
