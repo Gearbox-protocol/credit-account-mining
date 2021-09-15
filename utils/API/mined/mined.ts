@@ -1,7 +1,7 @@
 import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
-import { ErrorHub } from 'utils/API/errors/error-hub';
+import { getTypedError } from 'utils/API/errors/error-hub';
 import { IClaimObject } from 'utils/API/join/join';
 import distributorInfo from 'utils/accounts/distributor-info';
 
@@ -23,7 +23,7 @@ const countClaims = async (claimObj: Partial<IClaimObject>) => {
     };
     return [claimObject, query.length];
   } catch (e: any) {
-    throw ErrorHub.getTypedError(e);
+    throw getTypedError(e);
   }
 };
 
