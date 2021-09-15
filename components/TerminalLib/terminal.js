@@ -168,52 +168,57 @@ const keyboard = (parse, callback) => {
 };
 
 class Loader {
-  constructor(target) {
-    this.loading = false;
-    this.target = target;
-    this.count = 0;
-    this._loadingSymbol = '.';
+  constructor(target, loadingSymbol) {
+    this._loading = false;
+    this._target = target;
+    this._count = 0;
+    this._loadingSymbol = loadingSymbol || '.';
 
     this.startLoading = this.startLoading.bind(this);
     this.endLoading = this.endLoading.bind(this);
+    this.isLoading = this.isLoading.bind(this);
     this._clearLoading = this._clearLoading.bind(this);
     this._addDot = this._addDot.bind(this);
   }
 
   _clearLoading() {
-    const value = this.target.value;
-    this.target.value = value.substring(0, value.length - this.count * this._loadingSymbol.length);
-    this.count = 0;
+    const value = this._target.value;
+    this._target.value = value.substring(
+      0,
+      value.length - this._count * this._loadingSymbol.length,
+    );
+    this._count = 0;
   }
 
   _addDot() {
-    this.target.value += this._loadingSymbol;
-    this.count += 1;
+    this._target.value += this._loadingSymbol;
+    this._count += 1;
+  }
+
+  isLoading() {
+    return this._loading;
   }
 
   startLoading() {
-    if (!!this.loading) return;
-    this.loading = true;
+    if (this._loading) return;
+    this._loading = true;
 
     const interval = setInterval(() => {
-      if (!this.loading) {
+      if (!this._loading) {
         clearInterval(interval);
         return;
       }
 
-      if (this.count >= 4) {
-        this._clearLoading();
-      }
-
+      if (this._count >= 4) this._clearLoading();
       this._addDot();
     }, 1000);
   }
 
   endLoading() {
-    if (!this.loading) return;
-    this.loading = false;
+    if (!this._loading) return;
+    this._loading = false;
 
-    if (this.count === 0) return;
+    if (this._count === 0) return;
     this._clearLoading();
   }
 }
@@ -231,7 +236,11 @@ export const terminal = (opts) => {
   const width = $element.offsetWidth;
   const cwidth = Math.round((width / fontSize) * 1.9); // FIXME: Should be calculated via canvas
 
+  const loader = new Loader($element);
+
   const output = (output, center) => {
+    if (loader.isLoading()) loader.endLoading();
+
     let lines = output.split(/\n/);
     if (center) {
       lines = lines.map((line) =>
@@ -253,7 +262,7 @@ export const terminal = (opts) => {
   const kbd = keyboard(parse, callback);
   const clear = () => ($element.value = '');
   const input = (ev) => (busy || isLocked ? ev.preventDefault() : kbd[ev.type](ev));
-  const inputLock = (lock) => (isLocked = lock);
+  const inputLock = (lock) => (isLocked = Boolean(lock));
 
   $element.addEventListener('focus', () => setSelectionRange($element));
   $element.addEventListener('blur', focus);
@@ -276,8 +285,6 @@ export const terminal = (opts) => {
     $root.removeEventListener('click', focus);
     $root.innerHtml = '';
   };
-
-  const loader = new Loader($element);
 
   return {
     focus,
