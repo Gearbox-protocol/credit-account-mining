@@ -3,7 +3,7 @@ import messages from 'utils/API/messages/messages';
 import connectMetamask from 'utils/API/connect/connect';
 import { MetamaskSubscription } from 'utils/API/subscription/subscription';
 import { IClaimObject } from 'utils/API/join/join';
-import countClaims from 'utils/API/count-claims/count-claims';
+import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { setClaimObject, setMetamaskSubscriptionObject } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';

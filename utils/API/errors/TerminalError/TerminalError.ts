@@ -1,4 +1,4 @@
-import errorStrings from './errors-strings';
+import errorStrings from './error-strings';
 
 type TerminalErrorCodes =
   | 'COMMAND_NOT_FOUND'

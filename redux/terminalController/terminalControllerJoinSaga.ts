@@ -3,7 +3,7 @@ import {
   put, takeEvery, select, delay,
 } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
-import { TerminalError } from 'utils/API/errors/terminal-error';
+import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import connectMetamask from 'utils/API/connect/connect';
 import { MetamaskSubscription } from 'utils/API/subscription/subscription';
 import {

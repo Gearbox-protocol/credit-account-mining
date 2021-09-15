@@ -1,8 +1,8 @@
 import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
-import { ErrorHub } from 'utils/API/errors/error-hub';
-import { TerminalError } from 'utils/API/errors/terminal-error';
+import { getTypedError } from 'utils/API/errors/error-hub';
+import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import distributorInfo from 'utils/accounts/distributor-info';
 import { MerkleDistributorInfo } from 'utils/merkle/parse-accounts';
 
@@ -43,7 +43,7 @@ const isClaimed = async (claimObj: Partial<IClaimObject>, user: User) => {
     };
     return claimObject;
   } catch (e: any) {
-    throw ErrorHub.getTypedError(e);
+    throw getTypedError(e);
   }
 };
 
@@ -53,7 +53,7 @@ const claim = async ({ miningAccount }: IClaimObject, { index, salt, proof }: Us
     await res.wait();
     return [res, res.hash];
   } catch (e: any) {
-    throw ErrorHub.getTypedError(e);
+    throw getTypedError(e);
   }
 };
 
@@ -61,7 +61,7 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
   try {
     await transaction.wait();
   } catch (e: any) {
-    throw ErrorHub.getTypedError(e);
+    throw getTypedError(e);
   }
 };
 

@@ -1,6 +1,6 @@
 import { utils } from 'ethers';
-import { ErrorHub } from 'utils/API/errors/error-hub';
-import { TerminalError } from 'utils/API/errors/terminal-error';
+import { getTypedError } from 'utils/API/errors/error-hub';
+import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 
 const { isAddress, getAddress } = utils;
 
@@ -34,7 +34,7 @@ const connectMetamask = async () => {
 
     return getAddress(account);
   } catch (e: any) {
-    throw ErrorHub.getTypedError(e);
+    throw getTypedError(e);
   }
 };
 

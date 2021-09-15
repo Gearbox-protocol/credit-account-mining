@@ -1,4 +1,4 @@
-import { TerminalErrorCodes } from 'utils/API/errors/terminal-error';
+import { TerminalErrorCodes } from 'utils/API/errors/TerminalError/TerminalError';
 
 const errorStrings: Record<TerminalErrorCodes, string> = {
   COMMAND_NOT_FOUND: `
