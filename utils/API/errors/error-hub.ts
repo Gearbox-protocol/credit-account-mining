@@ -1,4 +1,4 @@
-import { TerminalError, TerminalErrorCodes } from './terminal-error';
+import { TerminalError, TerminalErrorCodes } from './TerminalError/TerminalError';
 
 interface IMetamaskError {
   code: number;
