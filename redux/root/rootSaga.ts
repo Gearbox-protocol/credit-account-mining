@@ -11,6 +11,12 @@ import {
 
 import watchControllerMinedWorker from 'redux/terminalController/terminalControllerMinedSaga';
 
+import {
+  watchChangeStatusWorker,
+  watchSubscribeWorker,
+  watchUnsubscribeWorker,
+} from 'redux/subscriptionController/subscriptionControllerSaga';
+
 import { all } from 'redux-saga/effects';
 
 export default function* rootSaga() {
@@ -22,5 +28,8 @@ export default function* rootSaga() {
     watchControllerJoinAcceptedWorker(),
     watchControllerJoinDeniedWorker(),
     watchControllerMinedWorker(),
+    watchChangeStatusWorker(),
+    watchSubscribeWorker(),
+    watchUnsubscribeWorker(),
   ]);
 }

@@ -1,0 +1,8 @@
+enum ActionType {
+  SUBSCRIBE = 'SUBSCRIBE',
+  UNSUBSCRIBE = 'UNSUBSCRIBE',
+  RESET_STATUS = 'RESET_STATUS',
+  CHANGE_STATUS = 'CHANGE_STATUS',
+}
+
+export default ActionType;
