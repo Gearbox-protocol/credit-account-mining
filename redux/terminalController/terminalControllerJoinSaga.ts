@@ -15,7 +15,7 @@ import {
   User,
 } from 'utils/API/join/join';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { subscribe, resetStatus } from 'redux/subscriptionController/subscriptionControllerActions';
+import { subscribe } from 'redux/subscriptionController/subscriptionControllerActions';
 import { playVideo, setClaimObject, setUser } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {
@@ -59,7 +59,6 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(print({ msg: messages.claim, center: false }));
     yield put(inputLock(false));
   } catch (e: any) {
-    yield put(resetStatus());
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
@@ -106,9 +105,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
 
     yield put(inputLock(false));
     yield put(controllerGotoRoot());
-    yield put(resetStatus());
   } catch (e: any) {
-    yield put(resetStatus());
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
@@ -125,7 +122,6 @@ function* controllerJoinDeniedWorker(): Generator<any, void, any> {
   try {
     throw new TerminalError({ code: 'DENIED_BY_USER' });
   } catch (e: any) {
-    yield put(resetStatus());
     yield put(controllerGotoRoot());
     if (e.message) yield put(print({ msg: e.message, center: false }));
   }

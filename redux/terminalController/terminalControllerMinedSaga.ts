@@ -5,7 +5,7 @@ import { isAborted } from 'utils/API/errors/error-hub';
 import { IClaimObject } from 'utils/API/join/join';
 import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { subscribe, resetStatus } from 'redux/subscriptionController/subscriptionControllerActions';
+import { subscribe } from 'redux/subscriptionController/subscriptionControllerActions';
 import { setClaimObject } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import { controllerGotoRoot } from './terminalControllerActions';
@@ -33,9 +33,7 @@ function* controllerMinedWorker(): Generator<any, void, any> {
 
     yield put(print({ msg: messages.accountsMined(amount), center: false }));
     yield put(inputLock(false));
-    yield put(resetStatus());
   } catch (e: any) {
-    yield put(resetStatus());
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
