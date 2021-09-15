@@ -12,10 +12,10 @@ function* controllerUserCommandWorker({ payload }: IControllerCommand): Generato
   } = (yield select()) as IState;
   try {
     if (!current || !current.userActions) {
-      throw new TerminalError({ code: TerminalErrorCodes.COMMAND_NOT_FOUND });
+      throw new TerminalError({ code: 'COMMAND_NOT_FOUND' });
     }
     if (!current.userActions[payload]) {
-      throw new TerminalError({ code: TerminalErrorCodes.COMMAND_NOT_FOUND });
+      throw new TerminalError({ code: 'COMMAND_NOT_FOUND' });
     }
     const func = current.userActions[payload];
     yield put(func());

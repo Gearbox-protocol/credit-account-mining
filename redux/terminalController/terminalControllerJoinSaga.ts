@@ -80,13 +80,13 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
   } = (yield select()) as IState;
   try {
     if (!claimObject) {
-      throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
+      throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
     if (!user) {
-      throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
+      throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
     if (!subscriptionObject) {
-      throw new TerminalError({ code: TerminalErrorCodes.METAMASK_RELOGIN });
+      throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
 
     yield put(inputLock(true));
@@ -132,7 +132,7 @@ function* controllerJoinDeniedWorker(): Generator<any, void, any> {
     terminalApp: { subscriptionObject },
   } = (yield select()) as IState;
   try {
-    throw new TerminalError({ code: TerminalErrorCodes.DENIED_BY_USER });
+    throw new TerminalError({ code: 'DENIED_BY_USER' });
   } catch (e: any) {
     yield subscriptionObject?.resetStatus();
     yield put(controllerGotoRoot());

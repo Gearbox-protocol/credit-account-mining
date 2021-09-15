@@ -59,9 +59,9 @@ class MetamaskSubscription implements IMetamaskSubscription {
   };
 
   checkStatus(): boolean {
-    if (this.accountChanged) throw new TerminalError({ code: TerminalErrorCodes.ACTION_ABORTED });
-    if (this.chainChanged) throw new TerminalError({ code: TerminalErrorCodes.ACTION_ABORTED });
-    if (this.disconnected) throw new TerminalError({ code: TerminalErrorCodes.ACTION_ABORTED });
+    if (this.accountChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
+    if (this.chainChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
+    if (this.disconnected) throw new TerminalError({ code: 'ACTION_ABORTED' });
     return true;
   }
 

@@ -5,12 +5,12 @@ interface IMetamaskError {
   message: string;
 }
 
-type KnownMetamaskErrors = TerminalErrorCodes.METAMASK_RELOGIN | TerminalErrorCodes.DENIED_BY_USER;
+type KnownMetamaskErrors = Extract<TerminalErrorCodes, 'METAMASK_RELOGIN' | 'DENIED_BY_USER'>;
 
 const MetamaskDictionary: Record<number, KnownMetamaskErrors> = {
-  [-32002]: TerminalErrorCodes.METAMASK_RELOGIN,
-  [-32603]: TerminalErrorCodes.DENIED_BY_USER,
-  4001: TerminalErrorCodes.DENIED_BY_USER,
+  [-32002]: 'METAMASK_RELOGIN',
+  [-32603]: 'DENIED_BY_USER',
+  4001: 'DENIED_BY_USER',
 };
 
 class ErrorHub {
@@ -28,7 +28,7 @@ class ErrorHub {
     return terminalCode
       ? new TerminalError({ code: terminalCode, name: 'Metamask error' })
       : new TerminalError({
-        code: TerminalErrorCodes.UNEXPECTED_ERROR,
+        code: 'UNEXPECTED_ERROR',
         name: 'Metamask error',
       });
   };
@@ -37,7 +37,7 @@ class ErrorHub {
     if (this.isTerminalError(e)) return e;
     if (this.isMetamaskError(e)) return this.processMetamaskError(e);
 
-    return new TerminalError({ code: TerminalErrorCodes.UNEXPECTED_ERROR });
+    return new TerminalError({ code: 'UNEXPECTED_ERROR' });
   };
 }
 

@@ -16,7 +16,7 @@ interface IClaimObject {
 
 const checkPermissions = (address: string): [User, number] => {
   if (!(address in distributorInfo.claims)) {
-    throw new TerminalError({ code: TerminalErrorCodes.PERMISSION_DENIED });
+    throw new TerminalError({ code: 'PERMISSION_DENIED' });
   }
 
   return [distributorInfo.claims[address], 1];
@@ -33,7 +33,7 @@ const isClaimed = async (claimObj: Partial<IClaimObject>, user: User) => {
 
     const claimed = await miningAccount.isClaimed(user.index);
     if (claimed) {
-      throw new TerminalError({ code: TerminalErrorCodes.ALREADY_CLAIMED });
+      throw new TerminalError({ code: 'ALREADY_CLAIMED' });
     }
 
     const claimObject: IClaimObject = {
