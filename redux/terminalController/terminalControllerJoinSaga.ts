@@ -4,8 +4,8 @@ import {
 } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
+import { isAborted } from 'utils/API/errors/error-hub';
 import connectMetamask from 'utils/API/connect/connect';
-import { MetamaskSubscription } from 'utils/API/subscription/subscription';
 import {
   checkPermissions,
   isClaimed,
@@ -15,12 +15,8 @@ import {
   User,
 } from 'utils/API/join/join';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import {
-  playVideo,
-  setClaimObject,
-  setMetamaskSubscriptionObject,
-  setUser,
-} from 'redux/terminalApp/terminalAppAction';
+import { subscribe, resetStatus } from 'redux/subscriptionController/subscriptionControllerActions';
+import { playVideo, setClaimObject, setUser } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import {
   controllerGotoRoot,
@@ -31,9 +27,8 @@ import ActionType from './terminalControllerActionTypes';
 
 function* controllerJoinWorker(): Generator<any, void, any> {
   const {
-    terminalApp: { subscriptionObject, claimObject, user },
+    terminalApp: { claimObject, user },
   } = (yield select()) as IState;
-  const safeSubscription = subscriptionObject || new MetamaskSubscription();
 
   try {
     yield put(inputLock(true));
@@ -41,27 +36,30 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
     yield put(loading(true));
     const address: string = yield connectMetamask();
-    yield safeSubscription.subscribeChanges();
-    if (!subscriptionObject) yield put(setMetamaskSubscriptionObject(safeSubscription));
+    yield put(subscribe());
     yield put(loading(false));
 
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
-    safeSubscription.checkStatus();
+    let state = (yield select()) as IState;
+    yield isAborted(state.subscriptionController.statusChanged);
+
     const [account, accountsToMine]: [User, number] = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
 
-    safeSubscription.checkStatus();
+    state = (yield select()) as IState;
+    yield isAborted(state.subscriptionController.statusChanged);
     const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, user || account);
     if (!claimObject) yield put(setClaimObject(safeClaim));
     if (!user) yield put(setUser(account));
 
-    safeSubscription.checkStatus();
+    state = (yield select()) as IState;
+    yield isAborted(state.subscriptionController.statusChanged);
     yield put(controllerNext());
     yield put(print({ msg: messages.claim, center: false }));
     yield put(inputLock(false));
   } catch (e: any) {
-    yield safeSubscription.resetStatus();
+    yield put(resetStatus());
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
@@ -76,22 +74,18 @@ function* watchControllerJoinWorker() {
 
 function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
   const {
-    terminalApp: { claimObject, subscriptionObject, user },
+    terminalApp: { claimObject, user },
+    subscriptionController: { isSubscribed },
   } = (yield select()) as IState;
   try {
-    if (!claimObject) {
-      throw new TerminalError({ code: 'METAMASK_RELOGIN' });
-    }
-    if (!user) {
-      throw new TerminalError({ code: 'METAMASK_RELOGIN' });
-    }
-    if (!subscriptionObject) {
+    if (!claimObject || !user || !isSubscribed) {
       throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
 
     yield put(inputLock(true));
 
-    subscriptionObject.checkStatus();
+    const state = (yield select()) as IState;
+    yield isAborted(state.subscriptionController.statusChanged);
     yield put(loading(true));
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(
       claimObject,
@@ -112,9 +106,9 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
 
     yield put(inputLock(false));
     yield put(controllerGotoRoot());
-    yield subscriptionObject.resetStatus();
+    yield put(resetStatus());
   } catch (e: any) {
-    yield subscriptionObject?.resetStatus();
+    yield put(resetStatus());
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
@@ -128,13 +122,10 @@ function* watchControllerJoinAcceptedWorker() {
 }
 
 function* controllerJoinDeniedWorker(): Generator<any, void, any> {
-  const {
-    terminalApp: { subscriptionObject },
-  } = (yield select()) as IState;
   try {
     throw new TerminalError({ code: 'DENIED_BY_USER' });
   } catch (e: any) {
-    yield subscriptionObject?.resetStatus();
+    yield put(resetStatus());
     yield put(controllerGotoRoot());
     if (e.message) yield put(print({ msg: e.message, center: false }));
   }

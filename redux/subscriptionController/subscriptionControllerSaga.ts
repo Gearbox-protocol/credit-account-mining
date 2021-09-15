@@ -6,30 +6,33 @@ import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import errorStrings from 'utils/API/errors/TerminalError/error-strings';
 import {
-  subscriptionChangeStatus,
-  ISubscriptionChangeStatus,
+  changeStatus,
+  setSubscription,
+  unsubscribe,
+  IChangeStatus,
 } from './subscriptionControllerActions';
 import ActionType from './subscriptionControllerActionTypes';
 
 const handleChainChange = () => {
-  store.dispatch(subscriptionChangeStatus('CHAIN_CHANGED'));
+  store.dispatch(changeStatus('CHAIN_CHANGED'));
 };
 
 const handleDisconnect = () => {
-  store.dispatch(subscriptionChangeStatus('DISCONNECTED'));
+  store.dispatch(changeStatus('DISCONNECTED'));
 };
 
 const handleAccountChange = () => {
-  store.dispatch(subscriptionChangeStatus('ACCOUNT_CHANGED'));
+  store.dispatch(changeStatus('ACCOUNT_CHANGED'));
 };
 
 function* subscribeWorker(): Generator<any, void, any> {
   const {
     subscriptionController: { isSubscribed },
   } = (yield select()) as IState;
-  console.log(isSubscribed);
   try {
+    yield put(setSubscription(true));
     if (isSubscribed) return;
+
     window.ethereum!.on!('disconnect', handleDisconnect);
     window.ethereum!.on!('accountsChanged', handleAccountChange);
     window.ethereum!.on!('chainChanged', handleChainChange);
@@ -44,6 +47,7 @@ function* watchSubscribeWorker() {
 
 function* unsubscribeWorker(): Generator<any, void, any> {
   try {
+    yield put(setSubscription(false));
     window.ethereum!.removeListener!('connect', handleDisconnect);
     window.ethereum!.removeListener!('accountsChanged', handleAccountChange);
     window.ethereum!.removeListener!('chainChanged', handleChainChange);
@@ -56,19 +60,22 @@ function* watchUnsubscribeWorker() {
   yield takeEvery(ActionType.UNSUBSCRIBE, unsubscribeWorker);
 }
 
-function* changeStatusWorker({ payload }: ISubscriptionChangeStatus): Generator<any, void, any> {
+function* changeStatusWorker({ payload }: IChangeStatus): Generator<any, void, any> {
   try {
     yield put(setClaimObject(null));
     yield put(setUser(null));
     yield put(print({ msg: errorStrings[payload], center: false }));
     yield put(controllerGotoRoot());
+    if (payload === 'DISCONNECTED') {
+      yield put(unsubscribe());
+    }
   } catch (e: any) {
     yield put(print({ msg: e, center: false }));
   }
 }
 
 function* watchChangeStatusWorker() {
-  yield takeEvery(ActionType.CHANGE_STATUS, changeStatusWorker);
+  yield takeEvery(ActionType.STATUS_CHANGED, changeStatusWorker);
 }
 
 export { watchSubscribeWorker, watchUnsubscribeWorker, watchChangeStatusWorker };

@@ -1,60 +1,65 @@
 import { TerminalErrorCodes } from 'utils/API/errors/TerminalError/TerminalError';
 import ActionType from './subscriptionControllerActionTypes';
 
-interface ISubscriptionSubscriber {
+interface ISetSubscription {
+  type: ActionType.SET_SUBSCRIPTION;
+  payload: boolean;
+}
+
+interface ISubscribe {
   type: ActionType.SUBSCRIBE;
 }
 
-interface ISubscriptionUnsubscribe {
+interface IUnsubscribe {
   type: ActionType.UNSUBSCRIBE;
 }
 
-interface ISubscriptionResetStatus {
+interface IResetStatus {
   type: ActionType.RESET_STATUS;
 }
 
 type ChangeErrors = Extract<
-  TerminalErrorCodes,
-  'DISCONNECTED' | 'CHAIN_CHANGED' | 'ACCOUNT_CHANGED'
+TerminalErrorCodes,
+'DISCONNECTED' | 'CHAIN_CHANGED' | 'ACCOUNT_CHANGED'
 >;
 
-interface ISubscriptionChangeStatus {
-  type: ActionType.CHANGE_STATUS;
+interface IChangeStatus {
+  type: ActionType.STATUS_CHANGED;
   payload: ChangeErrors;
 }
 
-const subscriptionSubscriber = (): ISubscriptionSubscriber => ({
+const setSubscription = (s: boolean): ISetSubscription => ({
+  type: ActionType.SET_SUBSCRIPTION,
+  payload: s,
+});
+
+const subscribe = (): ISubscribe => ({
   type: ActionType.SUBSCRIBE,
 });
 
-const subscriptionUnsubscribe = (): ISubscriptionUnsubscribe => ({
+const unsubscribe = (): IUnsubscribe => ({
   type: ActionType.UNSUBSCRIBE,
 });
 
-const subscriptionResetStatus = (): ISubscriptionResetStatus => ({
+const resetStatus = (): IResetStatus => ({
   type: ActionType.RESET_STATUS,
 });
 
-const subscriptionChangeStatus = (s: ChangeErrors): ISubscriptionChangeStatus => ({
-  type: ActionType.CHANGE_STATUS,
+const changeStatus = (s: ChangeErrors): IChangeStatus => ({
+  type: ActionType.STATUS_CHANGED,
   payload: s,
 });
 
 export type SubscriptionActions =
-  | ISubscriptionSubscriber
-  | ISubscriptionUnsubscribe
-  | ISubscriptionResetStatus
-  | ISubscriptionChangeStatus;
+  | ISubscribe
+  | IUnsubscribe
+  | IResetStatus
+  | IChangeStatus
+  | ISetSubscription;
 
 export type {
-  ISubscriptionSubscriber,
-  ISubscriptionUnsubscribe,
-  ISubscriptionResetStatus,
-  ISubscriptionChangeStatus,
+  ISubscribe, IUnsubscribe, IResetStatus, IChangeStatus, ISetSubscription,
 };
 export {
-  subscriptionSubscriber,
-  subscriptionUnsubscribe,
-  subscriptionResetStatus,
-  subscriptionChangeStatus,
+  subscribe, unsubscribe, resetStatus, changeStatus, setSubscription,
 };

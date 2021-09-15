@@ -1,40 +1,41 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import connectMetamask from 'utils/API/connect/connect';
-import { MetamaskSubscription } from 'utils/API/subscription/subscription';
+import { isAborted } from 'utils/API/errors/error-hub';
 import { IClaimObject } from 'utils/API/join/join';
 import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { setClaimObject, setMetamaskSubscriptionObject } from 'redux/terminalApp/terminalAppAction';
+import { subscribe, resetStatus } from 'redux/subscriptionController/subscriptionControllerActions';
+import { setClaimObject } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import { controllerGotoRoot } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
 function* controllerMinedWorker(): Generator<any, void, any> {
   const {
-    terminalApp: { subscriptionObject, claimObject },
+    terminalApp: { claimObject },
   } = (yield select()) as IState;
-  const safeSubscription = subscriptionObject || new MetamaskSubscription();
 
   try {
     yield put(inputLock(true));
 
     yield put(loading(true));
     yield connectMetamask();
-    yield safeSubscription.subscribeChanges();
-    if (!subscriptionObject) yield put(setMetamaskSubscriptionObject(safeSubscription));
+    yield put(subscribe());
     yield put(loading(false));
 
-    safeSubscription.checkStatus();
     yield put(loading(true));
+    const state = (yield select()) as IState;
+    yield isAborted(state.subscriptionController.statusChanged);
     const [safeClaim, amount]: [IClaimObject, number] = yield countClaims(claimObject || {});
     if (!claimObject) yield put(setClaimObject(safeClaim));
     yield put(loading(false));
 
     yield put(print({ msg: messages.accountsMined(amount), center: false }));
     yield put(inputLock(false));
+    yield put(resetStatus());
   } catch (e: any) {
-    yield safeSubscription.resetStatus();
+    yield put(resetStatus());
     yield put(loading(false));
     yield put(controllerGotoRoot());
 

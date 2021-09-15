@@ -39,7 +39,12 @@ const getTypedError = (e: any): TerminalError => {
   return new TerminalError({ code: 'UNEXPECTED_ERROR' });
 };
 
+const isAborted = (s: boolean): boolean => {
+  if (s) throw new TerminalError({ code: 'ACTION_ABORTED' });
+  return false;
+};
+
 export type { IMetamaskError };
 export {
-  getTypedError, isTerminalError, isMetamaskError, processMetamaskError,
+  getTypedError, isTerminalError, isMetamaskError, processMetamaskError, isAborted,
 };

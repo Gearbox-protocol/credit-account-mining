@@ -15,30 +15,19 @@ const controllerReducer: Reducer<ISubscriptionState, SubscriptionActions> = (
   action,
 ) => {
   switch (action.type) {
-    case ActionType.SUBSCRIBE: {
-      if (state.isSubscribed) {
-        return {
-          ...state,
-          statusChanged: false,
-        };
-      }
+    case ActionType.SET_SUBSCRIPTION: {
       return {
         ...state,
-        isSubscribed: true,
+        statusChanged: false,
+        isSubscribed: action.payload,
       };
     }
-    case ActionType.UNSUBSCRIBE:
-      return {
-        ...state,
-        isSubscribed: false,
-        statusChanged: false,
-      };
     case ActionType.RESET_STATUS:
       return {
         ...state,
         statusChanged: false,
       };
-    case ActionType.CHANGE_STATUS:
+    case ActionType.STATUS_CHANGED:
       return {
         ...state,
         statusChanged: true,
