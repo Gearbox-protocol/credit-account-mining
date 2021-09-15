@@ -9,7 +9,7 @@ import {
   changeStatus,
   setSubscription,
   unsubscribe,
-  IChangeStatus,
+  IActionChangeStatus,
 } from './subscriptionControllerActions';
 import ActionType from './subscriptionControllerActionTypes';
 
@@ -60,7 +60,7 @@ function* watchUnsubscribeWorker() {
   yield takeEvery(ActionType.UNSUBSCRIBE, unsubscribeWorker);
 }
 
-function* changeStatusWorker({ payload }: IChangeStatus): Generator<any, void, any> {
+function* changeStatusWorker({ payload }: IActionChangeStatus): Generator<any, void, any> {
   try {
     yield put(setClaimObject(null));
     yield put(setUser(null));

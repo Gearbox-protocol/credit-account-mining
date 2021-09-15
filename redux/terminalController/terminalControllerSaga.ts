@@ -3,10 +3,10 @@ import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import { print, clear } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
-import { IControllerCommand } from './terminalControllerActions';
+import { IActionCommand } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
-function* controllerUserCommandWorker({ payload }: IControllerCommand): Generator<any, void, any> {
+function* controllerUserCommandWorker({ payload }: IActionCommand): Generator<any, void, any> {
   const {
     terminalController: { current },
   } = (yield select()) as IState;

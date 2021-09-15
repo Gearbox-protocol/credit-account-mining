@@ -1,109 +1,109 @@
 import ActionType from './terminalControllerActionTypes';
 
-interface IControllerNext {
+interface IActionNext {
   type: ActionType.NEXT;
 }
 
-interface IControllerGotoRoot {
+interface IActionGotoRoot {
   type: ActionType.GOTO_ROOT;
 }
 
-interface IControllerGotoJoin {
+interface IActionGotoJoin {
   type: ActionType.GOTO_JOIN;
 }
 
-interface IControllerCommand {
+interface IActionCommand {
   type: ActionType.COMMAND;
   payload: string;
 }
 
-interface IControllerHelp {
+interface IActionHelp {
   type: ActionType.HELP;
 }
 
-interface IControllerClear {
+interface IActionClear {
   type: ActionType.C_CLEAR;
 }
 
-interface IControllerJoin {
+interface IActionJoin {
   type: ActionType.JOIN;
 }
 
-interface IControllerJoinAccepted {
+interface IActionJoinAccepted {
   type: ActionType.JOIN_ACCEPTED;
 }
 
-interface IControllerJoinDenied {
+interface IActionJoinDenied {
   type: ActionType.JOIN_DENIED;
 }
 
-interface IControllerMined {
+interface IActionMined {
   type: ActionType.MINED;
 }
 
-const controllerNext = (): IControllerNext => ({
+const controllerNext = (): IActionNext => ({
   type: ActionType.NEXT,
 });
 
-const controllerGotoRoot = (): IControllerGotoRoot => ({
+const controllerGotoRoot = (): IActionGotoRoot => ({
   type: ActionType.GOTO_ROOT,
 });
 
-const controllerGotoJoin = (): IControllerGotoJoin => ({
+const controllerGotoJoin = (): IActionGotoJoin => ({
   type: ActionType.GOTO_JOIN,
 });
 
-const controllerCommand = (c: string): IControllerCommand => ({
+const controllerCommand = (c: string): IActionCommand => ({
   type: ActionType.COMMAND,
   payload: c,
 });
 
-const controllerHelp = (): IControllerHelp => ({
+const controllerHelp = (): IActionHelp => ({
   type: ActionType.HELP,
 });
 
-const controllerClear = (): IControllerClear => ({
+const controllerClear = (): IActionClear => ({
   type: ActionType.C_CLEAR,
 });
 
-const controllerJoin = (): IControllerJoin => ({
+const controllerJoin = (): IActionJoin => ({
   type: ActionType.JOIN,
 });
 
-const controllerJoinAccepted = (): IControllerJoinAccepted => ({
+const controllerJoinAccepted = (): IActionJoinAccepted => ({
   type: ActionType.JOIN_ACCEPTED,
 });
 
-const controllerJoinDenied = (): IControllerJoinDenied => ({
+const controllerJoinDenied = (): IActionJoinDenied => ({
   type: ActionType.JOIN_DENIED,
 });
 
-const controllerMined = (): IControllerMined => ({
+const controllerMined = (): IActionMined => ({
   type: ActionType.MINED,
 });
 
 export type ControllerActions =
-  | IControllerNext
-  | IControllerGotoRoot
-  | IControllerCommand
-  | IControllerHelp
-  | IControllerClear
-  | IControllerJoin
-  | IControllerGotoJoin
-  | IControllerJoinAccepted
-  | IControllerJoinDenied
-  | IControllerMined;
+  | IActionNext
+  | IActionGotoRoot
+  | IActionCommand
+  | IActionHelp
+  | IActionClear
+  | IActionJoin
+  | IActionGotoJoin
+  | IActionJoinAccepted
+  | IActionJoinDenied
+  | IActionMined;
 export type {
-  IControllerNext,
-  IControllerGotoRoot,
-  IControllerCommand,
-  IControllerHelp,
-  IControllerClear,
-  IControllerJoin,
-  IControllerGotoJoin,
-  IControllerJoinAccepted,
-  IControllerJoinDenied,
-  IControllerMined,
+  IActionNext,
+  IActionGotoRoot,
+  IActionCommand,
+  IActionHelp,
+  IActionClear,
+  IActionJoin,
+  IActionGotoJoin,
+  IActionJoinAccepted,
+  IActionJoinDenied,
+  IActionMined,
 };
 export {
   controllerGotoRoot,

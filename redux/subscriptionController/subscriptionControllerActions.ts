@@ -1,20 +1,20 @@
 import { TerminalErrorCodes } from 'utils/API/errors/TerminalError/TerminalError';
 import ActionType from './subscriptionControllerActionTypes';
 
-interface ISetSubscription {
+interface IActionSetSubscription {
   type: ActionType.SET_SUBSCRIPTION;
   payload: boolean;
 }
 
-interface ISubscribe {
+interface IActionSubscribe {
   type: ActionType.SUBSCRIBE;
 }
 
-interface IUnsubscribe {
+interface IActionUnsubscribe {
   type: ActionType.UNSUBSCRIBE;
 }
 
-interface IResetStatus {
+interface IActionResetStatus {
   type: ActionType.RESET_STATUS;
 }
 
@@ -23,42 +23,46 @@ TerminalErrorCodes,
 'DISCONNECTED' | 'CHAIN_CHANGED' | 'ACCOUNT_CHANGED'
 >;
 
-interface IChangeStatus {
+interface IActionChangeStatus {
   type: ActionType.STATUS_CHANGED;
   payload: ChangeErrors;
 }
 
-const setSubscription = (s: boolean): ISetSubscription => ({
+const setSubscription = (s: boolean): IActionSetSubscription => ({
   type: ActionType.SET_SUBSCRIPTION,
   payload: s,
 });
 
-const subscribe = (): ISubscribe => ({
+const subscribe = (): IActionSubscribe => ({
   type: ActionType.SUBSCRIBE,
 });
 
-const unsubscribe = (): IUnsubscribe => ({
+const unsubscribe = (): IActionUnsubscribe => ({
   type: ActionType.UNSUBSCRIBE,
 });
 
-const resetStatus = (): IResetStatus => ({
+const resetStatus = (): IActionResetStatus => ({
   type: ActionType.RESET_STATUS,
 });
 
-const changeStatus = (s: ChangeErrors): IChangeStatus => ({
+const changeStatus = (s: ChangeErrors): IActionChangeStatus => ({
   type: ActionType.STATUS_CHANGED,
   payload: s,
 });
 
 export type SubscriptionActions =
-  | ISubscribe
-  | IUnsubscribe
-  | IResetStatus
-  | IChangeStatus
-  | ISetSubscription;
+  | IActionSubscribe
+  | IActionUnsubscribe
+  | IActionResetStatus
+  | IActionChangeStatus
+  | IActionSetSubscription;
 
 export type {
-  ISubscribe, IUnsubscribe, IResetStatus, IChangeStatus, ISetSubscription,
+  IActionSubscribe,
+  IActionUnsubscribe,
+  IActionResetStatus,
+  IActionChangeStatus,
+  IActionSetSubscription,
 };
 export {
   subscribe, unsubscribe, resetStatus, changeStatus, setSubscription,
