@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
 import { controllerCommand } from 'redux/terminalController/terminalControllerActions';
 import Block from 'components/Block/Block';
@@ -6,12 +7,10 @@ import Button from 'components/Button/Button';
 import Terminal from 'components/Terminal/Terminal';
 import messages from 'utils/API/messages/messages';
 import goBack from 'utils/text/buttons';
-import isMobile from 'utils/helpers/helpers';
 
 const TerminalController: React.FC = () => {
   const dispatch = useDispatch();
   const terminalRoot = useRef<HTMLDivElement>(null);
-  const mobile = isMobile();
 
   const handleCommand = (c: string): void => {
     if (!c) return;
@@ -20,8 +19,8 @@ const TerminalController: React.FC = () => {
 
   return (
     <Block variant="viewport-sized">
-      {mobile && <Button title={goBack.title} href={goBack.href} />}
-      {!mobile && (
+      {isMobile && <Button title={goBack.title} href={goBack.href} />}
+      {!isMobile && (
         <Terminal banner={messages.banner} ref={terminalRoot} onCommand={handleCommand} />
       )}
     </Block>
