@@ -1,15 +1,12 @@
 import ActionType from './terminalControllerActionTypes';
 
-interface IActionNext {
-  type: ActionType.NEXT;
+interface IActionGoto {
+  type: ActionType.GOTO;
+  payload: string;
 }
 
 interface IActionGotoRoot {
   type: ActionType.GOTO_ROOT;
-}
-
-interface IActionGotoJoin {
-  type: ActionType.GOTO_JOIN;
 }
 
 interface IActionCommand {
@@ -41,16 +38,13 @@ interface IActionLinks {
   type: ActionType.LINKS;
 }
 
-const controllerNext = (): IActionNext => ({
-  type: ActionType.NEXT,
+const controllerGoto = (t: string): IActionGoto => ({
+  type: ActionType.GOTO,
+  payload: t,
 });
 
 const controllerGotoRoot = (): IActionGotoRoot => ({
   type: ActionType.GOTO_ROOT,
-});
-
-const controllerGotoJoin = (): IActionGotoJoin => ({
-  type: ActionType.GOTO_JOIN,
 });
 
 const controllerCommand = (c: string): IActionCommand => ({
@@ -83,23 +77,21 @@ const controllerLinks = (): IActionLinks => ({
 });
 
 export type ControllerActions =
-  | IActionNext
+  | IActionGoto
   | IActionGotoRoot
   | IActionCommand
   | IActionHelp
   | IActionJoin
-  | IActionGotoJoin
   | IActionJoinAccepted
   | IActionJoinDenied
   | IActionMined
   | IActionLinks;
 export type {
-  IActionNext,
+  IActionGoto,
   IActionGotoRoot,
   IActionCommand,
   IActionHelp,
   IActionJoin,
-  IActionGotoJoin,
   IActionJoinAccepted,
   IActionJoinDenied,
   IActionMined,
@@ -107,11 +99,10 @@ export type {
 };
 export {
   controllerGotoRoot,
-  controllerNext,
+  controllerGoto,
   controllerCommand,
   controllerHelp,
   controllerJoin,
-  controllerGotoJoin,
   controllerJoinAccepted,
   controllerJoinDenied,
   controllerMined,

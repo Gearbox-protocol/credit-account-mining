@@ -13,12 +13,11 @@ import ActionType from './terminalControllerActionTypes';
 
 type Controller = {
   userActions?: Record<string, () => Action<any>>;
-  child: Controller | null;
+  children: Record<string, Controller> | null;
 };
 
 interface IControllerState extends DefaultRootState {
   root: Controller;
-  join: Controller;
   current: Controller | null;
 }
 
@@ -29,6 +28,18 @@ enum RootControllerActions {
   LINKS = 'links',
 }
 
+const join: Controller = {
+  children: {
+    choice: {
+      userActions: {
+        y: controllerJoinAccepted,
+        n: controllerJoinDenied,
+      },
+      children: null,
+    },
+  },
+};
+
 const root: Controller = {
   userActions: {
     [RootControllerActions.HELP]: controllerHelp,
@@ -36,42 +47,31 @@ const root: Controller = {
     [RootControllerActions.MINED]: controllerMined,
     [RootControllerActions.LINKS]: controllerLinks,
   },
-  child: null,
-};
-
-const join: Controller = {
-  child: {
-    userActions: {
-      y: controllerJoinAccepted,
-      n: controllerJoinDenied,
-    },
-    child: null,
+  children: {
+    join,
   },
 };
 
-const controllerDefaultState = { root, join, current: root };
+const controllerDefaultState = { root, current: root };
 
 const controllerReducer: Reducer<IControllerState, ControllerActions> = (
   state = controllerDefaultState,
   action,
 ) => {
   switch (action.type) {
-    case ActionType.NEXT: {
+    case ActionType.GOTO: {
       if (!state.current) return state;
+      if (!state.current.children) return state;
+      if (!(action.payload in state.current.children)) return state;
       return {
         ...state,
-        current: state.current.child,
+        current: state.current.children[action.payload],
       };
     }
     case ActionType.GOTO_ROOT:
       return {
         ...state,
         current: state.root,
-      };
-    case ActionType.GOTO_JOIN:
-      return {
-        ...state,
-        current: state.join,
       };
     default: {
       return state;

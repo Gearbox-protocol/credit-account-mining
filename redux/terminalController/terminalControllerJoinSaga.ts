@@ -16,11 +16,7 @@ import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscriptionController/subscriptionControllerActions';
 import { playVideo, setClaimObject, setUser } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
-import {
-  controllerGotoRoot,
-  controllerNext,
-  controllerGotoJoin,
-} from './terminalControllerActions';
+import { controllerGotoRoot, controllerGoto } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
 function* controllerJoinWorker(): Generator<any, void, any> {
@@ -30,7 +26,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
   try {
     yield put(inputLock(true));
-    yield put(controllerGotoJoin());
+    yield put(controllerGoto('join'));
 
     yield put(loading(true));
     const address: string = yield connectMetamask();
@@ -53,7 +49,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
     state = (yield select()) as IState;
     yield isAborted(state.subscriptionController.statusChanged);
-    yield put(controllerNext());
+    yield put(controllerGoto('choice'));
     yield put(print({ msg: messages.claim, center: false }));
     yield put(inputLock(false));
   } catch (e: any) {

@@ -1,7 +1,6 @@
 enum ActionType {
-  NEXT = 'NEXT',
   GOTO_ROOT = 'GOTO_ROOT',
-  GOTO_JOIN = 'GOTO_JOIN',
+  GOTO = 'GOTO',
   COMMAND = 'COMMAND',
   HELP = 'HELP',
   JOIN = 'JOIN',
