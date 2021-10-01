@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
-import {
-  put, takeEvery, select, delay,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import { isAborted } from 'utils/API/errors/error-hub';
@@ -40,8 +38,9 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     let state = (yield select()) as IState;
     yield isAborted(state.subscriptionController.statusChanged);
 
-    const [account, accountsToMine]: [User, number] = yield checkPermissions(address);
-    yield put(print({ msg: messages.amountOfMineAccounts(accountsToMine), center: false }));
+    yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
+    const account: User = yield checkPermissions(address);
+    yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
 
     state = (yield select()) as IState;
     yield isAborted(state.subscriptionController.statusChanged);
@@ -89,13 +88,11 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(loading(false));
 
     yield put(print({ msg: messages.almostDone, center: false }));
-    yield put(print({ msg: messages.yourHash(hash), center: false }));
     yield put(loading(true));
     yield waitTransactionEnd(transaction);
     yield put(loading(false));
 
-    yield put(print({ msg: messages.congratulations, center: false }));
-
+    yield put(print({ msg: messages.yourHash(hash), center: false }));
     yield delay(500);
     yield put(playVideo(true));
 

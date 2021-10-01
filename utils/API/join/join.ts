@@ -14,12 +14,12 @@ interface IClaimObject {
   signer: ethers.providers.JsonRpcSigner;
 }
 
-const checkPermissions = (address: string): [User, number] => {
+const checkPermissions = (address: string): User => {
   if (!(address in distributorInfo.claims)) {
     throw new TerminalError({ code: 'PERMISSION_DENIED' });
   }
 
-  return [distributorInfo.claims[address], 1];
+  return distributorInfo.claims[address];
 };
 
 const isClaimed = async (claimObj: Partial<IClaimObject>, user: User) => {
@@ -29,7 +29,8 @@ const isClaimed = async (claimObj: Partial<IClaimObject>, user: User) => {
 
     provider = provider || new ethers.providers.Web3Provider(window.ethereum!);
     signer = signer || provider.getSigner();
-    miningAccount = miningAccount || <AccountMining>AccountMining__factory.connect(contract, signer);
+    miningAccount =
+      miningAccount || <AccountMining>AccountMining__factory.connect(contract, signer);
 
     const claimed = await miningAccount.isClaimed(user.index);
     if (claimed) {
@@ -66,6 +67,4 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
 };
 
 export type { IClaimObject, User };
-export {
-  checkPermissions, isClaimed, claim, waitTransactionEnd,
-};
+export { checkPermissions, isClaimed, claim, waitTransactionEnd };
