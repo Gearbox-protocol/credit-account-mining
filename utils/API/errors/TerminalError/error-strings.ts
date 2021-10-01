@@ -5,13 +5,13 @@ const errorStrings: Record<TerminalErrorCodes, string> = {
   Command not found
   `,
   NO_METAMASK: `
-   Failed. Please install Metamask
+  Metamask not found. Please install Metamask.
   `,
   METAMASK_NOT_CONNECTED: `
-  Failed to connect Metamask
+  Failed to connect to Metamask. Try again.
   `,
   METAMASK_WRONG_NETWORK: `
-  Please switch to Mainnet and try again.
+  Please switch to Mainnet.
   `,
   NO_GEARBOX_NETWORK: `
   Target network not specified
@@ -23,22 +23,30 @@ const errorStrings: Record<TerminalErrorCodes, string> = {
   Failed to get your account address
   `,
   PERMISSION_DENIED: `
-  Permission to join Gearbox Launch Community is denied
+  Houston, we have a problem! 
+
+  Looks like you haven’t been active in the governance of protocols selected. 
+
+  Please check other activities you can join in order to become part of Gearbox governance: <>link<>
   `,
   ALREADY_CLAIMED: `
-  you already mined your Credit Account. Thanks for joining to Gearbox Launch Community.
+  Hold up, you have already mined 1 Credit Account designated for you.
+
+  It’s now time to check the /link command and join Gearbox socials!
   `,
   DENIED_BY_USER: `
-  you skip our movement to Freedom.
+  Seems like you are NGMI, anon! You skipped financial freedom.
+
+  Type /mine if you exited by mistake.
   `,
   ACCOUNT_CHANGED: `
-  you have just changed your account. All active actions were aborted.
+  You have just changed your account. All active actions were aborted.
   `,
   CHAIN_CHANGED: `
-  you have just changed your chain. All active actions were aborted.
+  You have just changed active chain. All active actions were aborted.
   `,
   DISCONNECTED: `
-  you have just disconnected. Please, connect and try again.
+  You have just disconnected. Please, connect and try again.
   `,
   UNEXPECTED_ERROR: `
   Unexpected Error
