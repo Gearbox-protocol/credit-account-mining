@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
-import {
-  put, takeEvery, select, delay,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import { isAborted } from 'utils/API/errors/error-hub';
@@ -67,7 +65,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchControllerJoinWorker() {
+function* watchControllerJoin() {
   yield takeEvery(ActionType.JOIN, controllerJoinWorker);
 }
 
@@ -114,7 +112,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchControllerJoinAcceptedWorker() {
+function* watchControllerJoinAccepted() {
   yield takeEvery(ActionType.JOIN_ACCEPTED, controllerJoinAcceptedWorker);
 }
 
@@ -127,12 +125,8 @@ function* controllerJoinDeniedWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchControllerJoinDeniedWorker() {
+function* watchControllerJoinDenied() {
   yield takeEvery(ActionType.JOIN_DENIED, controllerJoinDeniedWorker);
 }
 
-export {
-  watchControllerJoinWorker,
-  watchControllerJoinAcceptedWorker,
-  watchControllerJoinDeniedWorker,
-};
+export { watchControllerJoin, watchControllerJoinAccepted, watchControllerJoinDenied };

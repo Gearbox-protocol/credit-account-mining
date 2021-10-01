@@ -21,10 +21,6 @@ interface IActionHelp {
   type: ActionType.HELP;
 }
 
-interface IActionClear {
-  type: ActionType.C_CLEAR;
-}
-
 interface IActionJoin {
   type: ActionType.JOIN;
 }
@@ -39,6 +35,10 @@ interface IActionJoinDenied {
 
 interface IActionMined {
   type: ActionType.MINED;
+}
+
+interface IActionLinks {
+  type: ActionType.LINKS;
 }
 
 const controllerNext = (): IActionNext => ({
@@ -62,10 +62,6 @@ const controllerHelp = (): IActionHelp => ({
   type: ActionType.HELP,
 });
 
-const controllerClear = (): IActionClear => ({
-  type: ActionType.C_CLEAR,
-});
-
 const controllerJoin = (): IActionJoin => ({
   type: ActionType.JOIN,
 });
@@ -82,38 +78,42 @@ const controllerMined = (): IActionMined => ({
   type: ActionType.MINED,
 });
 
+const controllerLinks = (): IActionLinks => ({
+  type: ActionType.LINKS,
+});
+
 export type ControllerActions =
   | IActionNext
   | IActionGotoRoot
   | IActionCommand
   | IActionHelp
-  | IActionClear
   | IActionJoin
   | IActionGotoJoin
   | IActionJoinAccepted
   | IActionJoinDenied
-  | IActionMined;
+  | IActionMined
+  | IActionLinks;
 export type {
   IActionNext,
   IActionGotoRoot,
   IActionCommand,
   IActionHelp,
-  IActionClear,
   IActionJoin,
   IActionGotoJoin,
   IActionJoinAccepted,
   IActionJoinDenied,
   IActionMined,
+  IActionLinks,
 };
 export {
   controllerGotoRoot,
   controllerNext,
   controllerCommand,
   controllerHelp,
-  controllerClear,
   controllerJoin,
   controllerGotoJoin,
   controllerJoinAccepted,
   controllerJoinDenied,
   controllerMined,
+  controllerLinks,
 };

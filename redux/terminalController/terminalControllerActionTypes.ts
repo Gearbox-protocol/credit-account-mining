@@ -4,11 +4,11 @@ enum ActionType {
   GOTO_JOIN = 'GOTO_JOIN',
   COMMAND = 'COMMAND',
   HELP = 'HELP',
-  C_CLEAR = 'C_CLEAR',
   JOIN = 'JOIN',
   JOIN_ACCEPTED = 'JOIN_ACCEPTED',
   JOIN_DENIED = 'JOIN_DENIED',
   MINED = 'MINED',
+  LINKS = 'LINKS',
 }
 
 export default ActionType;

@@ -1,7 +1,7 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
-import { print, clear } from 'redux/terminal/terminalAction';
+import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import { IActionCommand } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
@@ -24,7 +24,7 @@ function* controllerUserCommandWorker({ payload }: IActionCommand): Generator<an
   }
 }
 
-function* watchControllerUserCommandWorker() {
+function* watchControllerUserCommand() {
   yield takeEvery(ActionType.COMMAND, controllerUserCommandWorker);
 }
 
@@ -36,20 +36,20 @@ function* controllerHelpWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchControllerHelpWorker() {
+function* watchControllerHelp() {
   yield takeEvery(ActionType.HELP, controllerHelpWorker);
 }
 
-function* controllerClearWorker(): Generator<any, void, any> {
+function* controllerLinksWorker(): Generator<any, void, any> {
   try {
-    yield put(clear());
+    yield put(print({ msg: messages.links, center: false }));
   } catch (e: any) {
     yield put(print({ msg: e, center: false }));
   }
 }
 
-function* watchControllerClearWorker() {
-  yield takeEvery(ActionType.C_CLEAR, controllerClearWorker);
+function* watchControllerLinks() {
+  yield takeEvery(ActionType.LINKS, controllerLinksWorker);
 }
 
-export { watchControllerUserCommandWorker, watchControllerHelpWorker, watchControllerClearWorker };
+export { watchControllerUserCommand, watchControllerHelp, watchControllerLinks };

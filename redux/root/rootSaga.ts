@@ -1,35 +1,35 @@
 import {
-  watchControllerUserCommandWorker,
-  watchControllerHelpWorker,
-  watchControllerClearWorker,
+  watchControllerUserCommand,
+  watchControllerHelp,
+  watchControllerLinks,
 } from 'redux/terminalController/terminalControllerSaga';
 import {
-  watchControllerJoinWorker,
-  watchControllerJoinAcceptedWorker,
-  watchControllerJoinDeniedWorker,
+  watchControllerJoin,
+  watchControllerJoinAccepted,
+  watchControllerJoinDenied,
 } from 'redux/terminalController/terminalControllerJoinSaga';
 
-import watchControllerMinedWorker from 'redux/terminalController/terminalControllerMinedSaga';
+import watchControllerMined from 'redux/terminalController/terminalControllerMinedSaga';
 
 import {
-  watchChangeStatusWorker,
-  watchSubscribeWorker,
-  watchUnsubscribeWorker,
+  watchChangeStatus,
+  watchSubscribe,
+  watchUnsubscribe,
 } from 'redux/subscriptionController/subscriptionControllerSaga';
 
 import { all } from 'redux-saga/effects';
 
 export default function* rootSaga() {
   yield all([
-    watchControllerUserCommandWorker(),
-    watchControllerHelpWorker(),
-    watchControllerClearWorker(),
-    watchControllerJoinWorker(),
-    watchControllerJoinAcceptedWorker(),
-    watchControllerJoinDeniedWorker(),
-    watchControllerMinedWorker(),
-    watchChangeStatusWorker(),
-    watchSubscribeWorker(),
-    watchUnsubscribeWorker(),
+    watchControllerUserCommand(),
+    watchControllerHelp(),
+    watchControllerLinks(),
+    watchControllerJoin(),
+    watchControllerJoinAccepted(),
+    watchControllerJoinDenied(),
+    watchControllerMined(),
+    watchChangeStatus(),
+    watchSubscribe(),
+    watchUnsubscribe(),
   ]);
 }

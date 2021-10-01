@@ -41,7 +41,7 @@ function* subscribeWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchSubscribeWorker() {
+function* watchSubscribe() {
   yield takeEvery(ActionType.SUBSCRIBE, subscribeWorker);
 }
 
@@ -56,7 +56,7 @@ function* unsubscribeWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchUnsubscribeWorker() {
+function* watchUnsubscribe() {
   yield takeEvery(ActionType.UNSUBSCRIBE, unsubscribeWorker);
 }
 
@@ -74,8 +74,8 @@ function* changeStatusWorker({ payload }: IActionChangeStatus): Generator<any, v
   }
 }
 
-function* watchChangeStatusWorker() {
+function* watchChangeStatus() {
   yield takeEvery(ActionType.STATUS_CHANGED, changeStatusWorker);
 }
 
-export { watchSubscribeWorker, watchUnsubscribeWorker, watchChangeStatusWorker };
+export { watchSubscribe, watchUnsubscribe, watchChangeStatus };

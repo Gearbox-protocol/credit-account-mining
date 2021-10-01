@@ -22,11 +22,17 @@ const messages = {
 
   helpText: `
   Available commands:
-  
-  ${RootControllerActions.HELP} - This output
-  ${RootControllerActions.JOIN} - join gearbox 
+
+  ${RootControllerActions.HELP} - this output
+  ${RootControllerActions.JOIN} - our path to freedom
   ${RootControllerActions.MINED} - shows number of mined accounts 
-  ${RootControllerActions.CLEAR} - clear terminal
+  ${RootControllerActions.LINKS} - links to social media channels of Gearbox
+  `,
+  links: `
+  links to social media channels of Gearbox
+
+  Twitter:  https://twitter.com/GearboxProtocol  
+  Discord:  https://discord.com/invite/jJuABVH9Pg
   `,
   metamaskConnected: `
   Metamask connected

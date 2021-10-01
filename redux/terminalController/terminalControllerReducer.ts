@@ -3,11 +3,11 @@ import { DefaultRootState } from 'react-redux';
 import {
   ControllerActions,
   controllerHelp,
-  controllerClear,
   controllerJoin,
   controllerJoinAccepted,
   controllerJoinDenied,
   controllerMined,
+  controllerLinks,
 } from './terminalControllerActions';
 import ActionType from './terminalControllerActionTypes';
 
@@ -24,17 +24,17 @@ interface IControllerState extends DefaultRootState {
 
 enum RootControllerActions {
   HELP = 'help',
-  CLEAR = 'clear',
   JOIN = 'join',
   MINED = 'mined',
+  LINKS = 'links',
 }
 
 const root: Controller = {
   userActions: {
     [RootControllerActions.HELP]: controllerHelp,
-    [RootControllerActions.CLEAR]: controllerClear,
     [RootControllerActions.JOIN]: controllerJoin,
     [RootControllerActions.MINED]: controllerMined,
+    [RootControllerActions.LINKS]: controllerLinks,
   },
   child: null,
 };

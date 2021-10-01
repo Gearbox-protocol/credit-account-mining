@@ -22,9 +22,7 @@ function* controllerMinedWorker(): Generator<any, void, any> {
     yield put(loading(true));
     yield connectMetamask();
     yield put(subscribe());
-    yield put(loading(false));
 
-    yield put(loading(true));
     const state = (yield select()) as IState;
     yield isAborted(state.subscriptionController.statusChanged);
     const [safeClaim, amount]: [IClaimObject, number] = yield countClaims(claimObject || {});
@@ -42,8 +40,8 @@ function* controllerMinedWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchControllerMinedWorker() {
+function* watchControllerMined() {
   yield takeEvery(ActionType.MINED, controllerMinedWorker);
 }
 
-export default watchControllerMinedWorker;
+export default watchControllerMined;
