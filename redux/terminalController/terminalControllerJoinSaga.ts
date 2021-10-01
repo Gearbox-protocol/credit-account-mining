@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
-import { put, takeEvery, select, delay } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, delay,
+} from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import { isAborted } from 'utils/API/errors/error-hub';

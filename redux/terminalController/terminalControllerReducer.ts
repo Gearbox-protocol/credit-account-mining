@@ -90,5 +90,7 @@ const controllerReducer: Reducer<IControllerState, ControllerActions> = (
 };
 
 export type { IControllerState };
-export { controllerDefaultState, RootControllerActions, ChoiceActions, SystemActions };
+export {
+  controllerDefaultState, RootControllerActions, ChoiceActions, SystemActions,
+};
 export default controllerReducer;
