@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+
 import { useDispatch } from 'react-redux';
 import { setTerminal } from 'redux/terminal/terminalAction';
 import { terminal } from 'components/TerminalLib/terminal';
 
 interface ITerminalProps {
   banner: string;
+  prompt: string;
   onCommand: (c: string) => void;
 }
 
@@ -19,15 +21,15 @@ interface ITerminalObject {
   endLoading: () => void;
 }
 
-const Terminal = React.forwardRef<HTMLDivElement, ITerminalProps>(({ banner, onCommand }, ref) => {
+const Terminal: React.FC<ITerminalProps> = ({ onCommand, banner, prompt }) => {
+  const terminalRoot = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
-  useEffect(() => {
-    const terminalRed = ref as React.RefObject<HTMLDivElement>;
 
+  useEffect(() => {
     const t: ITerminalObject = terminal({
-      root: terminalRed.current,
+      root: terminalRoot.current,
       callback: onCommand,
-      prompt: () => '/gearbox/mining $ ',
+      prompt: () => prompt,
       banner,
     });
 
@@ -45,13 +47,13 @@ const Terminal = React.forwardRef<HTMLDivElement, ITerminalProps>(({ banner, onC
           <div id="interlace"></div>
           <div id="scanline"></div>
           <div id="envelope">
-            <div id="terminal" ref={ref}></div>
+            <div id="terminal" ref={terminalRoot}></div>
           </div>
         </div>
       </div>
     </div>
   );
-});
+};
 
 export type { ITerminalObject };
 export default Terminal;

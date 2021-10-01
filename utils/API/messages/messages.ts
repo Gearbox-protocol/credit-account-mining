@@ -20,7 +20,7 @@ const messages = {
   
                        
                         
-                            Type "help" to see list of available commands
+                            Type ${RootControllerActions.HELP} to see list of available commands
   `,
 
   helpText: `

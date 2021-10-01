@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
 import { controllerCommand } from 'redux/terminalController/terminalControllerActions';
@@ -10,7 +10,6 @@ import goBack from 'utils/text/buttons';
 
 const TerminalController: React.FC = () => {
   const dispatch = useDispatch();
-  const terminalRoot = useRef<HTMLDivElement>(null);
 
   const handleCommand = (c: string): void => {
     if (!c) return;
@@ -21,7 +20,7 @@ const TerminalController: React.FC = () => {
     <Block variant="viewport-sized">
       {isMobile && <Button title={goBack.title} href={goBack.href} />}
       {!isMobile && (
-        <Terminal banner={messages.banner} ref={terminalRoot} onCommand={handleCommand} />
+        <Terminal banner={messages.banner} prompt="/gearbox/mining $ " onCommand={handleCommand} />
       )}
     </Block>
   );
