@@ -17,26 +17,6 @@ const terminalReducer: Reducer<ITerminalState, TerminalActions> = (
   switch (action.type) {
     case ActionType.SET_TERMINAL:
       return { ...state, terminal: action.payload };
-    case ActionType.PRINT: {
-      state.terminal?.print(action.payload.msg, action.payload.center);
-      return state;
-    }
-    case ActionType.CLEAR: {
-      state.terminal?.clear();
-      return state;
-    }
-    case ActionType.LOCK: {
-      state.terminal?.inputLock(action.payload);
-      return state;
-    }
-    case ActionType.TERMINAL_LOADING: {
-      if (action.payload) {
-        state.terminal?.startLoading();
-      } else {
-        state.terminal?.endLoading();
-      }
-      return state;
-    }
     default:
       return state;
   }

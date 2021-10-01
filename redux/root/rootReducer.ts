@@ -9,7 +9,7 @@ import terminalAppReducer, {
 import terminalReducer, {
   terminalDefaultState,
   ITerminalState,
-} from 'redux/terminal/terminalAppReducer';
+} from 'redux/terminal/terminalReducer';
 import terminalControllerReducer, {
   controllerDefaultState,
   IControllerState,

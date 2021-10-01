@@ -3,6 +3,9 @@ import {
   watchControllerHelp,
   watchControllerLinks,
 } from 'redux/terminalController/terminalControllerSaga';
+
+import { watchPrint, watchClear, watchLock, watchLoading } from 'redux/terminal/terminalSaga';
+
 import {
   watchControllerJoin,
   watchControllerJoinAccepted,
@@ -21,6 +24,13 @@ import { all } from 'redux-saga/effects';
 
 export default function* rootSaga() {
   yield all([
+    watchChangeStatus(),
+    watchSubscribe(),
+    watchUnsubscribe(),
+    watchPrint(),
+    watchClear,
+    watchLock,
+    watchLoading,
     watchControllerUserCommand(),
     watchControllerHelp(),
     watchControllerLinks(),
@@ -28,8 +38,5 @@ export default function* rootSaga() {
     watchControllerJoinAccepted(),
     watchControllerJoinDenied(),
     watchControllerMined(),
-    watchChangeStatus(),
-    watchSubscribe(),
-    watchUnsubscribe(),
   ]);
 }
