@@ -22,18 +22,23 @@ interface IControllerState extends DefaultRootState {
 }
 
 enum RootControllerActions {
-  HELP = 'help',
-  JOIN = 'join',
-  MINED = 'mined',
-  LINKS = 'links',
+  HELP = '/help',
+  JOIN = '/join',
+  MINED = '/mined',
+  LINKS = '/links',
+}
+
+enum ChoiceActions {
+  YES = '/mine',
+  NO = '/no',
 }
 
 const join: Controller = {
   children: {
     choice: {
       userActions: {
-        y: controllerJoinAccepted,
-        n: controllerJoinDenied,
+        [ChoiceActions.YES]: controllerJoinAccepted,
+        [ChoiceActions.NO]: controllerJoinDenied,
       },
       children: null,
     },
@@ -80,5 +85,5 @@ const controllerReducer: Reducer<IControllerState, ControllerActions> = (
 };
 
 export type { IControllerState };
-export { controllerDefaultState, RootControllerActions };
+export { controllerDefaultState, RootControllerActions, ChoiceActions };
 export default controllerReducer;

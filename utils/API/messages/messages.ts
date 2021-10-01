@@ -1,4 +1,7 @@
-import { RootControllerActions } from 'redux/terminalController/terminalControllerReducer';
+import {
+  RootControllerActions,
+  ChoiceActions,
+} from 'redux/terminalController/terminalControllerReducer';
 
 const messages = {
   banner: `
@@ -41,7 +44,7 @@ const messages = {
   You have ${c} credit accounts to mine
   `,
   claim: `
-  Do you want to mine credit account? Type y/n.
+  Do you want to mine credit account? Type ${ChoiceActions.YES} or ${ChoiceActions.NO}.
   `,
 
   almostDone: `
