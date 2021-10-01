@@ -69,4 +69,6 @@ function* watchLoading() {
   yield takeEvery(ActionType.TERMINAL_LOADING, loadingWorker);
 }
 
-export { watchPrint, watchClear, watchLock, watchLoading };
+export {
+  watchPrint, watchClear, watchLock, watchLoading,
+};

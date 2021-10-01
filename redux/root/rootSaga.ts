@@ -4,7 +4,9 @@ import {
   watchControllerLinks,
 } from 'redux/terminalController/terminalControllerSaga';
 
-import { watchPrint, watchClear, watchLock, watchLoading } from 'redux/terminal/terminalSaga';
+import {
+  watchPrint, watchClear, watchLock, watchLoading,
+} from 'redux/terminal/terminalSaga';
 
 import {
   watchControllerJoin,
