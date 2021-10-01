@@ -4,6 +4,7 @@ import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import { IActionCommand } from './terminalControllerActions';
+import { SystemActions } from './terminalControllerReducer';
 import ActionType from './terminalControllerActionTypes';
 
 function* controllerUserCommandWorker({ payload }: IActionCommand): Generator<any, void, any> {
@@ -14,11 +15,18 @@ function* controllerUserCommandWorker({ payload }: IActionCommand): Generator<an
     if (!current || !current.userActions) {
       throw new TerminalError({ code: 'COMMAND_NOT_FOUND' });
     }
-    if (!current.userActions[payload]) {
+    const hasDefaultAction = SystemActions.DEFAULT_ACTION in current.userActions;
+    const isActionCorrect = payload in current.userActions;
+
+    if (isActionCorrect) {
+      const func = current.userActions[payload];
+      yield put(func());
+    } else if (hasDefaultAction) {
+      const func = current.userActions[SystemActions.DEFAULT_ACTION];
+      yield put(func());
+    } else {
       throw new TerminalError({ code: 'COMMAND_NOT_FOUND' });
     }
-    const func = current.userActions[payload];
-    yield put(func());
   } catch (e: any) {
     yield put(print({ msg: e.message, center: false }));
   }

@@ -28,6 +28,10 @@ enum RootControllerActions {
   LINKS = '/links',
 }
 
+enum SystemActions {
+  DEFAULT_ACTION = 'defaultAction',
+}
+
 enum ChoiceActions {
   YES = '/mine',
   NO = '/no',
@@ -39,6 +43,7 @@ const join: Controller = {
       userActions: {
         [ChoiceActions.YES]: controllerJoinAccepted,
         [ChoiceActions.NO]: controllerJoinDenied,
+        [SystemActions.DEFAULT_ACTION]: controllerJoinDenied,
       },
       children: null,
     },
@@ -85,5 +90,5 @@ const controllerReducer: Reducer<IControllerState, ControllerActions> = (
 };
 
 export type { IControllerState };
-export { controllerDefaultState, RootControllerActions, ChoiceActions };
+export { controllerDefaultState, RootControllerActions, ChoiceActions, SystemActions };
 export default controllerReducer;
