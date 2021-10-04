@@ -16,19 +16,19 @@ enum SystemActions {
 }
 
 enum OptionalActions {
-  MINE = '/mine',
+  MINE = 'mine',
 }
 
 enum RootControllerActions {
-  HELP = '/help',
-  JOIN = '/join',
-  MINED = '/mined',
-  LINKS = '/links',
+  HELP = 'help',
+  JOIN = 'join',
+  MINED = 'mined',
+  LINKS = 'links',
 }
 
 enum ChoiceActions {
-  YES = '/mine',
-  NO = '/no',
+  YES = 'mine',
+  NO = 'no',
 }
 
 export {
