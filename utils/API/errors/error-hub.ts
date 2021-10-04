@@ -39,10 +39,5 @@ const getTypedError = (e: any): TerminalError => {
   return new TerminalError({ code: 'UNEXPECTED_ERROR' });
 };
 
-const assertError = (condition: boolean, code: TerminalErrorCodes): boolean => {
-  if (condition) throw new TerminalError({ code });
-  return false;
-};
-
 export type { IMetamaskError };
-export { getTypedError, assertError };
+export { getTypedError };
