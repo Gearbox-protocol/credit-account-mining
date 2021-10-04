@@ -9,10 +9,18 @@ import {
   controllerMined,
   controllerLinks,
 } from './terminalControllerActions';
-import ActionType from './terminalControllerActionTypes';
+import {
+  ActionType,
+  RootControllerActions,
+  SystemActions,
+  OptionalActions,
+  ChoiceActions,
+} from './terminalControllerActionTypes';
+
+type UserActions = Record<string, () => Action<any>>;
 
 type Controller = {
-  userActions?: Record<string, () => Action<any>>;
+  userActions?: UserActions;
   children: Record<string, Controller> | null;
 };
 
@@ -21,21 +29,9 @@ interface IControllerState extends DefaultRootState {
   current: Controller | null;
 }
 
-enum RootControllerActions {
-  HELP = '/help',
-  JOIN = '/join',
-  MINED = '/mined',
-  LINKS = '/links',
-}
-
-enum SystemActions {
-  DEFAULT_ACTION = 'defaultAction',
-}
-
-enum ChoiceActions {
-  YES = '/mine',
-  NO = '/no',
-}
+const optionalActions: UserActions = {
+  [OptionalActions.MINE]: controllerJoinAccepted,
+};
 
 const join: Controller = {
   children: {
@@ -83,13 +79,39 @@ const controllerReducer: Reducer<IControllerState, ControllerActions> = (
         ...state,
         current: state.root,
       };
+    case ActionType.ADD_ACTION:
+      if (!state.current) return state;
+      if (!(action.payload in optionalActions)) return state;
+
+      if (!state.current.userActions) {
+        return {
+          ...state,
+          current: {
+            ...state.current,
+            userActions: {
+              [action.payload]: optionalActions[action.payload],
+            },
+          },
+        };
+      }
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          userActions: {
+            ...state.current.userActions,
+            [action.payload]: optionalActions[action.payload],
+          },
+        },
+      };
+
     default: {
       return state;
     }
   }
 };
 
-export type { IControllerState };
+export type { IControllerState, OptionalActions };
 export {
   controllerDefaultState, RootControllerActions, ChoiceActions, SystemActions,
 };

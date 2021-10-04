@@ -1,4 +1,4 @@
-import ActionType from './terminalControllerActionTypes';
+import { ActionType, OptionalActions } from './terminalControllerActionTypes';
 
 interface IActionGoto {
   type: ActionType.GOTO;
@@ -7,6 +7,11 @@ interface IActionGoto {
 
 interface IActionGotoRoot {
   type: ActionType.GOTO_ROOT;
+}
+
+interface IAddAction {
+  type: ActionType.ADD_ACTION;
+  payload: OptionalActions;
 }
 
 interface IActionCommand {
@@ -47,6 +52,11 @@ const controllerGotoRoot = (): IActionGotoRoot => ({
   type: ActionType.GOTO_ROOT,
 });
 
+const controllerAddAction = (c: OptionalActions): IAddAction => ({
+  type: ActionType.ADD_ACTION,
+  payload: c,
+});
+
 const controllerCommand = (c: string): IActionCommand => ({
   type: ActionType.COMMAND,
   payload: c,
@@ -85,7 +95,8 @@ export type ControllerActions =
   | IActionJoinAccepted
   | IActionJoinDenied
   | IActionMined
-  | IActionLinks;
+  | IActionLinks
+  | IAddAction;
 export type {
   IActionGoto,
   IActionGotoRoot,
@@ -96,6 +107,7 @@ export type {
   IActionJoinDenied,
   IActionMined,
   IActionLinks,
+  IAddAction,
 };
 export {
   controllerGotoRoot,
@@ -107,4 +119,5 @@ export {
   controllerJoinDenied,
   controllerMined,
   controllerLinks,
+  controllerAddAction,
 };

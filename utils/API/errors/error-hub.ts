@@ -27,9 +27,9 @@ const processMetamaskError = (e: IMetamaskError): TerminalError => {
   return terminalCode
     ? new TerminalError({ code: terminalCode, name: 'Metamask error' })
     : new TerminalError({
-        code: 'UNEXPECTED_ERROR',
-        name: 'Metamask error',
-      });
+      code: 'UNEXPECTED_ERROR',
+      name: 'Metamask error',
+    });
 };
 
 const getTypedError = (e: any): TerminalError => {

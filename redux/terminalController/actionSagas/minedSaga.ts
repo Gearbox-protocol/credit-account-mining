@@ -9,7 +9,7 @@ import { subscribe } from 'redux/subscriptionController/subscriptionControllerAc
 import { setClaimObject } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
 import { controllerGotoRoot } from '../terminalControllerActions';
-import ActionType from '../terminalControllerActionTypes';
+import { ActionType } from '../terminalControllerActionTypes';
 
 function* controllerMinedWorker(): Generator<any, void, any> {
   try {

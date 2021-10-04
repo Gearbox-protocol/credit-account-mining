@@ -1,6 +1,7 @@
 enum ActionType {
   GOTO_ROOT = 'GOTO_ROOT',
   GOTO = 'GOTO',
+  ADD_ACTION = 'ADD_ACTION',
   COMMAND = 'COMMAND',
   HELP = 'HELP',
   JOIN = 'JOIN',
@@ -10,4 +11,26 @@ enum ActionType {
   LINKS = 'LINKS',
 }
 
-export default ActionType;
+enum SystemActions {
+  DEFAULT_ACTION = 'defaultAction',
+}
+
+enum OptionalActions {
+  MINE = '/mine',
+}
+
+enum RootControllerActions {
+  HELP = '/help',
+  JOIN = '/join',
+  MINED = '/mined',
+  LINKS = '/links',
+}
+
+enum ChoiceActions {
+  YES = '/mine',
+  NO = '/no',
+}
+
+export {
+  ActionType, SystemActions, OptionalActions, RootControllerActions, ChoiceActions,
+};

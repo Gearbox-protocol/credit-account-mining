@@ -1,7 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { print } from 'redux/terminal/terminalAction';
-import ActionType from '../terminalControllerActionTypes';
+import { ActionType } from '../terminalControllerActionTypes';
 
 function* controllerHelpWorker(): Generator<any, void, any> {
   try {

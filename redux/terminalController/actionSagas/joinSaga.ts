@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
-import { put, takeEvery, select, delay } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, delay,
+} from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import { assertError } from 'utils/API/errors/error-hub';
@@ -16,8 +18,12 @@ import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscriptionController/subscriptionControllerActions';
 import { playVideo, setClaimObject, setUser } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
-import { controllerGotoRoot, controllerGoto } from '../terminalControllerActions';
-import ActionType from '../terminalControllerActionTypes';
+import {
+  controllerGotoRoot,
+  controllerGoto,
+  controllerAddAction,
+} from '../terminalControllerActions';
+import { ActionType, OptionalActions } from '../terminalControllerActionTypes';
 
 function* controllerJoinWorker(): Generator<any, void, any> {
   try {
@@ -57,6 +63,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(controllerGotoRoot());
 
     if (e.message) yield put(print({ msg: e.message, center: false }));
+    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
     yield put(inputLock(false));
   }
 }
@@ -102,6 +109,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(controllerGotoRoot());
 
     if (e.message) yield put(print({ msg: e.message, center: false }));
+    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
     yield put(inputLock(false));
   }
 }
@@ -112,10 +120,13 @@ function* watchControllerJoinAccepted() {
 
 function* controllerJoinDeniedWorker(): Generator<any, void, any> {
   try {
+    yield put(inputLock(true));
     throw new TerminalError({ code: 'DENIED_BY_USER' });
   } catch (e: any) {
     yield put(controllerGotoRoot());
     if (e.message) yield put(print({ msg: e.message, center: false }));
+    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
+    yield put(inputLock(false));
   }
 }
 
