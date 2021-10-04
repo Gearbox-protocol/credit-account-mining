@@ -50,7 +50,6 @@ const isClaimed = async (claimObj: Partial<IClaimObject>, user: User) => {
 const claim = async ({ miningAccount }: IClaimObject, { index, salt, proof }: User) => {
   try {
     const res = await miningAccount.claim(index, salt, proof);
-    await res.wait();
     return [res, res.hash];
   } catch (e: any) {
     throw getTypedError(e);

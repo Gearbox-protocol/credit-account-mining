@@ -91,14 +91,14 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
       user,
     );
     yield put(loading(false));
-
     yield put(print({ msg: messages.almostDone, center: false }));
+
     yield put(loading(true));
     yield waitTransactionEnd(transaction);
     yield put(loading(false));
 
     yield put(print({ msg: messages.yourHash(hash), center: false }));
-    yield delay(5000);
+    yield delay(8000);
     yield put(playVideo(true));
 
     yield put(inputLock(false));
