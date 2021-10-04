@@ -98,7 +98,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(loading(false));
 
     yield put(print({ msg: messages.yourHash(hash), center: false }));
-    yield delay(500);
+    yield delay(5000);
     yield put(playVideo(true));
 
     yield put(inputLock(false));
