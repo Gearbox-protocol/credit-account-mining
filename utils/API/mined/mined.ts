@@ -8,11 +8,11 @@ import distributorInfo from 'utils/accounts/distributor-info';
 const countClaims = async (claimObj: Partial<IClaimObject>) => {
   try {
     const { contract } = distributorInfo;
-    let { provider, signer, miningAccount } = claimObj;
-
-    provider = provider || new ethers.providers.Web3Provider(window.ethereum!);
-    signer = signer || provider.getSigner();
-    miningAccount = miningAccount || <AccountMining>AccountMining__factory.connect(contract, signer);
+    const {
+      provider = new ethers.providers.Web3Provider(window.ethereum!),
+      signer = provider.getSigner(),
+      miningAccount = <AccountMining>AccountMining__factory.connect(contract, signer),
+    } = claimObj;
 
     const query = await miningAccount.queryFilter(miningAccount.filters.Claimed());
 
