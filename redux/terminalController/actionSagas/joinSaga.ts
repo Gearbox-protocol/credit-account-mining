@@ -43,14 +43,14 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
 
     yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
-    const account: User = yield checkPermissions(address);
+    const safeUser: User = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
 
     state = (yield select()) as IState;
     if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
-    const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, user || account);
+    const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, safeUser);
     if (!claimObject) yield put(setClaimObject(safeClaim));
-    if (!user) yield put(setUser(account));
+    if (!user) yield put(setUser(safeUser));
 
     state = (yield select()) as IState;
     if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
