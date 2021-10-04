@@ -1,7 +1,7 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import connectMetamask from 'utils/API/connect/connect';
-import { isAborted } from 'utils/API/errors/error-hub';
+import { assertError } from 'utils/API/errors/error-hub';
 import { IClaimObject } from 'utils/API/join/join';
 import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
@@ -24,7 +24,7 @@ function* controllerMinedWorker(): Generator<any, void, any> {
     yield put(subscribe());
 
     const state = (yield select()) as IState;
-    yield isAborted(state.subscriptionController.statusChanged);
+    yield assertError(state.subscriptionController.statusChanged, 'ACTION_ABORTED');
     const [safeClaim, amount]: [IClaimObject, number] = yield countClaims(claimObject || {});
     if (!claimObject) yield put(setClaimObject(safeClaim));
     yield put(loading(false));

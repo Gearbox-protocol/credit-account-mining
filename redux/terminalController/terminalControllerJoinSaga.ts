@@ -1,10 +1,8 @@
 import { ethers } from 'ethers';
-import {
-  put, takeEvery, select, delay,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
-import { isAborted } from 'utils/API/errors/error-hub';
+import { assertError } from 'utils/API/errors/error-hub';
 import connectMetamask from 'utils/API/connect/connect';
 import {
   checkPermissions,
@@ -38,20 +36,20 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(print({ msg: messages.metamaskConnected, center: false }));
 
     let state = (yield select()) as IState;
-    yield isAborted(state.subscriptionController.statusChanged);
+    yield assertError(state.subscriptionController.statusChanged, 'ACTION_ABORTED');
 
     yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
     const account: User = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
 
     state = (yield select()) as IState;
-    yield isAborted(state.subscriptionController.statusChanged);
+    yield assertError(state.subscriptionController.statusChanged, 'ACTION_ABORTED');
     const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, user || account);
     if (!claimObject) yield put(setClaimObject(safeClaim));
     if (!user) yield put(setUser(account));
 
     state = (yield select()) as IState;
-    yield isAborted(state.subscriptionController.statusChanged);
+    yield assertError(state.subscriptionController.statusChanged, 'ACTION_ABORTED');
     yield put(controllerGoto('choice'));
     yield put(print({ msg: messages.claim, center: false }));
     yield put(inputLock(false));
@@ -81,7 +79,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(inputLock(true));
 
     const state = (yield select()) as IState;
-    yield isAborted(state.subscriptionController.statusChanged);
+    yield assertError(state.subscriptionController.statusChanged, 'ACTION_ABORTED');
     yield put(loading(true));
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(
       claimObject,

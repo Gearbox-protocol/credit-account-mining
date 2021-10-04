@@ -27,9 +27,9 @@ const processMetamaskError = (e: IMetamaskError): TerminalError => {
   return terminalCode
     ? new TerminalError({ code: terminalCode, name: 'Metamask error' })
     : new TerminalError({
-      code: 'UNEXPECTED_ERROR',
-      name: 'Metamask error',
-    });
+        code: 'UNEXPECTED_ERROR',
+        name: 'Metamask error',
+      });
 };
 
 const getTypedError = (e: any): TerminalError => {
@@ -39,12 +39,10 @@ const getTypedError = (e: any): TerminalError => {
   return new TerminalError({ code: 'UNEXPECTED_ERROR' });
 };
 
-const isAborted = (s: boolean): boolean => {
-  if (s) throw new TerminalError({ code: 'ACTION_ABORTED' });
+const assertError = (condition: boolean, code: TerminalErrorCodes): boolean => {
+  if (condition) throw new TerminalError({ code });
   return false;
 };
 
 export type { IMetamaskError };
-export {
-  getTypedError, isTerminalError, isMetamaskError, processMetamaskError, isAborted,
-};
+export { getTypedError, assertError };
