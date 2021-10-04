@@ -6,10 +6,10 @@ import { IActionPrint, IActionLockInput, IActionLoading } from './terminalAction
 import ActionType from './terminalActionTypes';
 
 function* printWorker({ payload: { msg, center } }: IActionPrint): Generator<any, void, any> {
-  const {
-    terminal: { terminal },
-  } = (yield select()) as IState;
   try {
+    const {
+      terminal: { terminal },
+    } = (yield select()) as IState;
     terminal?.print(msg, center);
   } catch (e: any) {
     yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
@@ -21,10 +21,10 @@ function* watchPrint() {
 }
 
 function* clearWorker(): Generator<any, void, any> {
-  const {
-    terminal: { terminal },
-  } = (yield select()) as IState;
   try {
+    const {
+      terminal: { terminal },
+    } = (yield select()) as IState;
     terminal?.clear();
   } catch (e: any) {
     yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
@@ -36,10 +36,10 @@ function* watchClear() {
 }
 
 function* lockWorker({ payload }: IActionLockInput): Generator<any, void, any> {
-  const {
-    terminal: { terminal },
-  } = (yield select()) as IState;
   try {
+    const {
+      terminal: { terminal },
+    } = (yield select()) as IState;
     terminal?.inputLock(payload);
   } catch (e: any) {
     yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
@@ -51,10 +51,10 @@ function* watchLock() {
 }
 
 function* loadingWorker({ payload }: IActionLoading): Generator<any, void, any> {
-  const {
-    terminal: { terminal },
-  } = (yield select()) as IState;
   try {
+    const {
+      terminal: { terminal },
+    } = (yield select()) as IState;
     if (payload) {
       terminal?.startLoading();
     } else {
@@ -69,6 +69,4 @@ function* watchLoading() {
   yield takeEvery(ActionType.TERMINAL_LOADING, loadingWorker);
 }
 
-export {
-  watchPrint, watchClear, watchLock, watchLoading,
-};
+export { watchPrint, watchClear, watchLock, watchLoading };

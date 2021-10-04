@@ -8,15 +8,14 @@ import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscriptionController/subscriptionControllerActions';
 import { setClaimObject } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
-import { controllerGotoRoot } from './terminalControllerActions';
-import ActionType from './terminalControllerActionTypes';
+import { controllerGotoRoot } from '../terminalControllerActions';
+import ActionType from '../terminalControllerActionTypes';
 
 function* controllerMinedWorker(): Generator<any, void, any> {
-  const {
-    terminalApp: { claimObject },
-  } = (yield select()) as IState;
-
   try {
+    const {
+      terminalApp: { claimObject },
+    } = (yield select()) as IState;
     yield put(inputLock(true));
 
     yield put(loading(true));

@@ -26,10 +26,10 @@ const handleAccountChange = () => {
 };
 
 function* subscribeWorker(): Generator<any, void, any> {
-  const {
-    subscriptionController: { isSubscribed },
-  } = (yield select()) as IState;
   try {
+    const {
+      subscriptionController: { isSubscribed },
+    } = (yield select()) as IState;
     yield put(setSubscription(true));
     if (isSubscribed) return;
 
@@ -66,9 +66,7 @@ function* changeStatusWorker({ payload }: IActionChangeStatus): Generator<any, v
     yield put(setUser(null));
     yield put(print({ msg: errorStrings[payload], center: false }));
     yield put(controllerGotoRoot());
-    if (payload === 'DISCONNECTED') {
-      yield put(unsubscribe());
-    }
+    if (payload === 'DISCONNECTED') yield put(unsubscribe());
   } catch (e: any) {
     yield put(print({ msg: e, center: false }));
   }

@@ -16,15 +16,14 @@ import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscriptionController/subscriptionControllerActions';
 import { playVideo, setClaimObject, setUser } from 'redux/terminalApp/terminalAppAction';
 import { IState } from 'redux/root/rootReducer';
-import { controllerGotoRoot, controllerGoto } from './terminalControllerActions';
-import ActionType from './terminalControllerActionTypes';
+import { controllerGotoRoot, controllerGoto } from '../terminalControllerActions';
+import ActionType from '../terminalControllerActionTypes';
 
 function* controllerJoinWorker(): Generator<any, void, any> {
-  const {
-    terminalApp: { claimObject, user },
-  } = (yield select()) as IState;
-
   try {
+    const {
+      terminalApp: { claimObject, user },
+    } = (yield select()) as IState;
     yield put(inputLock(true));
     yield put(controllerGoto('join'));
 
@@ -67,11 +66,11 @@ function* watchControllerJoin() {
 }
 
 function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
-  const {
-    terminalApp: { claimObject, user },
-    subscriptionController: { isSubscribed },
-  } = (yield select()) as IState;
   try {
+    const {
+      terminalApp: { claimObject, user },
+      subscriptionController: { isSubscribed },
+    } = (yield select()) as IState;
     if (!claimObject || !user || !isSubscribed) {
       throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
