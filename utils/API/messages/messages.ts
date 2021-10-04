@@ -3,6 +3,13 @@ import {
   ChoiceActions,
 } from 'redux/terminalController/terminalControllerReducer';
 
+const actionsWithText: Record<string, string> = {
+  [RootControllerActions.HELP]: 'this output',
+  [RootControllerActions.JOIN]: 'our path to freedom',
+  [RootControllerActions.MINED]: 'total accounts mined',
+  [RootControllerActions.LINKS]: 'links to social media channels of Gearbox',
+};
+
 const messages = {
   banner: `
 
@@ -30,14 +37,18 @@ const messages = {
                           Type ${RootControllerActions.HELP} to see list of available commands
   `,
 
-  helpText: `
-  Available commands:
+  helpText: (actions: string[]) => {
+    const helpStrings = actions.reduce<string[]>((sum, action) => {
+      if (action in actionsWithText) return [...sum, `${action} - ${actionsWithText[action]}`];
+      return sum;
+    }, []);
 
-  ${RootControllerActions.HELP} - this output
-  ${RootControllerActions.JOIN} - our path to freedom
-  ${RootControllerActions.MINED} - total accounts mined
-  ${RootControllerActions.LINKS} - links to social media channels of Gearbox
-  `,
+    return `
+    Available commands:
+  
+    ${helpStrings.join('\n    ')}
+    `;
+  },
   links: `
   Links to social media channels of Gearbox:
 
