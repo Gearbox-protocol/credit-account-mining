@@ -55,13 +55,13 @@ const messages = {
   You have 1 credit accounts to mine
   `,
   claim: `
-  Do you wish to mine a Credit Account? Type ${ChoiceActions.YES} to proceed or ${ChoiceActions.NO} to reject. 
+  Do you wish to mine a Credit Account? Type "${ChoiceActions.YES}" to proceed or "${ChoiceActions.NO} to reject. 
 
   Just to make sure once again… you understand what’s about to happen, right? 
 
   If no, then check this article for complete information: <>link<>
 
-  Ok, now maybe ${ChoiceActions.YES} them!
+  Ok, now maybe "${ChoiceActions.YES}" then!
   `,
   almostDone: `
   We're almost done. Now wait till tx is confirmed.
