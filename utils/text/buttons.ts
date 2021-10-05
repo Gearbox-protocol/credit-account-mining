@@ -1,5 +1,5 @@
 const goBack = {
-  title: 'Mobile version is not currently available. Go back to the site',
+  title: 'Go back to website',
   href: 'https://app.beta.gearbox.fi/',
 };
 

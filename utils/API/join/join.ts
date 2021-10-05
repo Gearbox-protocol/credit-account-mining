@@ -64,4 +64,6 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
 };
 
 export type { IClaimObject, User };
-export { checkPermissions, isClaimed, claim, waitTransactionEnd };
+export {
+  checkPermissions, isClaimed, claim, waitTransactionEnd,
+};

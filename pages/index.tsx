@@ -6,6 +6,9 @@ import Layout from 'components/Layout/Layout';
 import FadingSwitcher from 'components/FadingSwitcher/FadingSwitcher';
 import VideoPlayer from 'components/VideoPlayer/VideoPlayer';
 
+const DisableMobile = dynamic(() => import('components/DisableMobile/DisableMobile'), {
+  ssr: false,
+});
 const TerminalController = dynamic(
   () => import('components/TerminalController/TerminalController'),
   { ssr: false },
@@ -24,7 +27,9 @@ const Index: React.FC = () => {
       }}
     >
       <FadingSwitcher isTransition={playVideo} transitionDuration={2000}>
-        <TerminalController />
+        <DisableMobile>
+          <TerminalController />
+        </DisableMobile>
         <VideoPlayer src="https://www.youtube.com/embed/c6-L_3GMBxs" />
       </FadingSwitcher>
     </Layout>

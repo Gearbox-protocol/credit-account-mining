@@ -1,12 +1,9 @@
 import React from 'react';
-import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
 import { controllerCommand } from 'redux/terminalController/terminalControllerActions';
 import Block from 'components/Block/Block';
-import Button from 'components/Button/Button';
 import Terminal from 'components/Terminal/Terminal';
 import messages from 'utils/API/messages/messages';
-import goBack from 'utils/text/buttons';
 
 const TerminalController: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,10 +15,7 @@ const TerminalController: React.FC = () => {
 
   return (
     <Block variant="viewport-sized">
-      {isMobile && <Button title={goBack.title} href={goBack.href} />}
-      {!isMobile && (
-        <Terminal banner={messages.banner} prompt="/gearbox/mining $ " onCommand={handleCommand} />
-      )}
+      <Terminal banner={messages.banner} prompt="/gearbox/mining $ " onCommand={handleCommand} />
     </Block>
   );
 };

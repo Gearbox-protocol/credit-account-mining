@@ -3,6 +3,7 @@ import { BlockVariants } from 'components/Block/Block';
 
 const Block = styled.section<{ variant?: BlockVariants }>`
   display: flex;
+  flex-wrap: wrap;
   height: ${({ variant }) => {
     switch (variant) {
       case 'viewport-sized':
