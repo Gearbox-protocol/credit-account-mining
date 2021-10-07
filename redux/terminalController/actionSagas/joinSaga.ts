@@ -15,7 +15,7 @@ import {
 } from 'utils/API/join/join';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscription/subscriptionActions';
-import { playVideo } from 'redux/terminalApp/terminalAppAction';
+import { playVideo, setVisited } from 'redux/terminalApp/terminalAppAction';
 import { setClaimObject, setUser, setAddress } from 'redux/user/userAction';
 import { IState } from 'redux/root/rootReducer';
 import {
@@ -41,13 +41,13 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(controllerGoto('notGaryQuestion'));
 
     const {
-      terminalApp: { firstTimeVisited },
+      terminalApp: { visited },
     } = (yield select()) as IState;
-    if (firstTimeVisited) {
+    if (!visited) {
       yield put(print({ msg: messages.notGaryQuestion, center: false }));
+      yield put(setVisited(true));
       yield localStorage.setItem('visited', 'true');
     } else {
-      yield put(controllerGoto('notGary'));
       yield put(controllerJoinContinue());
     }
 
@@ -70,7 +70,6 @@ function* controllerIsGaryWorker(): Generator<any, void, any> {
     yield put(inputLock(true));
 
     yield put(print({ msg: messages.isGary, center: false }));
-    yield put(controllerGoto('notGary'));
     yield put(controllerJoinContinue());
 
     yield put(inputLock(false));
@@ -89,6 +88,7 @@ function* watchControllerIsGary() {
 
 function* controllerJoinContinueWorker(): Generator<any, void, any> {
   try {
+    yield put(controllerGoto('notGary'));
     const {
       user: { claimObject, user, address },
       subscription: { statusChanged },

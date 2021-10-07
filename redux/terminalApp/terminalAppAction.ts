@@ -15,6 +15,11 @@ interface IActionPlayVideo {
   payload: boolean;
 }
 
+interface IActionSetVisited {
+  type: ActionTypeLoading.SET_VISITED;
+  payload: boolean;
+}
+
 const setPageLoading = (payload: boolean): IActionSetAppLoading => ({
   type: ActionTypeLoading.SET_APP_LOADER,
   payload,
@@ -30,6 +35,19 @@ const playVideo = (payload: boolean): IActionPlayVideo => ({
   payload,
 });
 
-export type TerminalAppActions = IActionSetAppLoading | IActionSetHydration | IActionPlayVideo;
-export type { IActionSetAppLoading, IActionSetHydration, IActionPlayVideo };
-export { setPageLoading, setPageHydration, playVideo };
+const setVisited = (payload: boolean): IActionSetVisited => ({
+  type: ActionTypeLoading.SET_VISITED,
+  payload,
+});
+
+export type TerminalAppActions =
+  | IActionSetAppLoading
+  | IActionSetHydration
+  | IActionPlayVideo
+  | IActionSetVisited;
+export type {
+  IActionSetAppLoading, IActionSetHydration, IActionPlayVideo, IActionSetVisited,
+};
+export {
+  setPageLoading, setPageHydration, playVideo, setVisited,
+};

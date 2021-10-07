@@ -33,6 +33,15 @@ enum MineChoiceActions {
   NO = 'no',
 }
 
+enum NotGaryQuestionActions {
+  NO = 'no',
+}
+
 export {
-  ActionType, SystemActions, OptionalActions, RootControllerActions, MineChoiceActions,
+  ActionType,
+  SystemActions,
+  OptionalActions,
+  RootControllerActions,
+  MineChoiceActions,
+  NotGaryQuestionActions,
 };

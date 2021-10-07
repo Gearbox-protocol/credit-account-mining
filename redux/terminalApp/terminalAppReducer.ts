@@ -7,15 +7,14 @@ interface ITerminalAppState extends DefaultRootState {
   appLoading: boolean;
   playVideo: boolean;
   appHydrated: boolean;
-  firstTimeVisited: boolean;
+  visited: boolean;
 }
 
 const terminalAppDefaultState = {
   appLoading: false,
   appHydrated: false,
   playVideo: false,
-  firstTimeVisited:
-    typeof localStorage !== 'undefined' && localStorage.getItem('visited') !== 'true',
+  visited: typeof localStorage !== 'undefined' && localStorage.getItem('visited') === 'true',
 };
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
@@ -29,6 +28,8 @@ const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
       return { ...state, appHydrated: action.payload };
     case ActionType.PLAY_VIDEO:
       return { ...state, playVideo: action.payload };
+    case ActionType.SET_VISITED:
+      return { ...state, visited: action.payload };
     default:
       return state;
   }
