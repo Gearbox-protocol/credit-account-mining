@@ -1,6 +1,6 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { store } from 'redux/store';
-import { setClaimObject, setUser } from 'redux/terminalApp/terminalAppAction';
+import { setClaimObject, setUser } from 'redux/user/userAction';
 import { controllerGotoRoot } from 'redux/terminalController/terminalControllerActions';
 import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';

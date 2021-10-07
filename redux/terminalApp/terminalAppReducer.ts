@@ -1,6 +1,5 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import { IClaimObject, User } from 'utils/API/join/join';
 import { TerminalAppActions } from './terminalAppAction';
 import ActionType from './terminalAppActionTypes';
 
@@ -8,16 +7,12 @@ interface ITerminalAppState extends DefaultRootState {
   appLoading: boolean;
   playVideo: boolean;
   appHydrated: boolean;
-  claimObject: IClaimObject | null;
-  user: User | null;
 }
 
 const terminalAppDefaultState = {
   appLoading: false,
   appHydrated: false,
   playVideo: false,
-  claimObject: null,
-  user: null,
 };
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
@@ -31,10 +26,6 @@ const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
       return { ...state, appHydrated: action.payload };
     case ActionType.PLAY_VIDEO:
       return { ...state, playVideo: action.payload };
-    case ActionType.SET_CLAIM_OBJECT:
-      return { ...state, claimObject: action.payload };
-    case ActionType.SET_USER:
-      return { ...state, user: action.payload };
     default:
       return state;
   }

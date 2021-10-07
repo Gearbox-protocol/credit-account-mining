@@ -5,7 +5,7 @@ import { IClaimObject } from 'utils/API/join/join';
 import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscriptionController/subscriptionControllerActions';
-import { setClaimObject } from 'redux/terminalApp/terminalAppAction';
+import { setClaimObject } from 'redux/user/userAction';
 import { IState } from 'redux/root/rootReducer';
 import { controllerGotoRoot } from '../terminalControllerActions';
 import { ActionType } from '../terminalControllerActionTypes';
@@ -13,7 +13,7 @@ import { ActionType } from '../terminalControllerActionTypes';
 function* controllerMinedWorker(): Generator<any, void, any> {
   try {
     const {
-      terminalApp: { claimObject },
+      user: { claimObject },
     } = (yield select()) as IState;
     yield put(inputLock(true));
 
