@@ -7,11 +7,13 @@ import ActionType from './userActionTypes';
 interface IUserState extends DefaultRootState {
   claimObject: IClaimObject | null;
   user: User | null;
+  address: string | null;
 }
 
 const userDefaultState: IUserState = {
   claimObject: null,
   user: null,
+  address: null,
 };
 
 const userReducer: Reducer<IUserState, UserActions> = (state = userDefaultState, action) => {
@@ -20,6 +22,8 @@ const userReducer: Reducer<IUserState, UserActions> = (state = userDefaultState,
       return { ...state, claimObject: action.payload };
     case ActionType.SET_USER:
       return { ...state, user: action.payload };
+    case ActionType.SET_ADDRESS:
+      return { ...state, address: action.payload };
     default:
       return state;
   }

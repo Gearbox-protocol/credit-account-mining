@@ -11,6 +11,11 @@ interface IActionSetUser {
   payload: User | null;
 }
 
+interface IActionSetAddress {
+  type: ActionTypeLoading.SET_ADDRESS;
+  payload: string | null;
+}
+
 const setClaimObject = (payload: IClaimObject | null): IActionSetClaimObject => ({
   type: ActionTypeLoading.SET_CLAIM_OBJECT,
   payload,
@@ -21,6 +26,11 @@ const setUser = (payload: User | null): IActionSetUser => ({
   payload,
 });
 
-export type UserActions = IActionSetClaimObject | IActionSetUser;
-export type { IActionSetClaimObject, IActionSetUser };
-export { setClaimObject, setUser };
+const setAddress = (payload: string | null): IActionSetAddress => ({
+  type: ActionTypeLoading.SET_ADDRESS,
+  payload,
+});
+
+export type UserActions = IActionSetClaimObject | IActionSetUser | IActionSetAddress;
+export type { IActionSetClaimObject, IActionSetUser, IActionSetAddress };
+export { setClaimObject, setUser, setAddress };
