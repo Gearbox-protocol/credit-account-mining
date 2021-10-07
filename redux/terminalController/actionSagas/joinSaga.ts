@@ -45,6 +45,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     } = (yield select()) as IState;
     if (firstTimeVisited) {
       yield put(print({ msg: messages.notGaryQuestion, center: false }));
+      yield localStorage.setItem('visited', 'true');
     } else {
       yield put(controllerGoto('notGary'));
       yield put(controllerJoinContinue());

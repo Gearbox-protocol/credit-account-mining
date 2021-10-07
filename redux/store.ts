@@ -5,9 +5,6 @@ import createReduxSagaMiddleware, { Task } from 'redux-saga';
 import rootSaga from './root/rootSaga';
 import rootReducer, { IState } from './root/rootReducer';
 
-const environment = process.env.NODE_ENV;
-const isDev = environment === 'development';
-
 interface SagaStore extends Store {
   sagaTask?: Task;
 }
@@ -25,7 +22,7 @@ const buildStore = () => {
 const store = buildStore();
 
 const makeStore: MakeStore<Store<IState>> = () => store;
-const wrapper = createWrapper<Store<IState>>(makeStore, { debug: isDev });
+const wrapper = createWrapper<Store<IState>>(makeStore);
 
 export type { SagaStore };
 export { wrapper, store };

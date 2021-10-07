@@ -14,7 +14,8 @@ const terminalAppDefaultState = {
   appLoading: false,
   appHydrated: false,
   playVideo: false,
-  firstTimeVisited: true,
+  firstTimeVisited:
+    typeof localStorage !== 'undefined' && localStorage.getItem('visited') !== 'true',
 };
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (

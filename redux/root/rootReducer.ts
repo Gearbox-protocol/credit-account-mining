@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-
 import { DefaultRootState } from 'react-redux';
 
 import terminalAppReducer, {
