@@ -82,6 +82,13 @@ const messages = {
   accountsMined: (n: number) => `
   Accounts mined: ${n}
   `,
+
+  notGaryQuestion: `
+  Is your name GARY by any chance? Please confirm this is NOT the case by typing ${Prefix.PREFIX}${MineChoiceActions.NO}.
+  `,
+  isGary: `
+  Ok, we assume you were joking. Carry on!
+  `,
 };
 
 export { Prefix };

@@ -11,7 +11,8 @@ import watchControllerHelp from 'redux/terminalController/actionSagas/helpSaga';
 import watchControllerLinks from 'redux/terminalController/actionSagas/linksSaga';
 import {
   watchControllerJoin,
-  watchJoinContinue,
+  watchControllerJoinContinue,
+  watchControllerIsGary,
   watchControllerJoinAccepted,
   watchControllerJoinDenied,
 } from 'redux/terminalController/actionSagas/joinSaga';
@@ -28,11 +29,13 @@ export default function* rootSaga() {
     watchClear(),
     watchLock(),
     watchLoading(),
+
     watchControllerUserCommand(),
     watchControllerHelp(),
     watchControllerLinks(),
     watchControllerJoin(),
-    watchJoinContinue(),
+    watchControllerIsGary(),
+    watchControllerJoinContinue(),
     watchControllerJoinAccepted(),
     watchControllerJoinDenied(),
     watchControllerMined(),

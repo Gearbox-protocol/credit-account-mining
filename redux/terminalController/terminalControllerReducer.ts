@@ -1,62 +1,13 @@
-import { Reducer, Action } from 'redux';
+import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import {
-  ControllerActions,
-  controllerHelp,
-  controllerJoin,
-  controllerJoinAccepted,
-  controllerJoinDenied,
-  controllerMined,
-  controllerLinks,
-} from './terminalControllerActions';
-import {
-  ActionType,
-  RootControllerActions,
-  SystemActions,
-  OptionalActions,
-  MineChoiceActions,
-} from './terminalControllerActionTypes';
-
-type UserActions = Record<string, () => Action<any>>;
-
-type Controller = {
-  userActions?: UserActions;
-  children: Record<string, Controller> | null;
-};
+import { ControllerActions } from './terminalControllerActions';
+import { ActionType, OptionalActions } from './terminalControllerActionTypes';
+import root, { Controller, optionalActions } from './controllers/root';
 
 interface IControllerState extends DefaultRootState {
   root: Controller;
   current: Controller | null;
 }
-
-const optionalActions: UserActions = {
-  [OptionalActions.MINE]: controllerJoinAccepted,
-};
-
-const join: Controller = {
-  children: {
-    choice: {
-      userActions: {
-        [MineChoiceActions.YES]: controllerJoinAccepted,
-        [MineChoiceActions.NO]: controllerJoinDenied,
-        [SystemActions.DEFAULT_ACTION]: controllerJoinDenied,
-      },
-      children: null,
-    },
-  },
-};
-
-const root: Controller = {
-  userActions: {
-    [RootControllerActions.HELP]: controllerHelp,
-    [RootControllerActions.JOIN]: controllerJoin,
-    [RootControllerActions.MINED]: controllerMined,
-    [RootControllerActions.LINKS]: controllerLinks,
-  },
-  children: {
-    join,
-  },
-};
 
 const controllerDefaultState = { root, current: root };
 

@@ -7,12 +7,14 @@ interface ITerminalAppState extends DefaultRootState {
   appLoading: boolean;
   playVideo: boolean;
   appHydrated: boolean;
+  firstTimeVisited: boolean;
 }
 
 const terminalAppDefaultState = {
   appLoading: false,
   appHydrated: false,
   playVideo: false,
+  firstTimeVisited: true,
 };
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (

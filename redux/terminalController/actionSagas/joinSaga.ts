@@ -38,9 +38,19 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
     yield put(setAddress(address));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
-    yield put(inputLock(false));
+    yield put(controllerGoto('notGaryQuestion'));
 
-    yield put(controllerJoinContinue());
+    const {
+      terminalApp: { firstTimeVisited },
+    } = (yield select()) as IState;
+    if (firstTimeVisited) {
+      yield put(print({ msg: messages.notGaryQuestion, center: false }));
+    } else {
+      yield put(controllerGoto('notGary'));
+      yield put(controllerJoinContinue());
+    }
+
+    yield put(inputLock(false));
   } catch (e: any) {
     yield put(loading(false));
     yield put(controllerGotoRoot());
@@ -54,6 +64,28 @@ function* watchControllerJoin() {
   yield takeEvery(ActionType.JOIN, controllerJoinWorker);
 }
 
+function* controllerIsGaryWorker(): Generator<any, void, any> {
+  try {
+    yield put(inputLock(true));
+
+    yield put(print({ msg: messages.isGary, center: false }));
+    yield put(controllerGoto('notGary'));
+    yield put(controllerJoinContinue());
+
+    yield put(inputLock(false));
+  } catch (e: any) {
+    yield put(loading(false));
+    yield put(controllerGotoRoot());
+
+    if (e.message) yield put(print({ msg: e.message, center: false }));
+    yield put(inputLock(false));
+  }
+}
+
+function* watchControllerIsGary() {
+  yield takeEvery(ActionType.IS_GARY, controllerIsGaryWorker);
+}
+
 function* controllerJoinContinueWorker(): Generator<any, void, any> {
   try {
     const {
@@ -64,6 +96,7 @@ function* controllerJoinContinueWorker(): Generator<any, void, any> {
     if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR' });
 
     yield put(inputLock(true));
+
     yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
     const safeUser: User = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
@@ -78,6 +111,7 @@ function* controllerJoinContinueWorker(): Generator<any, void, any> {
     if (state.subscription.statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     yield put(controllerGoto('choice'));
     yield put(print({ msg: messages.claim, center: false }));
+
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(loading(false));
@@ -89,7 +123,7 @@ function* controllerJoinContinueWorker(): Generator<any, void, any> {
   }
 }
 
-function* watchJoinContinue() {
+function* watchControllerJoinContinue() {
   yield takeEvery(ActionType.JOIN_CONTINUE, controllerJoinContinueWorker);
 }
 
@@ -159,5 +193,6 @@ export {
   watchControllerJoin,
   watchControllerJoinAccepted,
   watchControllerJoinDenied,
-  watchJoinContinue,
+  watchControllerJoinContinue,
+  watchControllerIsGary,
 };
