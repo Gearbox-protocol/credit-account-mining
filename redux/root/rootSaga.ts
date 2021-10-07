@@ -6,6 +6,7 @@ import {
   watchSubscribe,
   watchUnsubscribe,
 } from 'redux/subscription/subscriptionSaga';
+import watchSetVisited from 'redux/terminalApp/terminalAppSaga';
 import watchControllerUserCommand from 'redux/terminalController/terminalControllerSaga';
 import watchControllerHelp from 'redux/terminalController/actionSagas/helpSaga';
 import watchControllerLinks from 'redux/terminalController/actionSagas/linksSaga';
@@ -22,9 +23,12 @@ import { all } from 'redux-saga/effects';
 
 export default function* rootSaga() {
   yield all([
+    watchSetVisited(),
+
     watchChangeStatus(),
     watchSubscribe(),
     watchUnsubscribe(),
+
     watchPrint(),
     watchClear(),
     watchLock(),
