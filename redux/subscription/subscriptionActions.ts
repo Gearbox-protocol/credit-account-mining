@@ -1,5 +1,5 @@
 import { TerminalErrorCodes } from 'utils/API/errors/TerminalError/TerminalError';
-import ActionType from './subscriptionControllerActionTypes';
+import ActionType from './subscriptionActionTypes';
 
 interface IActionSetSubscription {
   type: ActionType.SET_SUBSCRIPTION;

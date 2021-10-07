@@ -1,7 +1,7 @@
 import { TerminalAppActions } from 'redux/terminalApp/terminalAppAction';
 import { TerminalActions } from 'redux/terminal/terminalAction';
 import { ControllerActions } from 'redux/terminalController/terminalControllerActions';
-import { SubscriptionActions } from 'redux/subscriptionController/subscriptionControllerActions';
+import { SubscriptionActions } from 'redux/subscription/subscriptionActions';
 
 import ActionType from './rootReducerActionTypes';
 

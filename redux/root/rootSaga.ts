@@ -5,12 +5,13 @@ import {
   watchChangeStatus,
   watchSubscribe,
   watchUnsubscribe,
-} from 'redux/subscriptionController/subscriptionControllerSaga';
+} from 'redux/subscription/subscriptionSaga';
 import watchControllerUserCommand from 'redux/terminalController/terminalControllerSaga';
 import watchControllerHelp from 'redux/terminalController/actionSagas/helpSaga';
 import watchControllerLinks from 'redux/terminalController/actionSagas/linksSaga';
 import {
   watchControllerJoin,
+  watchJoinContinue,
   watchControllerJoinAccepted,
   watchControllerJoinDenied,
 } from 'redux/terminalController/actionSagas/joinSaga';
@@ -31,6 +32,7 @@ export default function* rootSaga() {
     watchControllerHelp(),
     watchControllerLinks(),
     watchControllerJoin(),
+    watchJoinContinue(),
     watchControllerJoinAccepted(),
     watchControllerJoinDenied(),
     watchControllerMined(),

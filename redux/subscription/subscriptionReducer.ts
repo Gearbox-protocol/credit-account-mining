@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import { SubscriptionActions } from './subscriptionControllerActions';
-import ActionType from './subscriptionControllerActionTypes';
+import { SubscriptionActions } from './subscriptionActions';
+import ActionType from './subscriptionActionTypes';
 
 interface ISubscriptionState extends DefaultRootState {
   isSubscribed: boolean;

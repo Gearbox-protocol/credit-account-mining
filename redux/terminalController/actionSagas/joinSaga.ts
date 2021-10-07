@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
-import { put, takeEvery, select, delay } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, delay,
+} from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import connectMetamask from 'utils/API/connect/connect';
@@ -12,22 +14,20 @@ import {
   User,
 } from 'utils/API/join/join';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { subscribe } from 'redux/subscriptionController/subscriptionControllerActions';
+import { subscribe } from 'redux/subscription/subscriptionActions';
 import { playVideo } from 'redux/terminalApp/terminalAppAction';
-import { setClaimObject, setUser } from 'redux/user/userAction';
+import { setClaimObject, setUser, setAddress } from 'redux/user/userAction';
 import { IState } from 'redux/root/rootReducer';
 import {
   controllerGotoRoot,
   controllerGoto,
   controllerAddAction,
+  controllerJoinContinue,
 } from '../terminalControllerActions';
 import { ActionType, OptionalActions } from '../terminalControllerActionTypes';
 
 function* controllerJoinWorker(): Generator<any, void, any> {
   try {
-    const {
-      user: { claimObject, user },
-    } = (yield select()) as IState;
     yield put(inputLock(true));
     yield put(controllerGoto('join'));
 
@@ -36,32 +36,16 @@ function* controllerJoinWorker(): Generator<any, void, any> {
     yield put(subscribe());
     yield put(loading(false));
 
+    yield put(setAddress(address));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
-
-    let state = (yield select()) as IState;
-    if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
-
-    yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
-    const safeUser: User = yield checkPermissions(address);
-    yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
-
-    state = (yield select()) as IState;
-    if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
-    const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, safeUser);
-    if (!claimObject) yield put(setClaimObject(safeClaim));
-    if (!user) yield put(setUser(safeUser));
-
-    state = (yield select()) as IState;
-    if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
-    yield put(controllerGoto('choice'));
-    yield put(print({ msg: messages.claim, center: false }));
     yield put(inputLock(false));
+
+    yield put(controllerJoinContinue());
   } catch (e: any) {
     yield put(loading(false));
     yield put(controllerGotoRoot());
 
     if (e.message) yield put(print({ msg: e.message, center: false }));
-    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
     yield put(inputLock(false));
   }
 }
@@ -69,27 +53,29 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 function* watchControllerJoin() {
   yield takeEvery(ActionType.JOIN, controllerJoinWorker);
 }
-/*
-function* controllerContinueJoinWorker(): Generator<any, void, any> {
+
+function* controllerJoinContinueWorker(): Generator<any, void, any> {
   try {
     const {
-      terminalApp: { claimObject, user },
-      subscriptionController: { statusChanged },
+      user: { claimObject, user, address },
+      subscription: { statusChanged },
     } = (yield select()) as IState;
-    if (statusChanged) throw new Error('ACTION_ABORTED');
+    if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
+    if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR' });
 
+    yield put(inputLock(true));
     yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
     const safeUser: User = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
 
     let state = (yield select()) as IState;
-    if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
+    if (state.subscription.statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, safeUser);
     if (!claimObject) yield put(setClaimObject(safeClaim));
     if (!user) yield put(setUser(safeUser));
 
     state = (yield select()) as IState;
-    if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
+    if (state.subscription.statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     yield put(controllerGoto('choice'));
     yield put(print({ msg: messages.claim, center: false }));
     yield put(inputLock(false));
@@ -102,13 +88,16 @@ function* controllerContinueJoinWorker(): Generator<any, void, any> {
     yield put(inputLock(false));
   }
 }
-*/
+
+function* watchJoinContinue() {
+  yield takeEvery(ActionType.JOIN_CONTINUE, controllerJoinContinueWorker);
+}
 
 function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
   try {
     const {
       user: { claimObject, user },
-      subscriptionController: { isSubscribed },
+      subscription: { isSubscribed },
     } = (yield select()) as IState;
     if (!claimObject || !user || !isSubscribed) {
       throw new TerminalError({ code: 'METAMASK_RELOGIN' });
@@ -117,7 +106,7 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(inputLock(true));
 
     const state = (yield select()) as IState;
-    if (state.subscriptionController.statusChanged) throw new Error('ACTION_ABORTED');
+    if (state.subscription.statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     yield put(loading(true));
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(
       claimObject,
@@ -166,4 +155,9 @@ function* watchControllerJoinDenied() {
   yield takeEvery(ActionType.JOIN_DENIED, controllerJoinDeniedWorker);
 }
 
-export { watchControllerJoin, watchControllerJoinAccepted, watchControllerJoinDenied };
+export {
+  watchControllerJoin,
+  watchControllerJoinAccepted,
+  watchControllerJoinDenied,
+  watchJoinContinue,
+};

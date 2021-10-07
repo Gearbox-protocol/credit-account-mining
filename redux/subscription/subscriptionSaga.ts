@@ -10,8 +10,8 @@ import {
   setSubscription,
   unsubscribe,
   IActionChangeStatus,
-} from './subscriptionControllerActions';
-import ActionType from './subscriptionControllerActionTypes';
+} from './subscriptionActions';
+import ActionType from './subscriptionActionTypes';
 
 const handleChainChange = () => {
   store.dispatch(changeStatus('CHAIN_CHANGED'));
@@ -28,7 +28,7 @@ const handleAccountChange = () => {
 function* subscribeWorker(): Generator<any, void, any> {
   try {
     const {
-      subscriptionController: { isSubscribed },
+      subscription: { isSubscribed },
     } = (yield select()) as IState;
     yield put(setSubscription(true));
     if (isSubscribed) return;

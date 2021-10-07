@@ -27,6 +27,10 @@ interface IActionJoin {
   type: ActionType.JOIN;
 }
 
+interface IActionJoinContinue {
+  type: ActionType.JOIN_CONTINUE;
+}
+
 interface IActionJoinAccepted {
   type: ActionType.JOIN_ACCEPTED;
 }
@@ -70,6 +74,10 @@ const controllerJoin = (): IActionJoin => ({
   type: ActionType.JOIN,
 });
 
+const controllerJoinContinue = (): IActionJoinContinue => ({
+  type: ActionType.JOIN_CONTINUE,
+});
+
 const controllerJoinAccepted = (): IActionJoinAccepted => ({
   type: ActionType.JOIN_ACCEPTED,
 });
@@ -96,7 +104,8 @@ export type ControllerActions =
   | IActionJoinDenied
   | IActionMined
   | IActionLinks
-  | IAddAction;
+  | IAddAction
+  | IActionJoinContinue;
 export type {
   IActionGoto,
   IActionGotoRoot,
@@ -108,6 +117,7 @@ export type {
   IActionMined,
   IActionLinks,
   IAddAction,
+  IActionJoinContinue,
 };
 export {
   controllerGotoRoot,
@@ -120,4 +130,5 @@ export {
   controllerMined,
   controllerLinks,
   controllerAddAction,
+  controllerJoinContinue,
 };
