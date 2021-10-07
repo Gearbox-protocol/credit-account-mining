@@ -1,4 +1,9 @@
+import {
+  RootControllerActions,
+  OptionalActions,
+} from 'redux/terminalController/terminalControllerActionTypes';
 import { TerminalErrorCodes } from 'utils/API/errors/TerminalError/TerminalError';
+import { Prefix } from '../../messages/messages';
 import notFoundStrings from './notfound-strings';
 
 const errorStrings: Record<TerminalErrorCodes, string> = {
@@ -33,12 +38,12 @@ const errorStrings: Record<TerminalErrorCodes, string> = {
   ALREADY_CLAIMED: `
   Hold up, you have already mined 1 Credit Account designated for you.
 
-  It’s now time to check the /link command and join Gearbox socials!
+  It’s now time to check the ${Prefix.PREFIX}${RootControllerActions.LINKS} command and join Gearbox socials!
   `,
   DENIED_BY_USER: `
   Seems like you are NGMI, anon! You skipped financial freedom.
 
-  Type /mine if you exited by mistake.
+  Type ${Prefix.PREFIX}${OptionalActions.MINE} if you exited by mistake.
   `,
   ACCOUNT_CHANGED: `
   You have just changed your account. All active actions were aborted.

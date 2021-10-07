@@ -3,8 +3,7 @@ import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import { IActionCommand } from './terminalControllerActions';
-import { SystemActions } from './terminalControllerReducer';
-import { ActionType } from './terminalControllerActionTypes';
+import { SystemActions, ActionType } from './terminalControllerActionTypes';
 
 function* controllerUserCommandWorker({ payload }: IActionCommand): Generator<any, void, any> {
   try {

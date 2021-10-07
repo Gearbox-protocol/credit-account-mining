@@ -26,11 +26,11 @@ enum RootControllerActions {
   LINKS = 'links',
 }
 
-enum ChoiceActions {
+enum MineChoiceActions {
   YES = 'mine',
   NO = 'no',
 }
 
 export {
-  ActionType, SystemActions, OptionalActions, RootControllerActions, ChoiceActions,
+  ActionType, SystemActions, OptionalActions, RootControllerActions, MineChoiceActions,
 };

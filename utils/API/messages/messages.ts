@@ -1,7 +1,11 @@
 import {
   RootControllerActions,
-  ChoiceActions,
-} from 'redux/terminalController/terminalControllerReducer';
+  MineChoiceActions,
+} from 'redux/terminalController/terminalControllerActionTypes';
+
+enum Prefix {
+  PREFIX = '>',
+}
 
 const messages = {
   banner: `
@@ -27,16 +31,16 @@ const messages = {
                        
                                     Let’s get this machine going!
                      
-                          Type ${RootControllerActions.HELP} to see list of available commands
+                          Type ${Prefix.PREFIX}${RootControllerActions.HELP} to see list of available commands
   `,
 
   helpText: `
   Available commands:
 
-  ${RootControllerActions.HELP} - this output
-  ${RootControllerActions.JOIN} - our path to freedom
-  ${RootControllerActions.MINED} - total accounts mined
-  ${RootControllerActions.LINKS} - links to social media channels of Gearbox
+  ${Prefix.PREFIX}${RootControllerActions.HELP} - this output
+  ${Prefix.PREFIX}${RootControllerActions.JOIN} - our path to freedom
+  ${Prefix.PREFIX}${RootControllerActions.MINED} - total accounts mined
+  ${Prefix.PREFIX}${RootControllerActions.LINKS} - links to social media channels of Gearbox
   `,
   links: `
   Links to social media channels of Gearbox:
@@ -55,13 +59,13 @@ const messages = {
   You have 1 credit accounts to mine
   `,
   claim: `
-  Do you wish to mine a Credit Account? Type "${ChoiceActions.YES}" to proceed or "${ChoiceActions.NO} to reject. 
+  Do you wish to mine a Credit Account? Type ${Prefix.PREFIX}${MineChoiceActions.YES} to proceed or ${Prefix.PREFIX}${MineChoiceActions.NO} to reject. 
 
   Just to make sure once again… you understand what’s about to happen, right? 
 
   If no, then check this article for complete information: <>link<>
 
-  Ok, now maybe "${ChoiceActions.YES}" then!
+  Ok, now maybe ${Prefix.PREFIX}${MineChoiceActions.YES} then!
   `,
   almostDone: `
   We're almost done. Now wait till tx is confirmed.
@@ -71,7 +75,7 @@ const messages = {
 
   You have received GEAR tokens for your contribution: https://kovan.etherscan.io/tx/${h}
 
-  It’s now time to check the /link command and join Gearbox socials!
+  It’s now time to check the ${Prefix.PREFIX}${RootControllerActions.LINKS} command and join Gearbox socials!
 
   Governance work is about to begin… in a matter of days.
   `,
@@ -80,4 +84,5 @@ const messages = {
   `,
 };
 
+export { Prefix };
 export default messages;

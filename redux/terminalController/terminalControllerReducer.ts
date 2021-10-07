@@ -14,7 +14,7 @@ import {
   RootControllerActions,
   SystemActions,
   OptionalActions,
-  ChoiceActions,
+  MineChoiceActions,
 } from './terminalControllerActionTypes';
 
 type UserActions = Record<string, () => Action<any>>;
@@ -37,8 +37,8 @@ const join: Controller = {
   children: {
     choice: {
       userActions: {
-        [ChoiceActions.YES]: controllerJoinAccepted,
-        [ChoiceActions.NO]: controllerJoinDenied,
+        [MineChoiceActions.YES]: controllerJoinAccepted,
+        [MineChoiceActions.NO]: controllerJoinDenied,
         [SystemActions.DEFAULT_ACTION]: controllerJoinDenied,
       },
       children: null,
@@ -112,7 +112,5 @@ const controllerReducer: Reducer<IControllerState, ControllerActions> = (
 };
 
 export type { IControllerState, OptionalActions };
-export {
-  controllerDefaultState, RootControllerActions, ChoiceActions, SystemActions,
-};
+export { controllerDefaultState };
 export default controllerReducer;
