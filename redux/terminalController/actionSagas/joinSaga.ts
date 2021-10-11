@@ -15,6 +15,7 @@ import {
 } from 'utils/API/join/join';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscription/subscriptionActions';
+import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
 import { playVideo, setVisited } from 'redux/terminalApp/terminalAppAction';
 import { setClaimObject, setUser, setAddress } from 'redux/user/userAction';
 import { IState } from 'redux/root/rootReducer';
@@ -23,10 +24,11 @@ import {
   controllerGoto,
   controllerAddAction,
   controllerJoinContinue,
+  controllerError,
 } from '../terminalControllerActions';
 import { ActionType, OptionalActions } from '../terminalControllerActionTypes';
 
-function* controllerJoinWorker(): Generator<any, void, any> {
+function* controllerJoinWorker() {
   try {
     yield put(inputLock(true));
     yield put(controllerGoto('join'));
@@ -61,7 +63,7 @@ function* watchControllerJoin() {
   yield takeEvery(ActionType.JOIN, controllerJoinWorker);
 }
 
-function* controllerIsGaryWorker(): Generator<any, void, any> {
+function* controllerIsGaryWorker() {
   try {
     yield put(inputLock(true));
 
@@ -78,7 +80,7 @@ function* watchControllerIsGary() {
   yield takeEvery(ActionType.IS_GARY, controllerIsGaryWorker);
 }
 
-function* controllerJoinContinueWorker(): Generator<any, void, any> {
+function* controllerJoinContinueWorker() {
   try {
     yield put(controllerGoto('notGary'));
     const {
@@ -94,46 +96,36 @@ function* controllerJoinContinueWorker(): Generator<any, void, any> {
     const safeUser: User = yield checkPermissions(address);
     yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
 
-    let state = (yield select()) as IState;
-    if (state.subscription.statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, safeUser);
     if (!claimObject) yield put(setClaimObject(safeClaim));
     if (!user) yield put(setUser(safeUser));
 
-    state = (yield select()) as IState;
-    if (state.subscription.statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     yield put(controllerGoto('choice'));
     yield put(print({ msg: messages.claim, center: false }));
 
     yield put(inputLock(false));
   } catch (e: any) {
-    yield put(loading(false));
-    yield put(controllerGotoRoot());
-
-    if (e.message) yield put(print({ msg: e.message, center: false }));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
-    yield put(inputLock(false));
+    yield put(controllerError({ msg: e.message, center: false }));
   }
 }
 
 function* watchControllerJoinContinue() {
-  yield takeEvery(ActionType.JOIN_CONTINUE, controllerJoinContinueWorker);
+  yield takeEvery([ActionType.JOIN_CONTINUE], cancelOnStatusChange(controllerJoinContinueWorker));
 }
 
-function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
+function* controllerJoinAcceptedWorker() {
   try {
     const {
       user: { claimObject, user },
-      subscription: { isSubscribed },
+      subscription: { isSubscribed, statusChanged },
     } = (yield select()) as IState;
     if (!claimObject || !user || !isSubscribed) {
       throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
+    if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
 
     yield put(inputLock(true));
-
-    const state = (yield select()) as IState;
-    if (state.subscription.statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     yield put(loading(true));
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(
       claimObject,
@@ -153,12 +145,8 @@ function* controllerJoinAcceptedWorker(): Generator<any, void, any> {
     yield put(inputLock(false));
     yield put(controllerGotoRoot());
   } catch (e: any) {
-    yield put(loading(false));
-    yield put(controllerGotoRoot());
-
-    if (e.message) yield put(print({ msg: e.message, center: false }));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
-    yield put(inputLock(false));
+    yield put(controllerError({ msg: e.message, center: false }));
   }
 }
 

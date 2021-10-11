@@ -1,7 +1,9 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, race, call, take,
+} from 'redux-saga/effects';
 import { store } from 'redux/store';
 import { setAddress, setClaimObject, setUser } from 'redux/user/userAction';
-import { controllerGotoRoot } from 'redux/terminalController/terminalControllerActions';
+import { controllerError } from 'redux/terminalController/terminalControllerActions';
 import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import errorStrings from 'utils/API/errors/TerminalError/error-strings';
@@ -77,4 +79,15 @@ function* watchChangeStatus() {
   yield takeEvery(ActionType.STATUS_CHANGED, changeStatusWorker);
 }
 
-export { watchSubscribe, watchUnsubscribe, watchChangeStatus };
+function cancelOnStatusChange(generator: (...args: any[]) => void) {
+  return function* cancellableGenerator(...args: any[]) {
+    yield race({
+      task: call(generator, ...args),
+      cancel: take(ActionType.STATUS_CHANGED),
+    });
+  };
+}
+
+export {
+  watchSubscribe, watchUnsubscribe, watchChangeStatus, cancelOnStatusChange,
+};
