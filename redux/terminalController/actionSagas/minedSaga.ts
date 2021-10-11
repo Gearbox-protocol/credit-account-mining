@@ -1,4 +1,6 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
+import {
+  put, call, takeEvery, select,
+} from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import connectMetamask from 'utils/API/connect/connect';
 import { IClaimObject } from 'utils/API/join/join';
@@ -19,10 +21,11 @@ function* controllerMinedWorker() {
     yield put(inputLock(true));
 
     yield put(loading(true));
-    yield connectMetamask();
+    yield call(connectMetamask);
     yield put(subscribe());
 
-    const [safeClaim, amount]: [IClaimObject, number] = yield countClaims(claimObject || {});
+    const [safeClaim, amount]: [IClaimObject, number] = yield call(countClaims, claimObject || {});
+
     if (!claimObject) yield put(setClaimObject(safeClaim));
     yield put(loading(false));
 

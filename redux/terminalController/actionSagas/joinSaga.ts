@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import {
-  put, takeEvery, select, delay,
+  put, takeEvery, select, delay, call,
 } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
@@ -34,7 +34,7 @@ function* controllerJoinWorker() {
     yield put(controllerGoto('join'));
 
     yield put(loading(true));
-    const address: string = yield connectMetamask();
+    const address: string = yield call(connectMetamask);
     yield put(subscribe());
     yield put(loading(false));
 
@@ -94,10 +94,10 @@ function* controllerJoinContinueWorker() {
     if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR' });
 
     yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
-    const safeUser: User = yield checkPermissions(address);
+    const safeUser: User = yield call(checkPermissions, address);
     yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
 
-    const safeClaim: IClaimObject = yield isClaimed(claimObject || {}, safeUser);
+    const safeClaim: IClaimObject = yield call(isClaimed, claimObject || {}, safeUser);
     if (!claimObject) yield put(setClaimObject(safeClaim));
     if (!user) yield put(setUser(safeUser));
 
@@ -138,7 +138,7 @@ function* controllerJoinAcceptedWorker() {
     yield put(print({ msg: messages.almostDone, center: false }));
 
     yield put(loading(true));
-    yield waitTransactionEnd(transaction);
+    yield call(waitTransactionEnd, transaction);
     yield put(loading(false));
 
     yield put(print({ msg: messages.yourHash(hash), center: false }));
