@@ -1,6 +1,7 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import { ControllerActions } from './terminalControllerActions';
+import { ControllerActions } from './actions/terminalControllerActions';
+import { ControllerUserActions } from './actions/terminalControllerUserActions';
 import { ActionType, OptionalActions } from './terminalControllerActionTypes';
 import root, { Controller, optionalActions } from './controllers/root';
 
@@ -11,7 +12,7 @@ interface IControllerState extends DefaultRootState {
 
 const controllerDefaultState = { root, current: root };
 
-const controllerReducer: Reducer<IControllerState, ControllerActions> = (
+const controllerReducer: Reducer<IControllerState, ControllerActions | ControllerUserActions> = (
   state = controllerDefaultState,
   action,
 ) => {

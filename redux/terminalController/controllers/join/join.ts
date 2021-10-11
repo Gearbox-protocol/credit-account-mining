@@ -3,7 +3,7 @@ import {
   controllerJoinAccepted,
   controllerJoinDenied,
   controllerIsGary,
-} from 'redux/terminalController/terminalControllerActions';
+} from 'redux/terminalController/actions/terminalControllerUserActions';
 import {
   SystemActions,
   MineChoiceActions,

@@ -5,7 +5,7 @@ import {
   controllerJoinAccepted,
   controllerMined,
   controllerLinks,
-} from 'redux/terminalController/terminalControllerActions';
+} from 'redux/terminalController/actions/terminalControllerUserActions';
 import {
   RootControllerActions,
   OptionalActions,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { controllerCommand } from 'redux/terminalController/terminalControllerActions';
+import { controllerCommand } from 'redux/terminalController/actions/terminalControllerActions';
 import Block from 'components/Block/Block';
 import Terminal from 'components/Terminal/Terminal';
 import messages from 'utils/API/messages/messages';

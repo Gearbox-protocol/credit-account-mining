@@ -1,33 +1,4 @@
-import { ActionType, OptionalActions } from './terminalControllerActionTypes';
-
-interface IActionGoto {
-  type: ActionType.GOTO;
-  payload: string;
-}
-
-interface IActionGotoRoot {
-  type: ActionType.GOTO_ROOT;
-}
-
-interface IAddAction {
-  type: ActionType.ADD_ACTION;
-  payload: OptionalActions;
-}
-
-interface IActionCommand {
-  type: ActionType.COMMAND;
-  payload: string;
-}
-
-interface ErrorMessage {
-  msg: string | undefined;
-  center: boolean;
-}
-
-interface IControllerError {
-  type: ActionType.CONTROLLER_ERROR;
-  payload: ErrorMessage;
-}
+import { ActionType } from '../terminalControllerActionTypes';
 
 interface IActionHelp {
   type: ActionType.HELP;
@@ -61,30 +32,6 @@ interface IActionLinks {
   type: ActionType.LINKS;
 }
 
-const controllerGoto = (t: string): IActionGoto => ({
-  type: ActionType.GOTO,
-  payload: t,
-});
-
-const controllerGotoRoot = (): IActionGotoRoot => ({
-  type: ActionType.GOTO_ROOT,
-});
-
-const controllerAddAction = (a: OptionalActions): IAddAction => ({
-  type: ActionType.ADD_ACTION,
-  payload: a,
-});
-
-const controllerCommand = (c: string): IActionCommand => ({
-  type: ActionType.COMMAND,
-  payload: c,
-});
-
-const controllerError = (e: ErrorMessage): IControllerError => ({
-  type: ActionType.CONTROLLER_ERROR,
-  payload: e,
-});
-
 const controllerHelp = (): IActionHelp => ({
   type: ActionType.HELP,
 });
@@ -117,47 +64,32 @@ const controllerLinks = (): IActionLinks => ({
   type: ActionType.LINKS,
 });
 
-export type ControllerActions =
-  | IActionGoto
-  | IActionGotoRoot
-  | IActionCommand
+export type ControllerUserActions =
   | IActionHelp
   | IActionJoin
   | IActionJoinAccepted
   | IActionJoinDenied
   | IActionMined
   | IActionLinks
-  | IAddAction
   | IActionJoinContinue
-  | IActionIsGary
-  | IControllerError;
+  | IActionIsGary;
 export type {
-  IActionGoto,
-  IActionGotoRoot,
-  IActionCommand,
   IActionHelp,
   IActionJoin,
   IActionJoinAccepted,
   IActionJoinDenied,
   IActionMined,
   IActionLinks,
-  IAddAction,
   IActionJoinContinue,
   IActionIsGary,
-  IControllerError,
 };
 export {
-  controllerGotoRoot,
-  controllerGoto,
-  controllerCommand,
   controllerHelp,
   controllerJoin,
   controllerJoinAccepted,
   controllerJoinDenied,
   controllerMined,
   controllerLinks,
-  controllerAddAction,
   controllerJoinContinue,
   controllerIsGary,
-  controllerError,
 };

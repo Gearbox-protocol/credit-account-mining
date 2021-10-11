@@ -6,7 +6,7 @@ import { setAddress, setClaimObject, setUser } from 'redux/user/userAction';
 import {
   controllerError,
   controllerGotoRoot,
-} from 'redux/terminalController/terminalControllerActions';
+} from 'redux/terminalController/actions/terminalControllerActions';
 import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import errorStrings from 'utils/API/errors/TerminalError/error-strings';

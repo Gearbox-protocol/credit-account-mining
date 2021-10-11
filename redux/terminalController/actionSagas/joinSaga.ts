@@ -19,13 +19,13 @@ import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
 import { playVideo, setVisited } from 'redux/terminalApp/terminalAppAction';
 import { setClaimObject, setUser, setAddress } from 'redux/user/userAction';
 import { IState } from 'redux/root/rootReducer';
+import { controllerJoinContinue } from '../actions/terminalControllerUserActions';
 import {
   controllerGotoRoot,
   controllerGoto,
   controllerAddAction,
-  controllerJoinContinue,
   controllerError,
-} from '../terminalControllerActions';
+} from '../actions/terminalControllerActions';
 import { ActionType, OptionalActions } from '../terminalControllerActionTypes';
 
 function* controllerJoinWorker() {

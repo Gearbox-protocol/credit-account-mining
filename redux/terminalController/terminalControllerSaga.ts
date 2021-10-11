@@ -2,7 +2,7 @@ import { put, takeEvery, select } from 'redux-saga/effects';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import { print, loading, inputLock } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
-import { IActionCommand, IControllerError } from './terminalControllerActions';
+import { IActionCommand, IControllerError } from './actions/terminalControllerActions';
 import { SystemActions, ActionType } from './terminalControllerActionTypes';
 
 function* controllerUserCommandWorker({ payload }: IActionCommand) {

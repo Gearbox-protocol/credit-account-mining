@@ -10,7 +10,7 @@ import { subscribe } from 'redux/subscription/subscriptionActions';
 import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
 import { setClaimObject } from 'redux/user/userAction';
 import { IState } from 'redux/root/rootReducer';
-import { controllerError, controllerGotoRoot } from '../terminalControllerActions';
+import { controllerError, controllerGotoRoot } from '../actions/terminalControllerActions';
 import { ActionType } from '../terminalControllerActionTypes';
 
 function* controllerMinedWorker() {
