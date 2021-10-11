@@ -22,15 +22,15 @@ interface IButtonPropsTypes {
 
 const Button: React.FC<IButtonPropsTypes> = ({
   title,
-  element = 'link',
-  href = '/',
-  type = 'button',
-  disabled = false,
   colorTheme,
   size,
   textSize,
   onClick,
   target,
+  element = 'link',
+  href = '/',
+  type = 'button',
+  disabled = false,
 }) => (
   <>
     {element === 'link' ? (
