@@ -7,7 +7,10 @@ import {
   watchUnsubscribe,
 } from 'redux/subscription/subscriptionSaga';
 import watchSetVisited from 'redux/terminalApp/terminalAppSaga';
-import watchControllerUserCommand from 'redux/terminalController/terminalControllerSaga';
+import {
+  watchControllerUserCommand,
+  watchControllerError,
+} from 'redux/terminalController/terminalControllerSaga';
 import watchControllerHelp from 'redux/terminalController/actionSagas/helpSaga';
 import watchControllerLinks from 'redux/terminalController/actionSagas/linksSaga';
 import {
@@ -35,6 +38,7 @@ export default function* rootSaga() {
     watchLoading(),
 
     watchControllerUserCommand(),
+    watchControllerError(),
     watchControllerHelp(),
     watchControllerLinks(),
     watchControllerJoin(),

@@ -53,11 +53,7 @@ function* controllerJoinWorker(): Generator<any, void, any> {
 
     yield put(inputLock(false));
   } catch (e: any) {
-    yield put(loading(false));
-    yield put(controllerGotoRoot());
-
-    if (e.message) yield put(print({ msg: e.message, center: false }));
-    yield put(inputLock(false));
+    yield put(controllerError({ msg: e.message, center: false }));
   }
 }
 
@@ -74,11 +70,7 @@ function* controllerIsGaryWorker(): Generator<any, void, any> {
 
     yield put(inputLock(false));
   } catch (e: any) {
-    yield put(loading(false));
-    yield put(controllerGotoRoot());
-
-    if (e.message) yield put(print({ msg: e.message, center: false }));
-    yield put(inputLock(false));
+    yield put(controllerError({ msg: e.message, center: false }));
   }
 }
 
@@ -174,15 +166,13 @@ function* watchControllerJoinAccepted() {
   yield takeEvery(ActionType.JOIN_ACCEPTED, controllerJoinAcceptedWorker);
 }
 
-function* controllerJoinDeniedWorker(): Generator<any, void, any> {
+function* controllerJoinDeniedWorker() {
   try {
     yield put(inputLock(true));
     throw new TerminalError({ code: 'DENIED_BY_USER' });
   } catch (e: any) {
-    yield put(controllerGotoRoot());
-    if (e.message) yield put(print({ msg: e.message, center: false }));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
-    yield put(inputLock(false));
+    yield put(controllerError({ msg: e.message, center: false }));
   }
 }
 

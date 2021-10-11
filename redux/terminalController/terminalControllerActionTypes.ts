@@ -3,6 +3,7 @@ enum ActionType {
   GOTO = 'GOTO',
   ADD_ACTION = 'ADD_ACTION',
   COMMAND = 'COMMAND',
+  CONTROLLER_ERROR = 'CONTROLLER_ERROR',
   HELP = 'HELP',
   JOIN = 'JOIN',
   IS_GARY = 'IS_GARY',

@@ -1,11 +1,11 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
-import { print } from 'redux/terminal/terminalAction';
+import { print, loading, inputLock } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
-import { IActionCommand } from './terminalControllerActions';
+import { IActionCommand, IControllerError, controllerGotoRoot } from './terminalControllerActions';
 import { SystemActions, ActionType } from './terminalControllerActionTypes';
 
-function* controllerUserCommandWorker({ payload }: IActionCommand): Generator<any, void, any> {
+function* controllerUserCommandWorker({ payload }: IActionCommand) {
   try {
     const {
       terminalController: { current },
@@ -35,4 +35,16 @@ function* watchControllerUserCommand() {
   yield takeEvery(ActionType.COMMAND, controllerUserCommandWorker);
 }
 
-export default watchControllerUserCommand;
+function* controllerErrorWorker({ payload: { msg, center } }: IControllerError) {
+  yield put(loading(false));
+  yield put(controllerGotoRoot());
+
+  if (msg) yield put(print({ msg, center }));
+  yield put(inputLock(false));
+}
+
+function* watchControllerError() {
+  yield takeEvery(ActionType.CONTROLLER_ERROR, controllerErrorWorker);
+}
+
+export { watchControllerUserCommand, watchControllerError };

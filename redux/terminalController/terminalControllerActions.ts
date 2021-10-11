@@ -19,6 +19,16 @@ interface IActionCommand {
   payload: string;
 }
 
+interface ErrorMessage {
+  msg: string | undefined;
+  center: boolean;
+}
+
+interface IControllerError {
+  type: ActionType.CONTROLLER_ERROR;
+  payload: ErrorMessage;
+}
+
 interface IActionHelp {
   type: ActionType.HELP;
 }
@@ -60,14 +70,19 @@ const controllerGotoRoot = (): IActionGotoRoot => ({
   type: ActionType.GOTO_ROOT,
 });
 
-const controllerAddAction = (c: OptionalActions): IAddAction => ({
+const controllerAddAction = (a: OptionalActions): IAddAction => ({
   type: ActionType.ADD_ACTION,
-  payload: c,
+  payload: a,
 });
 
 const controllerCommand = (c: string): IActionCommand => ({
   type: ActionType.COMMAND,
   payload: c,
+});
+
+const controllerError = (e: ErrorMessage): IControllerError => ({
+  type: ActionType.CONTROLLER_ERROR,
+  payload: e,
 });
 
 const controllerHelp = (): IActionHelp => ({
@@ -114,7 +129,8 @@ export type ControllerActions =
   | IActionLinks
   | IAddAction
   | IActionJoinContinue
-  | IActionIsGary;
+  | IActionIsGary
+  | IControllerError;
 export type {
   IActionGoto,
   IActionGotoRoot,
@@ -128,6 +144,7 @@ export type {
   IAddAction,
   IActionJoinContinue,
   IActionIsGary,
+  IControllerError,
 };
 export {
   controllerGotoRoot,
@@ -142,4 +159,5 @@ export {
   controllerAddAction,
   controllerJoinContinue,
   controllerIsGary,
+  controllerError,
 };

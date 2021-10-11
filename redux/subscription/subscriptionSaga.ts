@@ -60,14 +60,14 @@ function* watchUnsubscribe() {
   yield takeEvery(ActionType.UNSUBSCRIBE, unsubscribeWorker);
 }
 
-function* changeStatusWorker({ payload }: IActionChangeStatus): Generator<any, void, any> {
+function* changeStatusWorker({ payload }: IActionChangeStatus) {
   try {
     yield put(setClaimObject(null));
     yield put(setUser(null));
     yield put(setAddress(null));
-    yield put(print({ msg: errorStrings[payload], center: false }));
-    yield put(controllerGotoRoot());
+
     if (payload === 'DISCONNECTED') yield put(unsubscribe());
+    yield put(controllerError({ msg: errorStrings[payload], center: false }));
   } catch (e: any) {
     yield put(print({ msg: e, center: false }));
   }
