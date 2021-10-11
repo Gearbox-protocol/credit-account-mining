@@ -5,7 +5,7 @@ import { IState } from 'redux/root/rootReducer';
 import { IActionPrint, IActionLockInput, IActionLoading } from './terminalAction';
 import ActionType from './terminalActionTypes';
 
-function* printWorker({ payload: { msg, center } }: IActionPrint): Generator<any, void, any> {
+function* printWorker({ payload: { msg, center } }: IActionPrint) {
   try {
     const {
       terminal: { terminal },
@@ -20,7 +20,7 @@ function* watchPrint() {
   yield takeEvery(ActionType.PRINT, printWorker);
 }
 
-function* clearWorker(): Generator<any, void, any> {
+function* clearWorker() {
   try {
     const {
       terminal: { terminal },
@@ -35,7 +35,7 @@ function* watchClear() {
   yield takeEvery(ActionType.CLEAR, clearWorker);
 }
 
-function* lockWorker({ payload }: IActionLockInput): Generator<any, void, any> {
+function* lockWorker({ payload }: IActionLockInput) {
   try {
     const {
       terminal: { terminal },
@@ -50,7 +50,7 @@ function* watchLock() {
   yield takeEvery(ActionType.LOCK, lockWorker);
 }
 
-function* loadingWorker({ payload }: IActionLoading): Generator<any, void, any> {
+function* loadingWorker({ payload }: IActionLoading) {
   try {
     const {
       terminal: { terminal },

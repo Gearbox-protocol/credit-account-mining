@@ -3,7 +3,7 @@ import messages from 'utils/API/messages/messages';
 import { print } from 'redux/terminal/terminalAction';
 import { ActionType } from '../terminalControllerActionTypes';
 
-function* controllerLinksWorker(): Generator<any, void, any> {
+function* controllerLinksWorker() {
   try {
     yield put(print({ msg: messages.links, center: false }));
   } catch (e: any) {

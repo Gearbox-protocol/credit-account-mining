@@ -25,7 +25,7 @@ const handleAccountChange = () => {
   store.dispatch(changeStatus('ACCOUNT_CHANGED'));
 };
 
-function* subscribeWorker(): Generator<any, void, any> {
+function* subscribeWorker() {
   try {
     const {
       subscription: { isSubscribed },
@@ -45,7 +45,7 @@ function* watchSubscribe() {
   yield takeEvery(ActionType.SUBSCRIBE, subscribeWorker);
 }
 
-function* unsubscribeWorker(): Generator<any, void, any> {
+function* unsubscribeWorker() {
   try {
     yield put(setSubscription(false));
     window.ethereum!.removeListener!('connect', handleDisconnect);

@@ -4,7 +4,7 @@ import { print } from 'redux/terminal/terminalAction';
 import { IActionSetVisited } from './terminalAppAction';
 import ActionType from './terminalAppActionTypes';
 
-function* setVisitedWorker({ payload }: IActionSetVisited): Generator<any, void, any> {
+function* setVisitedWorker({ payload }: IActionSetVisited) {
   try {
     yield localStorage.setItem('visited', String(payload));
   } catch (e: any) {
