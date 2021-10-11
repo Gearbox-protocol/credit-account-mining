@@ -3,7 +3,10 @@ import {
 } from 'redux-saga/effects';
 import { store } from 'redux/store';
 import { setAddress, setClaimObject, setUser } from 'redux/user/userAction';
-import { controllerError } from 'redux/terminalController/terminalControllerActions';
+import {
+  controllerError,
+  controllerGotoRoot,
+} from 'redux/terminalController/terminalControllerActions';
 import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import errorStrings from 'utils/API/errors/TerminalError/error-strings';
@@ -69,6 +72,7 @@ function* changeStatusWorker({ payload }: IActionChangeStatus) {
     yield put(setAddress(null));
 
     if (payload === 'DISCONNECTED') yield put(unsubscribe());
+    yield put(controllerGotoRoot());
     yield put(controllerError({ msg: errorStrings[payload], center: false }));
   } catch (e: any) {
     yield put(print({ msg: e, center: false }));

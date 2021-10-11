@@ -8,7 +8,7 @@ import { subscribe } from 'redux/subscription/subscriptionActions';
 import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
 import { setClaimObject } from 'redux/user/userAction';
 import { IState } from 'redux/root/rootReducer';
-import { controllerError } from '../terminalControllerActions';
+import { controllerError, controllerGotoRoot } from '../terminalControllerActions';
 import { ActionType } from '../terminalControllerActionTypes';
 
 function* controllerMinedWorker() {
@@ -29,6 +29,7 @@ function* controllerMinedWorker() {
     yield put(print({ msg: messages.accountsMined(amount), center: false }));
     yield put(inputLock(false));
   } catch (e: any) {
+    yield put(controllerGotoRoot());
     yield put(controllerError({ msg: e.message, center: false }));
   }
 }

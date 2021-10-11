@@ -48,13 +48,13 @@ function* controllerJoinWorker() {
     if (!visited) {
       yield put(print({ msg: messages.notGaryQuestion, center: false }));
       yield put(setVisited(true));
-      yield localStorage.setItem('visited', 'true');
     } else {
       yield put(controllerJoinContinue());
     }
 
     yield put(inputLock(false));
   } catch (e: any) {
+    yield put(controllerGotoRoot());
     yield put(controllerError({ msg: e.message, center: false }));
   }
 }
@@ -72,6 +72,7 @@ function* controllerIsGaryWorker() {
 
     yield put(inputLock(false));
   } catch (e: any) {
+    yield put(controllerGotoRoot());
     yield put(controllerError({ msg: e.message, center: false }));
   }
 }
@@ -82,15 +83,15 @@ function* watchControllerIsGary() {
 
 function* controllerJoinContinueWorker() {
   try {
+    yield put(inputLock(true));
     yield put(controllerGoto('notGary'));
+
     const {
       user: { claimObject, user, address },
       subscription: { statusChanged },
     } = (yield select()) as IState;
     if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR' });
-
-    yield put(inputLock(true));
 
     yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
     const safeUser: User = yield checkPermissions(address);
@@ -105,8 +106,9 @@ function* controllerJoinContinueWorker() {
 
     yield put(inputLock(false));
   } catch (e: any) {
-    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
+    yield put(controllerGotoRoot());
     yield put(controllerError({ msg: e.message, center: false }));
+    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
 
@@ -116,6 +118,8 @@ function* watchControllerJoinContinue() {
 
 function* controllerJoinAcceptedWorker() {
   try {
+    yield put(inputLock(true));
+
     const {
       user: { claimObject, user },
       subscription: { isSubscribed, statusChanged },
@@ -125,7 +129,6 @@ function* controllerJoinAcceptedWorker() {
     }
     if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
 
-    yield put(inputLock(true));
     yield put(loading(true));
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(
       claimObject,
@@ -145,8 +148,9 @@ function* controllerJoinAcceptedWorker() {
     yield put(inputLock(false));
     yield put(controllerGotoRoot());
   } catch (e: any) {
-    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
+    yield put(controllerGotoRoot());
     yield put(controllerError({ msg: e.message, center: false }));
+    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
 
@@ -159,8 +163,9 @@ function* controllerJoinDeniedWorker() {
     yield put(inputLock(true));
     throw new TerminalError({ code: 'DENIED_BY_USER' });
   } catch (e: any) {
-    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
+    yield put(controllerGotoRoot());
     yield put(controllerError({ msg: e.message, center: false }));
+    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
 
