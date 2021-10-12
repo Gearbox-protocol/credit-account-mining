@@ -78,7 +78,7 @@ function* controllerIsGaryWorker() {
 }
 
 function* watchControllerIsGary() {
-  yield takeEvery(ActionType.IS_GARY, controllerIsGaryWorker);
+  yield takeEvery([ActionType.IS_GARY], cancelOnStatusChange(controllerIsGaryWorker));
 }
 
 function* controllerJoinContinueWorker() {
