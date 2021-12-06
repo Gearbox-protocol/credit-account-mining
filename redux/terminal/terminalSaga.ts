@@ -5,14 +5,14 @@ import { IState } from 'redux/root/rootReducer';
 import { IActionPrint, IActionLockInput, IActionLoading } from './terminalAction';
 import ActionType from './terminalActionTypes';
 
-function* printWorker({ payload: { msg, center } }: IActionPrint) {
+function* printWorker({ payload: { msg, center = false } }: IActionPrint) {
   try {
     const {
       terminal: { terminal },
     } = (yield select()) as IState;
-    terminal?.print(msg, center);
+    yield terminal?.print(msg, center);
   } catch (e: any) {
-    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
+    yield console.error(errorStrings.UNEXPECTED_ERROR);
   }
 }
 
@@ -25,9 +25,9 @@ function* clearWorker() {
     const {
       terminal: { terminal },
     } = (yield select()) as IState;
-    terminal?.clear();
+    yield terminal?.clear();
   } catch (e: any) {
-    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
+    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR }));
   }
 }
 
@@ -40,9 +40,9 @@ function* lockWorker({ payload }: IActionLockInput) {
     const {
       terminal: { terminal },
     } = (yield select()) as IState;
-    terminal?.inputLock(payload);
+    yield terminal?.inputLock(payload);
   } catch (e: any) {
-    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
+    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR }));
   }
 }
 
@@ -55,13 +55,9 @@ function* loadingWorker({ payload }: IActionLoading) {
     const {
       terminal: { terminal },
     } = (yield select()) as IState;
-    if (payload) {
-      terminal?.startLoading();
-    } else {
-      terminal?.endLoading();
-    }
+    yield terminal?.setLoading(payload);
   } catch (e: any) {
-    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
+    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR }));
   }
 }
 

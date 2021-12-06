@@ -21,7 +21,7 @@ interface IActionCommand {
 
 interface ErrorMessage {
   msg: string | undefined;
-  center: boolean;
+  center?: boolean;
 }
 
 interface IControllerError {

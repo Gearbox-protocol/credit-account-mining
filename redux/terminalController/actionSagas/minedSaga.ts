@@ -29,11 +29,11 @@ function* controllerMinedWorker() {
     if (!claimObject) yield put(setClaimObject(safeClaim));
     yield put(loading(false));
 
-    yield put(print({ msg: messages.accountsMined(amount), center: false }));
+    yield put(print({ msg: messages.accountsMined(amount) }));
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message, center: false }));
+    yield put(controllerError({ msg: e.message }));
   }
 }
 

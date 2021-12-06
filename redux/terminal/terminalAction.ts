@@ -8,7 +8,7 @@ interface IActionSetTerminal {
 
 interface IPrintItem {
   msg: string;
-  center: boolean;
+  center?: boolean;
 }
 
 interface IActionPrint {

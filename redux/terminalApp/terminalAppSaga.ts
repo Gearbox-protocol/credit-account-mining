@@ -8,7 +8,7 @@ function* setVisitedWorker({ payload }: IActionSetVisited) {
   try {
     yield call(localStorage.setItem, 'visited', String(payload));
   } catch (e: any) {
-    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
+    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR }));
   }
 }
 

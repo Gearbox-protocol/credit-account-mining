@@ -42,7 +42,7 @@ function* subscribeWorker() {
     window.ethereum!.on!('accountsChanged', handleAccountChange);
     window.ethereum!.on!('chainChanged', handleChainChange);
   } catch (e: any) {
-    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
+    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR }));
   }
 }
 
@@ -57,7 +57,7 @@ function* unsubscribeWorker() {
     window.ethereum!.removeListener!('accountsChanged', handleAccountChange);
     window.ethereum!.removeListener!('chainChanged', handleChainChange);
   } catch (e: any) {
-    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR, center: false }));
+    yield put(print({ msg: errorStrings.UNEXPECTED_ERROR }));
   }
 }
 
@@ -73,9 +73,9 @@ function* changeStatusWorker({ payload }: IActionChangeStatus) {
 
     if (payload === 'DISCONNECTED') yield put(unsubscribe());
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: errorStrings[payload], center: false }));
+    yield put(controllerError({ msg: errorStrings[payload] }));
   } catch (e: any) {
-    yield put(print({ msg: e, center: false }));
+    yield put(print({ msg: e }));
   }
 }
 

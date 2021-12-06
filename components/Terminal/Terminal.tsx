@@ -17,8 +17,7 @@ interface ITerminalObject {
   print: (output: any, center: any) => void;
   destroy: () => void;
   inputLock: (lock: any) => any;
-  startLoading: () => void;
-  endLoading: () => void;
+  setLoading: (status: boolean) => void;
 }
 
 const Terminal: React.FC<ITerminalProps> = ({ onCommand, banner, prompt }) => {

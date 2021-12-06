@@ -39,14 +39,14 @@ function* controllerJoinWorker() {
     yield put(loading(false));
 
     yield put(setAddress(address));
-    yield put(print({ msg: messages.metamaskConnected, center: false }));
+    yield put(print({ msg: messages.metamaskConnected }));
     yield put(controllerGoto('isGaryQuestion'));
 
     const {
       terminalApp: { visited },
     } = (yield select()) as IState;
     if (!visited) {
-      yield put(print({ msg: messages.isGaryQuestion, center: false }));
+      yield put(print({ msg: messages.isGaryQuestion }));
       yield put(setVisited(true));
     } else {
       yield put(controllerJoinContinue());
@@ -55,7 +55,7 @@ function* controllerJoinWorker() {
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message, center: false }));
+    yield put(controllerError({ msg: e.message }));
   }
 }
 
@@ -67,13 +67,13 @@ function* controllerIsGaryWorker() {
   try {
     yield put(inputLock(true));
 
-    yield put(print({ msg: messages.isGary, center: false }));
+    yield put(print({ msg: messages.isGary }));
     yield put(controllerJoinContinue());
 
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message, center: false }));
+    yield put(controllerError({ msg: e.message }));
   }
 }
 
@@ -93,21 +93,21 @@ function* controllerJoinContinueWorker() {
     if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
     if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR' });
 
-    yield put(print({ msg: messages.permissionCheckingStarted, center: false }));
+    yield put(print({ msg: messages.permissionCheckingStarted }));
     const safeUser: User = yield call(checkPermissions, address);
-    yield put(print({ msg: messages.amountOfMineAccounts, center: false }));
+    yield put(print({ msg: messages.amountOfMineAccounts }));
 
     const safeClaim: IClaimObject = yield call(isClaimed, claimObject || {}, safeUser);
     if (!claimObject) yield put(setClaimObject(safeClaim));
     if (!user) yield put(setUser(safeUser));
 
     yield put(controllerGoto('choice'));
-    yield put(print({ msg: messages.claim, center: false }));
+    yield put(print({ msg: messages.claim }));
 
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message, center: false }));
+    yield put(controllerError({ msg: e.message }));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
@@ -135,13 +135,13 @@ function* controllerJoinAcceptedWorker() {
       user,
     );
     yield put(loading(false));
-    yield put(print({ msg: messages.almostDone, center: false }));
+    yield put(print({ msg: messages.almostDone }));
 
     yield put(loading(true));
     yield call(waitTransactionEnd, transaction);
     yield put(loading(false));
 
-    yield put(print({ msg: messages.yourHash(hash), center: false }));
+    yield put(print({ msg: messages.yourHash(hash) }));
     yield delay(8000);
     yield put(playVideo(true));
 
@@ -149,7 +149,7 @@ function* controllerJoinAcceptedWorker() {
     yield put(controllerGotoRoot());
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message, center: false }));
+    yield put(controllerError({ msg: e.message }));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
@@ -164,7 +164,7 @@ function* controllerJoinDeniedWorker() {
     throw new TerminalError({ code: 'DENIED_BY_USER' });
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message, center: false }));
+    yield put(controllerError({ msg: e.message }));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }

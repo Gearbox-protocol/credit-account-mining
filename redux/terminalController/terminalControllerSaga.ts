@@ -27,7 +27,7 @@ function* controllerUserCommandWorker({ payload }: IActionCommand) {
       throw new TerminalError({ code: 'COMMAND_NOT_FOUND' });
     }
   } catch (e: any) {
-    yield put(print({ msg: e.message, center: false }));
+    yield put(print({ msg: e.message }));
   }
 }
 
@@ -35,7 +35,7 @@ function* watchControllerUserCommand() {
   yield takeEvery(ActionType.COMMAND, controllerUserCommandWorker);
 }
 
-function* controllerErrorWorker({ payload: { msg, center } }: IControllerError) {
+function* controllerErrorWorker({ payload: { msg, center = false } }: IControllerError) {
   yield put(loading(false));
   if (msg) yield put(print({ msg, center }));
   yield put(inputLock(false));

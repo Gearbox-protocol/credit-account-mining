@@ -5,9 +5,9 @@ import { ActionType } from '../terminalControllerActionTypes';
 
 function* controllerLinksWorker() {
   try {
-    yield put(print({ msg: messages.links, center: false }));
+    yield put(print({ msg: messages.links }));
   } catch (e: any) {
-    yield put(print({ msg: e, center: false }));
+    yield put(print({ msg: e }));
   }
 }
 

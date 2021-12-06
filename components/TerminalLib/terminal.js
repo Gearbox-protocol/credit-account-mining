@@ -174,8 +174,9 @@ class Loader {
     this._count = 0;
     this._loadingSymbol = loadingSymbol || '.';
 
-    this.startLoading = this.startLoading.bind(this);
-    this.endLoading = this.endLoading.bind(this);
+    this._startLoading = this._startLoading.bind(this);
+    this._endLoading = this._endLoading.bind(this);
+    this.setLoading = this.setLoading.bind(this);
     this.isLoading = this.isLoading.bind(this);
     this._clearLoading = this._clearLoading.bind(this);
     this._addDot = this._addDot.bind(this);
@@ -199,7 +200,7 @@ class Loader {
     return this._loading;
   }
 
-  startLoading() {
+  _startLoading() {
     if (this._loading) return;
     this._loading = true;
 
@@ -214,12 +215,20 @@ class Loader {
     }, 1000);
   }
 
-  endLoading() {
+  _endLoading() {
     if (!this._loading) return;
     this._loading = false;
 
     if (this._count === 0) return;
     this._clearLoading();
+  }
+
+  setLoading(status) {
+    if (status === true) {
+      this._startLoading();
+    } else {
+      this._endLoading();
+    }
   }
 }
 
@@ -239,7 +248,7 @@ export const terminal = (opts) => {
   const loader = new Loader($element);
 
   const output = (output, center) => {
-    if (loader.isLoading()) loader.endLoading();
+    if (loader.isLoading()) loader.setLoading(false);
 
     let lines = output.split(/\n/);
     if (center) {
@@ -293,7 +302,6 @@ export const terminal = (opts) => {
     print: output,
     destroy,
     inputLock,
-    startLoading: loader.startLoading,
-    endLoading: loader.endLoading,
+    setLoading: loader.setLoading,
   };
 };

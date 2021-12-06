@@ -5,9 +5,9 @@ import { ActionType } from '../terminalControllerActionTypes';
 
 function* controllerHelpWorker() {
   try {
-    yield put(print({ msg: messages.helpText, center: false }));
+    yield put(print({ msg: messages.helpText }));
   } catch (e: any) {
-    yield put(print({ msg: e, center: false }));
+    yield put(print({ msg: e }));
   }
 }
 
