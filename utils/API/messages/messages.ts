@@ -83,7 +83,7 @@ const messages = {
   Accounts mined: ${n}
   `,
 
-  notGaryQuestion: `
+  isGaryQuestion: `
   Is your name GARY by any chance? Please confirm this is NOT the case by typing ${Prefix.PREFIX}${MineChoiceActions.NO}.
   `,
   isGary: `

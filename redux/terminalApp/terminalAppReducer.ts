@@ -10,11 +10,19 @@ interface ITerminalAppState extends DefaultRootState {
   visited: boolean;
 }
 
+const isVisited = () => {
+  try {
+    return localStorage.getItem('visited') === 'true';
+  } catch {
+    return false;
+  }
+};
+
 const terminalAppDefaultState = {
   appLoading: false,
   appHydrated: false,
   playVideo: false,
-  visited: typeof localStorage !== 'undefined' && localStorage.getItem('visited') === 'true',
+  visited: isVisited(),
 };
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (

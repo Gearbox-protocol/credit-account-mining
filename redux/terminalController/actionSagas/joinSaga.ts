@@ -40,13 +40,13 @@ function* controllerJoinWorker() {
 
     yield put(setAddress(address));
     yield put(print({ msg: messages.metamaskConnected, center: false }));
-    yield put(controllerGoto('notGaryQuestion'));
+    yield put(controllerGoto('isGaryQuestion'));
 
     const {
       terminalApp: { visited },
     } = (yield select()) as IState;
     if (!visited) {
-      yield put(print({ msg: messages.notGaryQuestion, center: false }));
+      yield put(print({ msg: messages.isGaryQuestion, center: false }));
       yield put(setVisited(true));
     } else {
       yield put(controllerJoinContinue());

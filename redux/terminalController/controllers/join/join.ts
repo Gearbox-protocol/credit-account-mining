@@ -23,7 +23,7 @@ const notGary: Controller = {
   children: { choice },
 };
 
-const notGaryQuestion: Controller = {
+const isGaryQuestion: Controller = {
   userActions: {
     [MineChoiceActions.NO]: controllerJoinContinue,
     [SystemActions.DEFAULT_ACTION]: controllerIsGary,
@@ -33,7 +33,7 @@ const notGaryQuestion: Controller = {
 
 const join: Controller = {
   children: {
-    notGaryQuestion,
+    isGaryQuestion,
   },
 };
 
