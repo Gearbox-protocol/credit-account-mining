@@ -1,21 +1,4 @@
-import errorStrings from './error-strings';
-
-type TerminalErrorCodes =
-  | 'COMMAND_NOT_FOUND'
-  | 'NO_METAMASK'
-  | 'METAMASK_NOT_CONNECTED'
-  | 'METAMASK_WRONG_NETWORK'
-  | 'NO_GEARBOX_NETWORK'
-  | 'METAMASK_RELOGIN'
-  | 'GET_ADDRESS_FAILED'
-  | 'PERMISSION_DENIED'
-  | 'ALREADY_CLAIMED'
-  | 'DENIED_BY_USER'
-  | 'ACCOUNT_CHANGED'
-  | 'CHAIN_CHANGED'
-  | 'DISCONNECTED'
-  | 'UNEXPECTED_ERROR'
-  | 'ACTION_ABORTED';
+import errorStrings, { TerminalErrorCodes } from './error-strings';
 
 interface ITerminalErrorProps {
   code: TerminalErrorCodes;

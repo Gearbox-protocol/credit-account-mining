@@ -2,9 +2,25 @@ import {
   RootControllerActions,
   OptionalActions,
 } from 'redux/terminalController/terminalControllerActionTypes';
-import { TerminalErrorCodes } from 'utils/API/errors/TerminalError/TerminalError';
 import { Prefix } from '../../messages/messages';
 import notFoundStrings from './notfound-strings';
+
+type TerminalErrorCodes =
+  | 'COMMAND_NOT_FOUND'
+  | 'NO_METAMASK'
+  | 'METAMASK_NOT_CONNECTED'
+  | 'METAMASK_WRONG_NETWORK'
+  | 'NO_GEARBOX_NETWORK'
+  | 'METAMASK_RELOGIN'
+  | 'GET_ADDRESS_FAILED'
+  | 'PERMISSION_DENIED'
+  | 'ALREADY_CLAIMED'
+  | 'DENIED_BY_USER'
+  | 'ACCOUNT_CHANGED'
+  | 'CHAIN_CHANGED'
+  | 'DISCONNECTED'
+  | 'UNEXPECTED_ERROR'
+  | 'ACTION_ABORTED';
 
 const errorStrings: Record<TerminalErrorCodes, string> = {
   get COMMAND_NOT_FOUND() {
@@ -60,4 +76,5 @@ const errorStrings: Record<TerminalErrorCodes, string> = {
   ACTION_ABORTED: '',
 };
 
+export type { TerminalErrorCodes };
 export default errorStrings;
