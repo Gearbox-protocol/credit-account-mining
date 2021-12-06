@@ -7,6 +7,12 @@ enum Prefix {
   PREFIX = '>',
 }
 
+enum Links {
+  ABOUT = '<>link<>',
+  WALLETS_TO_PARTICIPATE = '<>link<>',
+  CLAIM = '<>link<>',
+}
+
 const messages = {
   banner: `
 
@@ -25,7 +31,7 @@ const messages = {
 
         Once this stage is completed, the community is taking over Credit Account primitive 
                                   and the control over the codebase. 
-                  Read all about launch phases and how that is achieved: <>link<>
+                  Read all about launch phases and how that is achieved: ${Links.ABOUT}
                        
                        YOU will be in charge of what Gearbox shall become.
                        
@@ -53,7 +59,7 @@ const messages = {
   `,
   permissionCheckingStarted: `
   ...the machine is checking if you are in the snapshot...
-  Learn more about which wallets are allowed to participate: <>link<>
+  Learn more about which wallets are allowed to participate: ${Links.WALLETS_TO_PARTICIPATE}
   `,
   amountOfMineAccounts: `
   You have 1 credit accounts to mine
@@ -63,7 +69,7 @@ const messages = {
 
   Just to make sure once again… you understand what’s about to happen, right? 
 
-  If no, then check this article for complete information: <>link<>
+  If no, then check this article for complete information: ${Links.CLAIM}
 
   Ok, now maybe ${Prefix.PREFIX}${MineChoiceActions.YES} then!
   `,
@@ -91,5 +97,5 @@ const messages = {
   `,
 };
 
-export { Prefix };
+export { Prefix, Links };
 export default messages;
