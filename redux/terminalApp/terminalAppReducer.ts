@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
+import { isVisited } from 'utils/API/visited/visited';
 import { TerminalAppActions } from './terminalAppAction';
 import ActionType from './terminalAppActionTypes';
 
@@ -9,14 +10,6 @@ interface ITerminalAppState extends DefaultRootState {
   appHydrated: boolean;
   visited: boolean;
 }
-
-const isVisited = () => {
-  try {
-    return localStorage.getItem('visited') === 'true';
-  } catch {
-    return false;
-  }
-};
 
 const terminalAppDefaultState = {
   appLoading: false,
