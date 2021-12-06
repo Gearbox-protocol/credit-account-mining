@@ -19,16 +19,6 @@ interface IActionCommand {
   payload: string;
 }
 
-interface ErrorMessage {
-  msg: string | undefined;
-  center?: boolean;
-}
-
-interface IControllerError {
-  type: ActionType.CONTROLLER_ERROR;
-  payload: ErrorMessage;
-}
-
 const controllerGoto = (t: string): IActionGoto => ({
   type: ActionType.GOTO,
   payload: t,
@@ -48,24 +38,10 @@ const controllerCommand = (c: string): IActionCommand => ({
   payload: c,
 });
 
-const controllerError = (e: ErrorMessage): IControllerError => ({
-  type: ActionType.CONTROLLER_ERROR,
-  payload: e,
-});
-
-export type ControllerActions =
-  | IActionGoto
-  | IActionGotoRoot
-  | IActionCommand
-  | IAddAction
-  | IControllerError;
+export type ControllerActions = IActionGoto | IActionGotoRoot | IActionCommand | IAddAction;
 export type {
-  IActionGoto, IActionGotoRoot, IActionCommand, IAddAction, IControllerError,
+  IActionGoto, IActionGotoRoot, IActionCommand, IAddAction,
 };
 export {
-  controllerGotoRoot,
-  controllerGoto,
-  controllerCommand,
-  controllerAddAction,
-  controllerError,
+  controllerGotoRoot, controllerGoto, controllerCommand, controllerAddAction,
 };

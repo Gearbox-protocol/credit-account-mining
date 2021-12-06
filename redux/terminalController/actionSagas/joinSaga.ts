@@ -24,7 +24,6 @@ import {
   controllerGotoRoot,
   controllerGoto,
   controllerAddAction,
-  controllerError,
 } from '../actions/terminalControllerActions';
 import { ActionType, OptionalActions } from '../terminalControllerActionTypes';
 
@@ -55,7 +54,9 @@ function* controllerJoinWorker() {
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message }));
+    yield put(loading(false));
+    yield put(print({ msg: e.message }));
+    yield put(inputLock(false));
   }
 }
 
@@ -73,7 +74,9 @@ function* controllerIsGaryWorker() {
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message }));
+    yield put(loading(false));
+    yield put(print({ msg: e.message }));
+    yield put(inputLock(false));
   }
 }
 
@@ -107,7 +110,9 @@ function* controllerJoinContinueWorker() {
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message }));
+    yield put(loading(false));
+    yield put(print({ msg: e.message }));
+    yield put(inputLock(false));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
@@ -149,7 +154,9 @@ function* controllerJoinAcceptedWorker() {
     yield put(controllerGotoRoot());
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message }));
+    yield put(loading(false));
+    yield put(print({ msg: e.message }));
+    yield put(inputLock(false));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
@@ -164,7 +171,9 @@ function* controllerJoinDeniedWorker() {
     throw new TerminalError({ code: 'DENIED_BY_USER' });
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message }));
+    yield put(loading(false));
+    yield put(print({ msg: e.message }));
+    yield put(inputLock(false));
     if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }

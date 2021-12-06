@@ -10,7 +10,7 @@ import { subscribe } from 'redux/subscription/subscriptionActions';
 import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
 import { setClaimObject } from 'redux/user/userAction';
 import { IState } from 'redux/root/rootReducer';
-import { controllerError, controllerGotoRoot } from '../actions/terminalControllerActions';
+import { controllerGotoRoot } from '../actions/terminalControllerActions';
 import { ActionType } from '../terminalControllerActionTypes';
 
 function* controllerMinedWorker() {
@@ -33,7 +33,9 @@ function* controllerMinedWorker() {
     yield put(inputLock(false));
   } catch (e: any) {
     yield put(controllerGotoRoot());
-    yield put(controllerError({ msg: e.message }));
+    yield put(loading(false));
+    yield put(print({ msg: e.message }));
+    yield put(inputLock(false));
   }
 }
 
