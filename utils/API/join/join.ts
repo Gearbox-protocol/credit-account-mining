@@ -15,9 +15,7 @@ interface User {
   proof: string[];
 }
 
-interface ClaimsInfo {
-  [accountAddress: string]: User;
-}
+type ClaimsInfo = Record<string, User>;
 
 interface IClaimObject {
   miningAccount: AccountMining;
@@ -25,8 +23,10 @@ interface IClaimObject {
   signer: ethers.providers.JsonRpcSigner;
 }
 
+const keyFromAddress = (address: string) => address.slice(2, 4);
+
 const getClaims = async (address: string): Promise<ClaimsInfo> => {
-  console.log(address);
+  console.log(keyFromAddress(address));
   const claims = {} as ClaimsInfo;
   return claims;
 };
@@ -73,5 +73,5 @@ export type {
   IClaimObject, User, MerkleDistributorInfo, ClaimsInfo,
 };
 export {
-  checkPermissions, isClaimed, claim, waitTransactionEnd,
+  checkPermissions, isClaimed, claim, waitTransactionEnd, keyFromAddress,
 };
