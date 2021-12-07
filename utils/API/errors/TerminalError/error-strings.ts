@@ -10,7 +10,6 @@ type TerminalErrorCodes =
   | 'NO_METAMASK'
   | 'METAMASK_NOT_CONNECTED'
   | 'METAMASK_WRONG_NETWORK'
-  | 'NO_GEARBOX_NETWORK'
   | 'METAMASK_RELOGIN'
   | 'GET_ADDRESS_FAILED'
   | 'PERMISSION_DENIED'
@@ -34,9 +33,6 @@ const errorStrings: Record<TerminalErrorCodes, string> = {
   `,
   METAMASK_WRONG_NETWORK: `
   Please switch to Mainnet.
-  `,
-  NO_GEARBOX_NETWORK: `
-  Target network not specified
   `,
   METAMASK_RELOGIN: `
   Log in and try again

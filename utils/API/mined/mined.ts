@@ -2,7 +2,7 @@ import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
 import { IClaimObject } from 'utils/API/join/join';
-import distributorInfo from 'utils/accounts/distributor-info';
+import { distributorInfo } from 'config/config';
 
 const countClaims = async (claimObj: Partial<IClaimObject>) => {
   const { contract } = distributorInfo;

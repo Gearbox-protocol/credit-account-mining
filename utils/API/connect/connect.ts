@@ -1,5 +1,6 @@
 import { utils } from 'ethers';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
+import { network } from 'config/config';
 
 const { isAddress, getAddress } = utils;
 
@@ -14,11 +15,6 @@ const connectMetamask = async () => {
   }
   if (!accounts) {
     throw new TerminalError({ code: 'METAMASK_RELOGIN' });
-  }
-
-  const network = process.env.NEXT_PUBLIC_GEARBOX_NETWORK;
-  if (!network) {
-    throw new TerminalError({ code: 'NO_GEARBOX_NETWORK' });
   }
 
   if (window.ethereum.networkVersion !== network) {
