@@ -1,5 +1,7 @@
 /// <reference types="react-scripts" />
 
+declare module 'crt-terminal';
+
 interface Window {
   ethereum?: {
     isMetaMask?: true;

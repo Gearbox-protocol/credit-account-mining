@@ -81,9 +81,5 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
   await transaction.wait();
 };
 
-export type {
-  IClaimObject, User, MerkleDistributorInfo, ClaimsInfo,
-};
-export {
-  checkPermissions, isClaimed, claim, waitTransactionEnd, keyFromAddress, filename,
-};
+export type { IClaimObject, User, MerkleDistributorInfo, ClaimsInfo };
+export { checkPermissions, isClaimed, claim, waitTransactionEnd, keyFromAddress, filename };

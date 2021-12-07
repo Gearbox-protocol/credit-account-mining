@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-
+import { terminal } from 'crt-terminal';
 import { useDispatch } from 'react-redux';
 import { setTerminal } from 'redux/terminal/terminalAction';
-import { terminal } from 'components/TerminalLib/terminal';
 
 interface ITerminalProps {
   banner: string;
