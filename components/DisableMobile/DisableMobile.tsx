@@ -2,7 +2,6 @@ import React from 'react';
 import { isMobile } from 'react-device-detect';
 import Block from 'components/Block/Block';
 import Button from 'components/Button/Button';
-import goBack from 'utils/text/buttons';
 import * as Styled from './DisableMobile.styled';
 
 const DisableMobile: React.FC = ({ children }) => (
@@ -16,7 +15,7 @@ const DisableMobile: React.FC = ({ children }) => (
               Apologies for the inconvenience.
             </Styled.Text>
           </Styled.TextWrap>
-          <Button title={goBack.title} href={goBack.href} />
+          <Button title="Go back to website" href="https://app.beta.gearbox.fi/" />
         </Styled.DisableWrap>
       </Block>
     )}
