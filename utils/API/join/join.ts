@@ -1,8 +1,9 @@
 import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
+import path from 'path';
+import { claimsRoute, distributorInfo } from 'config/config';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
-import distributorInfo from 'utils/accounts/distributor-info';
 
 interface MerkleDistributorInfo {
   merkleRoot: string;
@@ -24,10 +25,21 @@ interface IClaimObject {
 }
 
 const keyFromAddress = (address: string) => address.slice(2, 4);
+const filename = (key: string) => `${key}.json`;
 
 const getClaims = async (address: string): Promise<ClaimsInfo> => {
-  console.log(keyFromAddress(address));
-  const claims = {} as ClaimsInfo;
+  const key = keyFromAddress(address);
+  const file = filename(key);
+  const filePath = path.join(claimsRoute, file);
+
+  const resp = await fetch(filePath);
+  if (!resp.ok) {
+    throw new TerminalError({
+      code: 'UNEXPECTED_ERROR',
+      details: `Response with status: ${resp.status}`,
+    });
+  }
+  const claims: ClaimsInfo = await resp.json();
   return claims;
 };
 
@@ -73,5 +85,5 @@ export type {
   IClaimObject, User, MerkleDistributorInfo, ClaimsInfo,
 };
 export {
-  checkPermissions, isClaimed, claim, waitTransactionEnd, keyFromAddress,
+  checkPermissions, isClaimed, claim, waitTransactionEnd, keyFromAddress, filename,
 };

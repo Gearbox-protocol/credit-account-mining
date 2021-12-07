@@ -96,7 +96,7 @@ function* controllerJoinContinueWorker() {
       subscription: { statusChanged },
     } = (yield select()) as IState;
     if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
-    if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR' });
+    if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR', details: 'No adress' });
 
     yield put(print({ msg: messages.permissionCheckingStarted }));
     const safeUser: User = yield call(checkPermissions, address);
