@@ -4,9 +4,21 @@ import { ethers } from 'ethers';
 import { getTypedError } from 'utils/API/errors/error-hub';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import distributorInfo from 'utils/accounts/distributor-info';
-import { MerkleDistributorInfo } from 'utils/merkle/parse-accounts';
 
-type User = MerkleDistributorInfo['claims']['string'];
+interface MerkleDistributorInfo {
+  merkleRoot: string;
+  contract: string;
+}
+
+interface User {
+  index: number;
+  salt: string;
+  proof: string[];
+}
+
+interface ClaimsInfo {
+  [accountAddress: string]: User;
+}
 
 interface IClaimObject {
   miningAccount: AccountMining;
@@ -14,14 +26,21 @@ interface IClaimObject {
   signer: ethers.providers.JsonRpcSigner;
 }
 
-const checkPermissions = (address: string): User => {
-  if (!(address in distributorInfo.claims)) {
-    throw new TerminalError({ code: 'PERMISSION_DENIED' });
-  }
-  return distributorInfo.claims[address];
+const getClaims = async (address: string): Promise<ClaimsInfo> => {
+  console.log(address);
+  const claims = {} as ClaimsInfo;
+  return claims;
 };
 
-const isClaimed = async (claimObj: Partial<IClaimObject>, user: User) => {
+const checkPermissions = async (address: string): Promise<User> => {
+  const claims = await getClaims(address);
+  if (!(address in claims)) {
+    throw new TerminalError({ code: 'PERMISSION_DENIED' });
+  }
+  return claims[address];
+};
+
+const isClaimed = async (claimObj: Partial<IClaimObject>, { index }: User) => {
   try {
     const { contract } = distributorInfo;
     const {
@@ -30,7 +49,7 @@ const isClaimed = async (claimObj: Partial<IClaimObject>, user: User) => {
       miningAccount = <AccountMining>AccountMining__factory.connect(contract, signer),
     } = claimObj;
 
-    const claimed = await miningAccount.isClaimed(user.index);
+    const claimed = await miningAccount.isClaimed(index);
     if (claimed) {
       throw new TerminalError({ code: 'ALREADY_CLAIMED' });
     }
@@ -63,7 +82,5 @@ const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
   }
 };
 
-export type { IClaimObject, User };
-export {
-  checkPermissions, isClaimed, claim, waitTransactionEnd,
-};
+export type { IClaimObject, User, MerkleDistributorInfo, ClaimsInfo };
+export { checkPermissions, isClaimed, claim, waitTransactionEnd };
