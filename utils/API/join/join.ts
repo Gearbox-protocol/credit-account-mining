@@ -1,7 +1,6 @@
 import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
 import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
-import { getTypedError } from 'utils/API/errors/error-hub';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 import distributorInfo from 'utils/accounts/distributor-info';
 
@@ -41,46 +40,38 @@ const checkPermissions = async (address: string): Promise<User> => {
 };
 
 const isClaimed = async (claimObj: Partial<IClaimObject>, { index }: User) => {
-  try {
-    const { contract } = distributorInfo;
-    const {
-      provider = new ethers.providers.Web3Provider(window.ethereum!),
-      signer = provider.getSigner(),
-      miningAccount = <AccountMining>AccountMining__factory.connect(contract, signer),
-    } = claimObj;
+  const { contract } = distributorInfo;
+  const {
+    provider = new ethers.providers.Web3Provider(window.ethereum!),
+    signer = provider.getSigner(),
+    miningAccount = <AccountMining>AccountMining__factory.connect(contract, signer),
+  } = claimObj;
 
-    const claimed = await miningAccount.isClaimed(index);
-    if (claimed) {
-      throw new TerminalError({ code: 'ALREADY_CLAIMED' });
-    }
-
-    const claimObject: IClaimObject = {
-      miningAccount,
-      provider,
-      signer,
-    };
-    return claimObject;
-  } catch (e: any) {
-    throw getTypedError(e);
+  const claimed = await miningAccount.isClaimed(index);
+  if (claimed) {
+    throw new TerminalError({ code: 'ALREADY_CLAIMED' });
   }
+
+  const claimObject: IClaimObject = {
+    miningAccount,
+    provider,
+    signer,
+  };
+  return claimObject;
 };
 
 const claim = async ({ miningAccount }: IClaimObject, { index, salt, proof }: User) => {
-  try {
-    const res = await miningAccount.claim(index, salt, proof);
-    return [res, res.hash];
-  } catch (e: any) {
-    throw getTypedError(e);
-  }
+  const res = await miningAccount.claim(index, salt, proof);
+  return [res, res.hash];
 };
 
 const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {
-  try {
-    await transaction.wait();
-  } catch (e: any) {
-    throw getTypedError(e);
-  }
+  await transaction.wait();
 };
 
-export type { IClaimObject, User, MerkleDistributorInfo, ClaimsInfo };
-export { checkPermissions, isClaimed, claim, waitTransactionEnd };
+export type {
+  IClaimObject, User, MerkleDistributorInfo, ClaimsInfo,
+};
+export {
+  checkPermissions, isClaimed, claim, waitTransactionEnd,
+};

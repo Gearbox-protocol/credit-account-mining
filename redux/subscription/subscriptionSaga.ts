@@ -6,7 +6,7 @@ import { setAddress, setClaimObject, setUser } from 'redux/user/userAction';
 import { controllerGotoRoot } from 'redux/terminalController/actions/terminalControllerActions';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
-import errorStrings from 'utils/API/errors/TerminalError/error-strings';
+import { getTypedError, errorStrings, TerminalError } from 'utils/API/errors/error-hub';
 import {
   changeStatus,
   setSubscription,
@@ -74,7 +74,8 @@ function* changeStatusWorker({ payload }: IActionChangeStatus) {
     yield put(print({ msg: errorStrings[payload] }));
     yield put(inputLock(false));
   } catch (e: any) {
-    yield put(print({ msg: e }));
+    const { message }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
   }
 }
 

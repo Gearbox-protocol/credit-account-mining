@@ -1,5 +1,7 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
-import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
+import {
+  put, call, takeEvery, select,
+} from 'redux-saga/effects';
+import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
 import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import { IActionCommand } from './actions/terminalControllerActions';
@@ -27,7 +29,8 @@ function* controllerUserCommandWorker({ payload }: IActionCommand) {
       throw new TerminalError({ code: 'COMMAND_NOT_FOUND' });
     }
   } catch (e: any) {
-    yield put(print({ msg: e.message }));
+    const { message }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
   }
 }
 

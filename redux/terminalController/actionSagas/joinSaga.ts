@@ -3,7 +3,7 @@ import {
   put, takeEvery, select, delay, call,
 } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
-import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
+import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
 import connectMetamask from 'utils/API/connect/connect';
 import {
   checkPermissions,
@@ -55,7 +55,8 @@ function* controllerJoinWorker() {
   } catch (e: any) {
     yield put(controllerGotoRoot());
     yield put(loading(false));
-    yield put(print({ msg: e.message }));
+    const { message }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
     yield put(inputLock(false));
   }
 }
@@ -75,7 +76,8 @@ function* controllerIsGaryWorker() {
   } catch (e: any) {
     yield put(controllerGotoRoot());
     yield put(loading(false));
-    yield put(print({ msg: e.message }));
+    const { message }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
     yield put(inputLock(false));
   }
 }
@@ -111,9 +113,10 @@ function* controllerJoinContinueWorker() {
   } catch (e: any) {
     yield put(controllerGotoRoot());
     yield put(loading(false));
-    yield put(print({ msg: e.message }));
+    const { message, code }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
     yield put(inputLock(false));
-    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
+    if (code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
 
@@ -155,9 +158,10 @@ function* controllerJoinAcceptedWorker() {
   } catch (e: any) {
     yield put(controllerGotoRoot());
     yield put(loading(false));
-    yield put(print({ msg: e.message }));
+    const { message, code }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
     yield put(inputLock(false));
-    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
+    if (code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
 
@@ -172,9 +176,10 @@ function* controllerJoinDeniedWorker() {
   } catch (e: any) {
     yield put(controllerGotoRoot());
     yield put(loading(false));
-    yield put(print({ msg: e.message }));
+    const { message, code }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
     yield put(inputLock(false));
-    if (e.code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
+    if (code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
   }
 }
 

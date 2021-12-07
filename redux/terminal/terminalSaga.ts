@@ -1,5 +1,5 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import errorStrings from 'utils/API/errors/TerminalError/error-strings';
+import { errorStrings } from 'utils/API/errors/error-hub';
 import { print } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import { IActionPrint, IActionLockInput, IActionLoading } from './terminalAction';

@@ -2,6 +2,7 @@ import {
   put, call, takeEvery, select,
 } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
+import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
 import connectMetamask from 'utils/API/connect/connect';
 import { IClaimObject } from 'utils/API/join/join';
 import countClaims from 'utils/API/mined/mined';
@@ -34,7 +35,8 @@ function* controllerMinedWorker() {
   } catch (e: any) {
     yield put(controllerGotoRoot());
     yield put(loading(false));
-    yield put(print({ msg: e.message }));
+    const { message }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
     yield put(inputLock(false));
   }
 }

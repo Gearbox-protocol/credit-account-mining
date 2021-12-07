@@ -7,5 +7,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   extends: ['airbnb-typescript/base'],
-  rules: {},
+  rules: {
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
+  },
 };

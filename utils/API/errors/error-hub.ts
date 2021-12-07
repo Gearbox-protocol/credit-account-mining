@@ -1,4 +1,5 @@
 import { TerminalError, TerminalErrorCodes } from './TerminalError/TerminalError';
+import errorStrings from './TerminalError/error-strings';
 
 interface IMetamaskError {
   code: number;
@@ -35,9 +36,9 @@ const processMetamaskError = (e: IMetamaskError): TerminalError => {
 const getTypedError = (e: any): TerminalError => {
   if (isTerminalError(e)) return e;
   if (isMetamaskError(e)) return processMetamaskError(e);
-
+  if (process.env.NODE_ENV === 'development') console.warn(e);
   return new TerminalError({ code: 'UNEXPECTED_ERROR' });
 };
 
 export type { IMetamaskError };
-export { getTypedError };
+export { getTypedError, errorStrings, TerminalError };
