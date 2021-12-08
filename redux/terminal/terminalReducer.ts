@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import { ITerminalObject } from 'components/Terminal/Terminal';
+import { ITerminalObject } from 'crt-terminal';
 import { TerminalActions } from './terminalAction';
 import ActionType from './terminalActionTypes';
 

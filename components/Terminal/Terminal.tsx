@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { terminal } from 'crt-terminal';
+import { terminal, ITerminalObject } from 'crt-terminal';
 import { useDispatch } from 'react-redux';
 import { setTerminal } from 'redux/terminal/terminalAction';
 
@@ -9,33 +9,26 @@ interface ITerminalProps {
   onCommand: (c: string) => void;
 }
 
-interface ITerminalObject {
-  focus: () => NodeJS.Timeout;
-  parse: (str: any) => void;
-  clear: () => string;
-  print: (output: any, center: any) => void;
-  destroy: () => void;
-  inputLock: (lock: any) => any;
-  setLoading: (status: boolean) => void;
-}
-
-const Terminal: React.FC<ITerminalProps> = ({ onCommand, banner, prompt }) => {
+const Terminal = ({ onCommand, banner, prompt }: ITerminalProps) => {
   const terminalRoot = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const t: ITerminalObject = terminal({
-      root: terminalRoot.current,
-      callback: onCommand,
-      prompt: () => prompt,
-      banner,
-    });
+    if (terminalRoot.current !== null) {
+      const t: ITerminalObject = terminal({
+        root: terminalRoot.current,
+        callback: onCommand,
+        prompt: () => prompt,
+        banner,
+      });
 
-    dispatch(setTerminal(t));
+      dispatch(setTerminal(t));
 
-    return () => {
-      t.destroy();
-    };
+      return () => {
+        t.destroy();
+      };
+    }
+    return () => {};
   }, []);
 
   return (

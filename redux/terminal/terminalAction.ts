@@ -1,4 +1,4 @@
-import { ITerminalObject } from 'components/Terminal/Terminal';
+import { ITerminalObject } from 'crt-terminal';
 import ActionType from './terminalActionTypes';
 
 interface IActionSetTerminal {
