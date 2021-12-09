@@ -14,7 +14,7 @@ const TerminalController = dynamic(
   { ssr: false },
 );
 
-const Index: React.FC = () => {
+function Index() {
   const { playVideo } = useSelector((state: IState) => state.terminalApp);
 
   return (
@@ -34,6 +34,6 @@ const Index: React.FC = () => {
       </FadingSwitcher>
     </Layout>
   );
-};
+}
 
 export default Index;

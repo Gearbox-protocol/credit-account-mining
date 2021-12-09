@@ -5,7 +5,7 @@ import Block from 'components/Block/Block';
 import Terminal from 'components/Terminal/Terminal';
 import messages from 'utils/API/messages/messages';
 
-const TerminalController: React.FC = () => {
+function TerminalController() {
   const dispatch = useDispatch();
 
   const handleCommand = (c: string): void => {
@@ -18,6 +18,6 @@ const TerminalController: React.FC = () => {
       <Terminal banner={messages.banner} prompt="/gearbox/mining $ " onCommand={handleCommand} />
     </Block>
   );
-};
+}
 
 export default TerminalController;

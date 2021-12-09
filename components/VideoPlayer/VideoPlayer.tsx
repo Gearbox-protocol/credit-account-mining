@@ -7,11 +7,13 @@ interface IVideoPlayerProps {
   play?: boolean;
 }
 
-const VideoPlayer: React.FC<IVideoPlayerProps> = ({ src, play = false }) => (
-  <PlayerWrapper>
-    <ReactPlayer url={src} playing={play} controls width="100%" height="100%" />
-  </PlayerWrapper>
-);
+function VideoPlayer({ src, play = false }: IVideoPlayerProps) {
+  return (
+    <PlayerWrapper>
+      <ReactPlayer url={src} playing={play} controls width="100%" height="100%" />
+    </PlayerWrapper>
+  );
+}
 
 export type { IVideoPlayerProps };
 export default VideoPlayer;

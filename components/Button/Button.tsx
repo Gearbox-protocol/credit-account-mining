@@ -20,7 +20,7 @@ interface IButtonPropsTypes {
   onClick?: () => void;
 }
 
-const Button: React.FC<IButtonPropsTypes> = ({
+function Button({
   title,
   colorTheme,
   size,
@@ -31,34 +31,36 @@ const Button: React.FC<IButtonPropsTypes> = ({
   href = '/',
   type = 'button',
   disabled = false,
-}) => (
-  <>
-    {element === 'link' ? (
-      <Link href={href} shallow={true}>
-        <Styled.ButtonLink
-          href={href}
+}: IButtonPropsTypes) {
+  return (
+    <>
+      {element === 'link' ? (
+        <Link href={href} shallow={true}>
+          <Styled.ButtonLink
+            href={href}
+            colorTheme={colorTheme}
+            size={size}
+            textSize={textSize}
+            target={target}
+          >
+            {title}
+          </Styled.ButtonLink>
+        </Link>
+      ) : (
+        <Styled.Button
+          type={type}
+          disabled={disabled}
           colorTheme={colorTheme}
           size={size}
           textSize={textSize}
-          target={target}
+          onClick={onClick}
         >
           {title}
-        </Styled.ButtonLink>
-      </Link>
-    ) : (
-      <Styled.Button
-        type={type}
-        disabled={disabled}
-        colorTheme={colorTheme}
-        size={size}
-        textSize={textSize}
-        onClick={onClick}
-      >
-        {title}
-      </Styled.Button>
-    )}
-  </>
-);
+        </Styled.Button>
+      )}
+    </>
+  );
+}
 
 export default Button;
 export type {

@@ -5,10 +5,12 @@ import { wrapper } from 'redux/store';
 import theme from 'styles/theme';
 import 'crt-terminal/src/styles.scss';
 
-const GearboxTerminal: React.FC<AppProps> = ({ Component, pageProps }) => (
-  <ThemeProvider theme={theme}>
-    <Component {...pageProps} />
-  </ThemeProvider>
-);
+function GearboxTerminal({ Component, pageProps }: AppProps) {
+  return (
+    <ThemeProvider theme={theme}>
+      <Component {...pageProps} />
+    </ThemeProvider>
+  );
+}
 
 export default wrapper.withRedux(GearboxTerminal);
