@@ -2,6 +2,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { useSelector } from 'react-redux';
 import { IState } from 'redux/root/rootReducer';
+import { videoSource } from 'config/config';
 import Layout from 'components/Layout/Layout';
 import FadingSwitcher from 'components/FadingSwitcher/FadingSwitcher';
 import VideoPlayer from 'components/VideoPlayer/VideoPlayer';
@@ -30,7 +31,7 @@ function Index() {
         <DisableMobile>
           <TerminalController />
         </DisableMobile>
-        <VideoPlayer src="https://www.youtube.com/embed/c6-L_3GMBxs" />
+        <VideoPlayer src={videoSource} />
       </FadingSwitcher>
     </Layout>
   );
