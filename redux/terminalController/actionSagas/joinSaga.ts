@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
-import { put, takeEvery, select, delay, call } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, delay, call,
+} from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
 import connectMetamask from 'utils/API/connect/connect';
@@ -15,7 +17,7 @@ import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscription/subscriptionActions';
 import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
 import { playVideo, setVisited } from 'redux/terminalApp/terminalAppAction';
-import { setClaimObject, setUser, setAddress } from 'redux/user/userAction';
+import { setClaimObject, setUser, setAddress } from 'redux/web3/web3Action';
 import { IState } from 'redux/root/rootReducer';
 import { controllerJoinContinue } from '../actions/terminalControllerUserActions';
 import {
@@ -90,11 +92,11 @@ function* controllerJoinContinueWorker() {
     yield put(controllerGoto('notGary'));
 
     const {
-      user: { claimObject, user, address },
+      web3: { claimObject, user, address },
       subscription: { statusChanged },
     } = (yield select()) as IState;
     if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
-    if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR', details: 'No adress' });
+    if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR', details: 'No address' });
 
     yield put(print({ msg: messages.permissionCheckingStarted }));
     const safeUser: User = yield call(checkPermissions, address);
@@ -127,7 +129,7 @@ function* controllerJoinAcceptedWorker() {
     yield put(inputLock(true));
 
     const {
-      user: { claimObject, user },
+      web3: { claimObject, user },
       subscription: { metamaskSubscribed, statusChanged },
     } = (yield select()) as IState;
     if (!claimObject || !user || !metamaskSubscribed) {

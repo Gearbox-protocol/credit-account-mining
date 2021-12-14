@@ -9,7 +9,7 @@ import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { subscribe } from 'redux/subscription/subscriptionActions';
 import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
-import { setClaimObject } from 'redux/user/userAction';
+import { setClaimObject } from 'redux/web3/web3Action';
 import { IState } from 'redux/root/rootReducer';
 import { controllerGotoRoot } from '../actions/terminalControllerActions';
 import { ActionType } from '../terminalControllerActionTypes';
@@ -17,7 +17,7 @@ import { ActionType } from '../terminalControllerActionTypes';
 function* controllerMinedWorker() {
   try {
     const {
-      user: { claimObject },
+      web3: { claimObject },
     } = (yield select()) as IState;
     yield put(inputLock(true));
 

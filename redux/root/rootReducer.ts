@@ -17,7 +17,7 @@ import subscriptionReducer, {
   subscriptionDefaultState,
   ISubscriptionState,
 } from 'redux/subscription/subscriptionReducer';
-import userReducer, { userDefaultState, IUserState } from 'redux/user/userReducer';
+import web3Reducer, { web3DefaultState, IWeb3State } from 'redux/web3/web3Reducer';
 
 import { RootReducerAction } from './rootReducerActions';
 import ActionType from './rootReducerActionTypes';
@@ -26,7 +26,7 @@ interface IState extends DefaultRootState {
   terminalApp: ITerminalAppState;
   terminal: ITerminalState;
   terminalController: IControllerState;
-  user: IUserState;
+  web3: IWeb3State;
   subscription: ISubscriptionState;
 }
 
@@ -34,7 +34,7 @@ const combinedReducer = combineReducers({
   terminalApp: terminalAppReducer,
   terminal: terminalReducer,
   terminalController: terminalControllerReducer,
-  user: userReducer,
+  web3: web3Reducer,
   subscription: subscriptionReducer,
 });
 
@@ -43,7 +43,7 @@ const rootReducer = (
     terminalApp: terminalAppDefaultState,
     terminal: terminalDefaultState,
     terminalController: controllerDefaultState,
-    user: userDefaultState,
+    web3: web3DefaultState,
     subscription: subscriptionDefaultState,
   },
   action: RootReducerAction<IState>,

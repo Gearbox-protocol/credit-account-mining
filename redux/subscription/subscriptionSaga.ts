@@ -1,6 +1,8 @@
-import { put, takeEvery, select, race, call, take } from 'redux-saga/effects';
+import {
+  put, takeEvery, select, race, call, take,
+} from 'redux-saga/effects';
 import { store } from 'redux/store';
-import { setAddress, setClaimObject, setUser } from 'redux/user/userAction';
+import { setAddress, setClaimObject, setUser } from 'redux/web3/web3Action';
 import { controllerGotoRoot } from 'redux/terminalController/actions/terminalControllerActions';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
@@ -91,4 +93,6 @@ function cancelOnStatusChange(generator: (...args: any[]) => void) {
   };
 }
 
-export { watchSubscribe, watchUnsubscribe, watchChangeStatus, cancelOnStatusChange };
+export {
+  watchSubscribe, watchUnsubscribe, watchChangeStatus, cancelOnStatusChange,
+};

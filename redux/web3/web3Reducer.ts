@@ -1,22 +1,22 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
 import { IClaimObject, User } from 'utils/API/join/join';
-import { UserActions } from './userAction';
-import ActionType from './userActionTypes';
+import { Web3Actions } from './web3Action';
+import ActionType from './web3ActionTypes';
 
-interface IUserState extends DefaultRootState {
+interface IWeb3State extends DefaultRootState {
   claimObject: IClaimObject | null;
   user: User | null;
   address: string | null;
 }
 
-const userDefaultState: IUserState = {
+const web3DefaultState: IWeb3State = {
   claimObject: null,
   user: null,
   address: null,
 };
 
-const userReducer: Reducer<IUserState, UserActions> = (state = userDefaultState, action) => {
+const userReducer: Reducer<IWeb3State, Web3Actions> = (state = web3DefaultState, action) => {
   switch (action.type) {
     case ActionType.SET_CLAIM_OBJECT:
       return { ...state, claimObject: action.payload };
@@ -29,6 +29,6 @@ const userReducer: Reducer<IUserState, UserActions> = (state = userDefaultState,
   }
 };
 
-export type { IUserState };
-export { userDefaultState };
+export type { IWeb3State };
+export { web3DefaultState };
 export default userReducer;
