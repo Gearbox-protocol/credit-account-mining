@@ -1,8 +1,10 @@
 import React from 'react';
+import { GetStaticProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useSelector } from 'react-redux';
 import { IState } from 'redux/root/rootReducer';
-import { videoSource } from 'config/config';
+import { videoSource, isLive } from 'config/config';
+import generateClaims from 'utils/node-scripts/generate-merkle-claims';
 import Layout from 'components/Layout/Layout';
 import FadingSwitcher from 'components/FadingSwitcher/FadingSwitcher';
 import VideoPlayer from 'components/VideoPlayer/VideoPlayer';
@@ -36,5 +38,12 @@ function Index() {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  if (isLive) generateClaims();
+  return {
+    props: {},
+  };
+};
 
 export default Index;
