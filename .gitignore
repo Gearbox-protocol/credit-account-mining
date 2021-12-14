@@ -31,5 +31,5 @@ yarn-error.log*
 
 # vercel
 .vercel
-public/claims
+public/claims/*.json
 utils/node-scripts/merkle.json
