@@ -4,11 +4,11 @@ import { SubscriptionActions } from './subscriptionActions';
 import ActionType from './subscriptionActionTypes';
 
 interface ISubscriptionState extends DefaultRootState {
-  isSubscribed: boolean;
+  metamaskSubscribed: boolean;
   statusChanged: boolean;
 }
 
-const subscriptionDefaultState = { isSubscribed: false, statusChanged: false };
+const subscriptionDefaultState = { metamaskSubscribed: false, statusChanged: false };
 
 const controllerReducer: Reducer<ISubscriptionState, SubscriptionActions> = (
   state = subscriptionDefaultState,
@@ -19,7 +19,7 @@ const controllerReducer: Reducer<ISubscriptionState, SubscriptionActions> = (
       return {
         ...state,
         statusChanged: false,
-        isSubscribed: action.payload,
+        metamaskSubscribed: action.payload,
       };
     }
     case ActionType.RESET_STATUS:

@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
-import {
-  put, takeEvery, select, delay, call,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, delay, call } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
 import connectMetamask from 'utils/API/connect/connect';
@@ -130,9 +128,9 @@ function* controllerJoinAcceptedWorker() {
 
     const {
       user: { claimObject, user },
-      subscription: { isSubscribed, statusChanged },
+      subscription: { metamaskSubscribed, statusChanged },
     } = (yield select()) as IState;
-    if (!claimObject || !user || !isSubscribed) {
+    if (!claimObject || !user || !metamaskSubscribed) {
       throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
     if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });

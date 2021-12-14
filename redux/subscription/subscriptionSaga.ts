@@ -1,6 +1,4 @@
-import {
-  put, takeEvery, select, race, call, take,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, race, call, take } from 'redux-saga/effects';
 import { store } from 'redux/store';
 import { setAddress, setClaimObject, setUser } from 'redux/user/userAction';
 import { controllerGotoRoot } from 'redux/terminalController/actions/terminalControllerActions';
@@ -30,14 +28,15 @@ const handleAccountChange = () => {
 function* subscribeWorker() {
   try {
     const {
-      subscription: { isSubscribed },
+      subscription: { metamaskSubscribed },
     } = (yield select()) as IState;
     yield put(setSubscription(true));
-    if (isSubscribed) return;
-
-    window.ethereum!.on!('disconnect', handleDisconnect);
-    window.ethereum!.on!('accountsChanged', handleAccountChange);
-    window.ethereum!.on!('chainChanged', handleChainChange);
+    if (!metamaskSubscribed) {
+      yield put(setSubscription(true));
+      window.ethereum!.on!('disconnect', handleDisconnect);
+      window.ethereum!.on!('accountsChanged', handleAccountChange);
+      window.ethereum!.on!('chainChanged', handleChainChange);
+    }
   } catch (e: any) {
     yield put(print({ msg: errorStrings.UNEXPECTED_ERROR }));
   }
@@ -92,6 +91,4 @@ function cancelOnStatusChange(generator: (...args: any[]) => void) {
   };
 }
 
-export {
-  watchSubscribe, watchUnsubscribe, watchChangeStatus, cancelOnStatusChange,
-};
+export { watchSubscribe, watchUnsubscribe, watchChangeStatus, cancelOnStatusChange };
