@@ -3,6 +3,10 @@ import {
   MineChoiceActions,
 } from 'redux/terminalController/terminalControllerActionTypes';
 
+enum Prompt {
+  PROMPT = '/gearbox/mining $ ',
+}
+
 enum Prefix {
   PREFIX = '>',
 }
@@ -97,5 +101,5 @@ const messages = {
   `,
 };
 
-export { Prefix, Links };
+export { Prefix, Links, Prompt };
 export default messages;

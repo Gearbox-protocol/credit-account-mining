@@ -1,9 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { controllerCommand } from 'redux/terminalController/actions/terminalControllerActions';
-import Block from 'components/Block/Block';
 import Terminal from 'components/Terminal/Terminal';
-import messages from 'utils/API/messages/messages';
+import messages, { Prompt } from 'utils/API/messages/messages';
 
 function TerminalController() {
   const dispatch = useDispatch();
@@ -13,11 +12,7 @@ function TerminalController() {
     dispatch(controllerCommand(c.trim()));
   };
 
-  return (
-    <Block variant="viewport-sized">
-      <Terminal banner={messages.banner} prompt="/gearbox/mining $ " onCommand={handleCommand} />
-    </Block>
-  );
+  return <Terminal banner={messages.banner} prompt={Prompt.PROMPT} onCommand={handleCommand} />;
 }
 
 export default TerminalController;
