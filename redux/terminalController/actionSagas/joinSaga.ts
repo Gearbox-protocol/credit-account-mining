@@ -4,17 +4,12 @@ import {
 } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
-import connectMetamask from 'utils/API/connect/connect';
+import connectMetamask from 'utils/API/web3/connect-metamask';
 import {
-  checkPermissions,
-  isClaimed,
-  claim,
-  waitTransactionEnd,
-  IClaimObject,
-  User,
+  checkPermissions, isClaimed, claim, waitTransactionEnd, User,
 } from 'utils/API/join/join';
+import { IClaimObject } from 'utils/API/web3/make-claim';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { subscribe } from 'redux/subscription/subscriptionActions';
 import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
 import { playVideo, setVisited } from 'redux/terminalApp/terminalAppAction';
 import { setClaimObject, setUser, setAddress } from 'redux/web3/web3Action';
@@ -34,7 +29,6 @@ function* controllerJoinWorker() {
 
     yield put(loading(true));
     const address: string = yield call(connectMetamask);
-    yield put(subscribe());
     yield put(loading(false));
 
     yield put(setAddress(address));

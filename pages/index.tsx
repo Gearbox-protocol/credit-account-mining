@@ -5,7 +5,9 @@ import { isLive } from 'config/config';
 import generateClaims from 'utils/node-scripts/generate-merkle-claims';
 import Layout from 'components/Layout/Layout';
 
-const LiveIndex = dynamic(() => import('screens/index/Live/Live'));
+const LiveIndex = dynamic(() => import('screens/index/Live/Live'), {
+  ssr: false,
+});
 const PlaceholderIndex = dynamic(() => import('screens/index/Placeholder/Placeholder'), {
   ssr: false,
 });

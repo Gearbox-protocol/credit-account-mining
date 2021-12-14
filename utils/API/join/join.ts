@@ -1,8 +1,7 @@
-import { AccountMining__factory } from '@diesellabs/gearbox-sdk/lib/types';
-import { AccountMining } from '@diesellabs/gearbox-sdk/src/types/AccountMining';
 import { ethers } from 'ethers';
 import path from 'path';
-import { claimsRoute, distributorInfo } from 'config/config';
+import { claimsRoute } from 'config/config';
+import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 
 interface MerkleDistributorInfo {
@@ -17,12 +16,6 @@ interface User {
 }
 
 type ClaimsInfo = Record<string, User>;
-
-interface IClaimObject {
-  miningAccount: AccountMining;
-  provider: ethers.providers.Web3Provider;
-  signer: ethers.providers.JsonRpcSigner;
-}
 
 const keyFromAddress = (address: string) => address.slice(2, 4);
 const filename = (key: string) => `${key}.json`;
@@ -52,24 +45,14 @@ const checkPermissions = async (address: string): Promise<User> => {
 };
 
 const isClaimed = async (claimObj: Partial<IClaimObject>, { index }: User) => {
-  const { contract } = distributorInfo;
-  const {
-    provider = new ethers.providers.Web3Provider(window.ethereum!),
-    signer = provider.getSigner(),
-    miningAccount = <AccountMining>AccountMining__factory.connect(contract, signer),
-  } = claimObj;
+  const safeClaimObj = await makeClaim(claimObj);
 
-  const claimed = await miningAccount.isClaimed(index);
+  const claimed = await safeClaimObj.miningAccount.isClaimed(index);
   if (claimed) {
     throw new TerminalError({ code: 'ALREADY_CLAIMED' });
   }
 
-  const claimObject: IClaimObject = {
-    miningAccount,
-    provider,
-    signer,
-  };
-  return claimObject;
+  return safeClaimObj;
 };
 
 const claim = async ({ miningAccount }: IClaimObject, { index, salt, proof }: User) => {

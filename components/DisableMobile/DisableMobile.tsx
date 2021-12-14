@@ -2,14 +2,16 @@ import { PropsWithChildren } from 'react';
 import { isMobile } from 'react-device-detect';
 import Block from 'components/Block/Block';
 import Button from 'components/Button/Button';
+import { isDev } from 'config/config';
 import * as Styled from './DisableMobile.styled';
 
 interface IDisableMobileProps {}
 
 function DisableMobile({ children }: PropsWithChildren<IDisableMobileProps>) {
+  const show = isDev || !isMobile;
   return (
     <>
-      {isMobile && (
+      {!show && (
         <Block variant="viewport-sized">
           <Styled.DisableWrap>
             <Styled.TextWrap>
@@ -22,7 +24,7 @@ function DisableMobile({ children }: PropsWithChildren<IDisableMobileProps>) {
           </Styled.DisableWrap>
         </Block>
       )}
-      {!isMobile && children}
+      {show && children}
     </>
   );
 }

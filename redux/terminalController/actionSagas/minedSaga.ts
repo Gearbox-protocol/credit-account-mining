@@ -3,7 +3,7 @@ import {
 } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
-import { IClaimObject } from 'utils/API/join/join';
+import { IClaimObject } from 'utils/API/web3/make-claim';
 import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';

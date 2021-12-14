@@ -1,6 +1,7 @@
 import { Reducer } from 'redux';
 import { DefaultRootState } from 'react-redux';
-import { IClaimObject, User } from 'utils/API/join/join';
+import { User } from 'utils/API/join/join';
+import { IClaimObject } from 'utils/API/web3/make-claim';
 import { Web3Actions } from './web3Action';
 import ActionType from './web3ActionTypes';
 

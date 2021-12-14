@@ -1,4 +1,5 @@
-import { IClaimObject, User } from 'utils/API/join/join';
+import { User } from 'utils/API/join/join';
+import { IClaimObject } from 'utils/API/web3/make-claim';
 import ActionTypeWeb3 from './web3ActionTypes';
 
 interface IActionSetClaimObject {

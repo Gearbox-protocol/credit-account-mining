@@ -17,7 +17,13 @@ const connectMetamask = async () => {
     throw new TerminalError({ code: 'METAMASK_RELOGIN' });
   }
 
-  if (window.ethereum.networkVersion !== network) {
+  if (!window.ethereum.request) {
+    throw new TerminalError({ code: 'METAMASK_WRONG_NETWORK' });
+  }
+
+  const chainId: string = await window.ethereum.request({ method: 'net_version' });
+
+  if (chainId !== network) {
     throw new TerminalError({ code: 'METAMASK_WRONG_NETWORK' });
   }
 
