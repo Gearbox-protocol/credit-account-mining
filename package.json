@@ -8,7 +8,8 @@
     "start": "next start  -p $PORT",
     "lint:ts": "eslint . --ext .tsx,.ts",
     "format:ts": "eslint . --ext .tsx,.ts --fix",
-    "lint:css": "stylelint \"**/*.styled.tsx\""
+    "lint:css": "stylelint \"**/*.styled.tsx\"",
+    "merkle": "cross-env CLAIMS_GENERATE=true ts-node --files --project ./node.tsconfig.json utils/node-scripts/generate-merkle-claims.ts"
   },
   "engines": {
     "node": "14.x"
@@ -45,6 +46,7 @@
     "@types/styled-components": "^5.1.11",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-plugin-import": "^2.22.1",
@@ -53,6 +55,8 @@
     "stylelint-config-standard": "^21.0.0",
     "stylelint-order": "^4.1.0",
     "stylelint-processor-styled-components": "^1.10.0",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.12.0",
     "typescript": "^4.1.6",
     "url-loader": "^4.1.1"
   },

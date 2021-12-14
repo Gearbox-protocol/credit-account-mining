@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2017",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "paths": {
+      "components/*": ["./components/*"],
+      "config/*": ["./config/*"],
+      "public/*": ["./public/*"],
+      "utils/*": ["./utils/*"],
+      "styles/*": ["./styles/*"],
+      "redux/*": ["./redux/*"]
+    }
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register", "dotenv/config"]
+  }
+}
