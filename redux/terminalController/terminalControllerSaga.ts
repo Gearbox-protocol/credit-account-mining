@@ -7,6 +7,8 @@ import { IState } from 'redux/root/rootReducer';
 import { IActionCommand } from './actions/terminalControllerActions';
 import { SystemActions, ActionType } from './terminalControllerActionTypes';
 
+const parseCommand = (command: string) => command.replaceAll('>', '');
+
 function* controllerUserCommandWorker({ payload }: IActionCommand) {
   try {
     const {
@@ -16,11 +18,12 @@ function* controllerUserCommandWorker({ payload }: IActionCommand) {
       throw new TerminalError({ code: 'COMMAND_NOT_FOUND' });
     }
 
-    const isMainAction = payload in current.userActions;
+    const command = parseCommand(payload);
+    const isMainAction = command in current.userActions;
     const hasDefaultAction = SystemActions.DEFAULT_ACTION in current.userActions;
 
     if (isMainAction) {
-      const func = current.userActions[payload];
+      const func = current.userActions[command];
       yield put(func());
     } else if (hasDefaultAction) {
       const func = current.userActions[SystemActions.DEFAULT_ACTION];
