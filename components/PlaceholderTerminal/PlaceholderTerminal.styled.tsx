@@ -8,9 +8,12 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const BackgroundVideo = styled.video`
+const BackgroundVideo = styled.div`
   height: 100%;
   width: 100%;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
 `;
 
 const AbsoluteBlock = styled.div`
