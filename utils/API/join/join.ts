@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import path from 'path';
 import { claimsRoute } from 'config/config';
 import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
@@ -11,7 +11,6 @@ interface MerkleDistributorInfo {
 
 interface User {
   index: number;
-  salt: string;
   proof: string[];
 }
 
@@ -55,7 +54,13 @@ const isClaimed = async (claimObj: Partial<IClaimObject>, { index }: User) => {
   return safeClaimObj;
 };
 
-const claim = async ({ miningAccount }: IClaimObject, { index, salt, proof }: User) => {
+const claim = async ({ miningAccount }: IClaimObject, { index, proof }: User) => {
+  const salt =   BigNumber.from(
+    ethers.utils.keccak256(
+      BigNumber.from(await miningAccount.signer.getAddress()).mul(121).add(123).toHexString()
+    )
+  );
+
   const res = await miningAccount.claim(index, salt, proof);
   return [res, res.hash];
 };

@@ -11,9 +11,7 @@
     "lint:css": "stylelint \"**/*.styled.tsx\"",
     "merkle": "cross-env CLAIMS_GENERATE=true ts-node --files --project ./node.tsconfig.json utils/node-scripts/generate-merkle-claims.ts"
   },
-  "engines": {
-    "node": "14.x"
-  },
+
   "dependencies": {
     "@diesellabs/gearbox-sdk": "0.0.222",
     "@redux-saga/core": "^1.1.3",
