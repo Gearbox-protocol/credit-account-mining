@@ -15,7 +15,7 @@ function SiteHead({
   keyWords,
   url,
   favIcon = '/images/favicon.ico?v=2',
-  image = 'https://static.tildacdn.com/tild3635-3464-4834-b134-326234643038/Screenshot_2021-06-1.png',
+  image = '/images/card.png',
 }: ISiteHeadProps) {
   return (
     <Head>

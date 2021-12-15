@@ -16,10 +16,10 @@ function Index() {
   return (
     <Layout
       layoutParams={{
-        title: 'Gearbox',
-        description: 'Gearbox-terminal main page',
-        keyWords: 'Gearbox, crypto',
-        url: 'http://landing-test.gearbox.finance',
+        title: 'Credit account mining | Gearbox',
+        description: 'Gearbox credit account mining app',
+        keyWords: 'Gearbox, crypto, redit account mining',
+        url: 'https://credit-mining.gearbox.finance',
       }}
     >
       {isLive ? <LiveIndex /> : <PlaceholderIndex />}
