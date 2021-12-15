@@ -12,10 +12,12 @@ const EmptyTerminal = () => (
     />
     <Styled.AbsoluteBlock>
       <Styled.TextBlock>
-        <Styled.Text>Some text</Styled.Text>
+        <Styled.Text>Approximate start: 15:00 UTC - Dec 16</Styled.Text>
       </Styled.TextBlock>
-
-      <Button title="with link" href="https://app.beta.gearbox.fi/" />
+      <Button
+        title="MINING GUIDE"
+        href="https://medium.com/gearbox-protocol/credit-account-mining-guide-fueling-up-for-the-launch-abc17fbddbad"
+      />
     </Styled.AbsoluteBlock>
   </Styled.Container>
 );

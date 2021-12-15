@@ -11,7 +11,6 @@ const Container = styled.div`
 const BackgroundVideo = styled.video`
   height: 100%;
   width: 100%;
-  object-fit: cover;
 `;
 
 const AbsoluteBlock = styled.div`
@@ -33,9 +32,11 @@ const TextBlock = styled.div`
 
 const Text = styled.h2`
   margin-bottom: 0;
-  max-width: 480px;
-  font-size: 28px;
+  max-width: 440px;
+  font-size: 24px;
   text-align: center;
 `;
 
-export { Container, BackgroundVideo, AbsoluteBlock, TextBlock, Text };
+export {
+  Container, BackgroundVideo, AbsoluteBlock, TextBlock, Text,
+};

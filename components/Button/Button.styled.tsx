@@ -24,7 +24,7 @@ const ButtonLink = styled.a<{
       case 'sm':
         return '13px';
       default:
-        return '16px';
+        return '22px';
     }
   }};
   line-height: 1.55;
@@ -86,7 +86,7 @@ const ButtonLink = styled.a<{
       case 'sm':
         return '11px';
       default:
-        return '14px';
+        return '18px';
     }
   }};
   }

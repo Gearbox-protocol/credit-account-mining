@@ -167,7 +167,7 @@ function* connectWeb3Worker() {
     yield put(inputLock(false));
   } catch (e: any) {
     const { message }: TerminalError = yield call(getTypedError, e);
-    yield put(print({ msg: message }));
+    console.warn(message);
   }
 }
 
