@@ -14,7 +14,7 @@
     "hardhat": "env-cmd -f .env.test npx hardhat node"
   },
   "dependencies": {
-    "@diesellabs/gearbox-sdk": "0.0.222",
+    "@diesellabs/gearbox-sdk": ">=0.0.222",
     "@redux-saga/core": "^1.1.3",
     "@types/react-transition-group": "^4.4.2",
     "crt-terminal": "^1.0.5",
