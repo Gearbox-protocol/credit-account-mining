@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "env-cmd -f .env.test next dev",
+    "dev": "next dev",
+    "dev:test-network": "env-cmd -f .env.test next dev",
     "build": "next build",
     "start": "next start  -p $PORT",
     "lint:ts": "eslint . --ext .tsx,.ts",
