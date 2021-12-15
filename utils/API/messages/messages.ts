@@ -1,3 +1,4 @@
+import { network } from 'config/config';
 import {
   RootControllerActions,
   MineChoiceActions,
@@ -16,6 +17,8 @@ enum Links {
   WALLETS_TO_PARTICIPATE = '<>link<>',
   CLAIM = '<>link<>',
 }
+
+const etherscanPrefix = network === '42' ? 'kovan.' : '';
 
 const messages = {
   banner: `
@@ -82,7 +85,7 @@ const messages = {
   yourHash: (h: string) => `
   Congratulations, captain! 
 
-  You have received GEAR tokens for your contribution: https://kovan.etherscan.io/tx/${h}
+  You have received GEAR tokens for your contribution: https://${etherscanPrefix}etherscan.io/tx/${h}
 
   It’s now time to check the ${Prefix.PREFIX}${RootControllerActions.LINKS} command and join Gearbox socials!
 
