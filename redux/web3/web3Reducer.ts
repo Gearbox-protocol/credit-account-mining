@@ -9,12 +9,16 @@ interface IWeb3State extends DefaultRootState {
   claimObject: IClaimObject | null;
   user: User | null;
   address: string | null;
+  metamaskSubscribed: boolean;
+  web3Connected: boolean;
 }
 
 const web3DefaultState: IWeb3State = {
   claimObject: null,
   user: null,
   address: null,
+  metamaskSubscribed: false,
+  web3Connected: false,
 };
 
 const userReducer: Reducer<IWeb3State, Web3Actions> = (state = web3DefaultState, action) => {
@@ -25,6 +29,17 @@ const userReducer: Reducer<IWeb3State, Web3Actions> = (state = web3DefaultState,
       return { ...state, user: action.payload };
     case ActionType.SET_ADDRESS:
       return { ...state, address: action.payload };
+    case ActionType.SET_SUBSCRIPTION: {
+      return {
+        ...state,
+        metamaskSubscribed: action.payload,
+      };
+    }
+    case ActionType.SET_CONNECTION:
+      return {
+        ...state,
+        web3Connected: action.payload,
+      };
     default:
       return state;
   }

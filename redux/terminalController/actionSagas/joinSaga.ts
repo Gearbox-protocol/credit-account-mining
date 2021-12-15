@@ -10,7 +10,7 @@ import {
 } from 'utils/API/join/join';
 import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { cancelOnDisconnectWeb3 } from 'redux/subscription/subscriptionSaga';
+import { cancelOnDisconnectWeb3 } from 'redux/web3/web3Saga';
 import { playVideo, setVisited } from 'redux/terminalApp/terminalAppAction';
 import { setUser, setAddress } from 'redux/web3/web3Action';
 import { IState } from 'redux/root/rootReducer';
@@ -86,8 +86,9 @@ function* controllerJoinContinueWorker() {
     yield put(controllerGoto('notGary'));
 
     const {
-      web3: { claimObject, user, address },
-      subscription: { web3Connected },
+      web3: {
+        claimObject, user, address, web3Connected,
+      },
     } = (yield select()) as IState;
     if (!web3Connected) throw new TerminalError({ code: 'ACTION_ABORTED' });
     if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR', details: 'No address' });
@@ -123,8 +124,7 @@ function* controllerJoinAcceptedWorker() {
     yield put(inputLock(true));
 
     const {
-      web3: { claimObject, user },
-      subscription: { web3Connected },
+      web3: { claimObject, user, web3Connected },
     } = (yield select()) as IState;
     if (!claimObject || !user || !web3Connected) {
       throw new TerminalError({ code: 'METAMASK_RELOGIN' });

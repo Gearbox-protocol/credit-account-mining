@@ -6,7 +6,7 @@ import {
   watchConnectWeb3,
   watchSubscribe,
   watchUnsubscribe,
-} from 'redux/subscription/subscriptionSaga';
+} from 'redux/web3/web3Saga';
 import {
   watchSetVisited,
   watchInitCounter,

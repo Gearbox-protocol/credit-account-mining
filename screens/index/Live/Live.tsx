@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useSelector, useDispatch } from 'react-redux';
 import { IState } from 'redux/root/rootReducer';
-import { subscribe, connectWeb3 } from 'redux/subscription/subscriptionActions';
+import { subscribe, connectWeb3 } from 'redux/web3/web3Action';
 import { videoSource } from 'config/config';
 import FadingSwitcher from 'components/FadingSwitcher/FadingSwitcher';
 import VideoPlayer from 'components/VideoPlayer/VideoPlayer';

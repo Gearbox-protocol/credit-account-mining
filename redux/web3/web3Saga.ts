@@ -16,8 +16,8 @@ import {
   disconnectedWeb3,
   setSubscription,
   IActionWeb3Disconnected,
-} from './subscriptionActions';
-import ActionType from './subscriptionActionTypes';
+} from './web3Action';
+import ActionType from './web3ActionTypes';
 
 const handleChainChange = (hexChainID: string) => {
   const decimalChainID = Number(hexChainID).toString();
@@ -43,7 +43,7 @@ const handleAccountChange = () => {
 function* subscribeWorker() {
   try {
     const {
-      subscription: { metamaskSubscribed },
+      web3: { metamaskSubscribed },
     } = (yield select()) as IState;
     if (!metamaskSubscribed) {
       yield put(setSubscription(true));
@@ -101,8 +101,7 @@ function* web3ShallowDisconnect({ payload }: IActionWeb3Disconnected) {
 function* web3DeepDisconnect({ payload }: IActionWeb3Disconnected) {
   try {
     const {
-      web3: { claimObject },
-      subscription: { web3Connected },
+      web3: { claimObject, web3Connected },
     } = (yield select()) as IState;
 
     if (web3Connected && claimObject) {

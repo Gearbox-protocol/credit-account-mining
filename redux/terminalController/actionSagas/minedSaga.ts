@@ -6,7 +6,7 @@ import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
 import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
 import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { cancelOnDisconnectWeb3 } from 'redux/subscription/subscriptionSaga';
+import { cancelOnDisconnectWeb3 } from 'redux/web3/web3Saga';
 import { IState } from 'redux/root/rootReducer';
 import { controllerGotoRoot } from '../actions/terminalControllerActions';
 import { ActionType } from '../terminalControllerActionTypes';
