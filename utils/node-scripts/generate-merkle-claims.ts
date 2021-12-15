@@ -40,11 +40,6 @@ const ensureFolderExistence = (Folder: string) => {
   });
 };
 
-const clearFolder = (Folder: string) => {
-  const files = fs.readdirSync(Folder);
-  files.map((file) => fs.unlinkSync(path.join(Folder, file)));
-};
-
 function main() {
   const merkleRoute = process.env.CLAIMS_WRITE_ROUTE;
   if (!merkleRoute) throw new Error('Merkle split destination env not specified');
@@ -53,8 +48,6 @@ function main() {
   if (!merkleSource) throw new Error('merkle.json source env not specified');
 
   ensureFolderExistence(merkleRoute);
-  clearFolder(merkleRoute);
-
   const merkleRaw = readFrom(merkleSource);
   const merleSplit = split(merkleRaw);
   const writeClaims = writeTo(merkleRoute);

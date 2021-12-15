@@ -33,3 +33,5 @@ yarn-error.log*
 .vercel
 public/claims/*.json
 utils/node-scripts/merkle.json
+cache
+.env.test

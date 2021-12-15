@@ -55,10 +55,10 @@ const isClaimed = async (claimObj: Partial<IClaimObject>, { index }: User) => {
 };
 
 const claim = async ({ miningAccount }: IClaimObject, { index, proof }: User) => {
-  const salt =   BigNumber.from(
+  const salt = BigNumber.from(
     ethers.utils.keccak256(
-      BigNumber.from(await miningAccount.signer.getAddress()).mul(121).add(123).toHexString()
-    )
+      BigNumber.from(await miningAccount.signer.getAddress()).mul(121).add(123).toHexString(),
+    ),
   );
 
   const res = await miningAccount.claim(index, salt, proof);
