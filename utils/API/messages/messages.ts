@@ -56,7 +56,7 @@ const messages = {
   Links to social media channels of Gearbox:
 
   Twitter:  https://twitter.com/GearboxProtocol  
-  Discord:  https://discord.com/invite/jJuABVH9Pg
+  Discord:  https://discord.com/invite/Gearbox
   `,
   metamaskConnected: `
   Metamask connected
