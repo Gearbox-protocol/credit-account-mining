@@ -31,17 +31,16 @@ const messages = {
                       ╚██████╔╝███████╗██║  ██║██║  ██║██████╔╝╚██████╔╝██╔╝ ██╗
                        ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
                                                             
-                          Welcome to the Gearbox Protocol governance launch!
+                            Welcome to Gearbox Protocol launch ceremony!
 
-        Once this stage is completed, the community is taking over Credit Account primitive 
-                                  and the control over the codebase. 
-                  Read all about launch phases and how that is achieved: ${Links.ABOUT}
+                            Once these stages are completed, the DAO will 
+                            take over the Credit Account primitive and 
+                            control over the codebase. Read all about 
+                            launch phases on Gearbox Medium and join Discord.
                        
-                       YOU will be in charge of what Gearbox shall become.
-                       
-                                    Let’s get this machine going!
+                            YOU will be in charge of what Gearbox is to become!
                      
-                          Type ${Prefix.PREFIX}${RootControllerActions.HELP} to see list of available commands
+                            Type ${Prefix.PREFIX}${RootControllerActions.HELP} to see list of available commands
   `,
 
   helpText: `
