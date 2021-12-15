@@ -5,10 +5,10 @@ import ActionType from './subscriptionActionTypes';
 
 interface ISubscriptionState extends DefaultRootState {
   metamaskSubscribed: boolean;
-  statusChanged: boolean;
+  web3Connected: boolean;
 }
 
-const subscriptionDefaultState = { metamaskSubscribed: false, statusChanged: false };
+const subscriptionDefaultState = { metamaskSubscribed: false, web3Connected: false };
 
 const controllerReducer: Reducer<ISubscriptionState, SubscriptionActions> = (
   state = subscriptionDefaultState,
@@ -18,19 +18,13 @@ const controllerReducer: Reducer<ISubscriptionState, SubscriptionActions> = (
     case ActionType.SET_SUBSCRIPTION: {
       return {
         ...state,
-        statusChanged: false,
         metamaskSubscribed: action.payload,
       };
     }
-    case ActionType.RESET_STATUS:
+    case ActionType.SET_CONNECTION:
       return {
         ...state,
-        statusChanged: false,
-      };
-    case ActionType.STATUS_CHANGED:
-      return {
-        ...state,
-        statusChanged: true,
+        web3Connected: action.payload,
       };
     default: {
       return state;

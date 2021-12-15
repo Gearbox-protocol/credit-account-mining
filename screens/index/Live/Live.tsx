@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useSelector, useDispatch } from 'react-redux';
 import { IState } from 'redux/root/rootReducer';
-import { initCounter } from 'redux/terminalApp/terminalAppAction';
-import { subscribe } from 'redux/subscription/subscriptionActions';
+import { subscribe, connectWeb3 } from 'redux/subscription/subscriptionActions';
 import { videoSource } from 'config/config';
 import FadingSwitcher from 'components/FadingSwitcher/FadingSwitcher';
 import VideoPlayer from 'components/VideoPlayer/VideoPlayer';
@@ -23,13 +22,10 @@ function LiveIndex() {
 
   useEffect(() => {
     if (window.ethereum && window.ethereum.isMetaMask) {
+      dispatch(connectWeb3());
       dispatch(subscribe());
     }
   }, [window.ethereum]);
-
-  useEffect(() => {
-    dispatch(initCounter());
-  }, []);
 
   return (
     <FadingSwitcher isTransition={playVideo} transitionDuration={2000}>

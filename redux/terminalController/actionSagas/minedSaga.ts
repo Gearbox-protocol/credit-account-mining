@@ -3,11 +3,10 @@ import {
 } from 'redux-saga/effects';
 import messages from 'utils/API/messages/messages';
 import { getTypedError, TerminalError } from 'utils/API/errors/error-hub';
-import { IClaimObject } from 'utils/API/web3/make-claim';
+import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
 import countClaims from 'utils/API/mined/mined';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
-import { setClaimObject } from 'redux/web3/web3Action';
+import { cancelOnDisconnectWeb3 } from 'redux/subscription/subscriptionSaga';
 import { IState } from 'redux/root/rootReducer';
 import { controllerGotoRoot } from '../actions/terminalControllerActions';
 import { ActionType } from '../terminalControllerActionTypes';
@@ -17,11 +16,12 @@ function* controllerMinedWorker() {
     const {
       web3: { claimObject },
     } = (yield select()) as IState;
+    const safeClaim: IClaimObject = claimObject || (yield makeClaim({}));
+
     yield put(inputLock(true));
     yield put(loading(true));
 
-    const [safeClaim, amount]: [IClaimObject, number] = yield call(countClaims, claimObject || {});
-    if (!claimObject) yield put(setClaimObject(safeClaim));
+    const amount: number = yield call(countClaims, safeClaim);
 
     yield put(loading(false));
     yield put(print({ msg: messages.accountsMined(amount) }));
@@ -36,7 +36,7 @@ function* controllerMinedWorker() {
 }
 
 function* watchControllerMined() {
-  yield takeEvery(ActionType.MINED, cancelOnStatusChange(controllerMinedWorker));
+  yield takeEvery(ActionType.MINED, cancelOnDisconnectWeb3(controllerMinedWorker));
 }
 
 export default watchControllerMined;

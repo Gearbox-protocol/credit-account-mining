@@ -3,36 +3,41 @@ import {
 } from 'redux-saga/effects';
 import { store } from 'redux/store';
 import { initCounter, resetCounter } from 'redux/terminalApp/terminalAppAction';
-import { setAddress, setUser } from 'redux/web3/web3Action';
+import { setClaimObject, setAddress, setUser } from 'redux/web3/web3Action';
 import { controllerGotoRoot } from 'redux/terminalController/actions/terminalControllerActions';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { IState } from 'redux/root/rootReducer';
 import { getTypedError, errorStrings, TerminalError } from 'utils/API/errors/error-hub';
+import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
 import { network } from 'config/config';
-import { changeStatus, setSubscription, IActionChangeStatus } from './subscriptionActions';
+import {
+  setConnection,
+  connectWeb3,
+  disconnectedWeb3,
+  setSubscription,
+  IActionWeb3Disconnected,
+} from './subscriptionActions';
 import ActionType from './subscriptionActionTypes';
 
 const handleChainChange = (hexChainID: string) => {
   const decimalChainID = Number(hexChainID).toString();
   if (decimalChainID === network) {
-    store.dispatch(initCounter());
+    store.dispatch(connectWeb3());
   } else {
-    store.dispatch(resetCounter());
+    store.dispatch(disconnectedWeb3('CHAIN_CHANGED'));
   }
-  store.dispatch(changeStatus('CHAIN_CHANGED'));
 };
 
 const handleConnect = () => {
-  store.dispatch(initCounter());
+  store.dispatch(connectWeb3());
 };
 
 const handleDisconnect = () => {
-  store.dispatch(resetCounter());
-  store.dispatch(changeStatus('DISCONNECTED'));
+  store.dispatch(disconnectedWeb3('DISCONNECTED'));
 };
 
 const handleAccountChange = () => {
-  store.dispatch(changeStatus('ACCOUNT_CHANGED'));
+  store.dispatch(disconnectedWeb3('ACCOUNT_CHANGED'));
 };
 
 function* subscribeWorker() {
@@ -72,14 +77,94 @@ function* watchUnsubscribe() {
   yield takeEvery(ActionType.UNSUBSCRIBE, unsubscribeWorker);
 }
 
-function* changeStatusWorker({ payload }: IActionChangeStatus) {
+function* web3ShallowDisconnect({ payload }: IActionWeb3Disconnected) {
   try {
-    yield put(setUser(null));
-    yield put(setAddress(null));
+    const {
+      web3: { address },
+    } = (yield select()) as IState;
+
+    const newlyConnected = !address;
+    if (!newlyConnected) {
+      yield put(setUser(null));
+      yield put(setAddress(null));
+      yield put(controllerGotoRoot());
+      yield put(loading(false));
+      yield put(print({ msg: errorStrings[payload] }));
+      yield put(inputLock(false));
+    }
+  } catch (e: any) {
+    const { message }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
+  }
+}
+
+function* web3DeepDisconnect({ payload }: IActionWeb3Disconnected) {
+  try {
+    const {
+      web3: { claimObject },
+      subscription: { web3Connected },
+    } = (yield select()) as IState;
+
+    if (web3Connected && claimObject) {
+      yield put(setConnection(false));
+
+      yield put(resetCounter(claimObject));
+
+      yield put(setClaimObject(null));
+      yield put(setUser(null));
+      yield put(setAddress(null));
+
+      yield put(controllerGotoRoot());
+      yield put(loading(false));
+      yield put(print({ msg: errorStrings[payload] }));
+      yield put(inputLock(false));
+    }
+  } catch (e: any) {
+    const { message }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
+  }
+}
+
+function* disconnectWeb3Worker(props: IActionWeb3Disconnected) {
+  try {
+    if (props.payload === 'ACCOUNT_CHANGED') {
+      yield call(web3ShallowDisconnect, props);
+    } else {
+      yield call(web3DeepDisconnect, props);
+    }
+  } catch (e: any) {
+    const { message }: TerminalError = yield call(getTypedError, e);
+    yield put(print({ msg: message }));
+  }
+}
+
+function* watchDisconnectWeb3() {
+  yield takeEvery(ActionType.DISCONNECTED_WEB3, disconnectWeb3Worker);
+}
+
+function cancelOnDisconnectWeb3(generator: (...args: any[]) => void) {
+  return function* cancellableGenerator(...args: any[]) {
+    yield race({
+      task: call(generator, ...args),
+      cancel: take(ActionType.DISCONNECTED_WEB3),
+    });
+  };
+}
+
+function* connectWeb3Worker() {
+  try {
+    const {
+      web3: { claimObject },
+    } = (yield select()) as IState;
+
+    const safeClaim: IClaimObject = yield call(makeClaim, claimObject || {});
+    yield put(initCounter(safeClaim));
+    yield put(setClaimObject(safeClaim));
+
+    yield put(setConnection(true));
 
     yield put(controllerGotoRoot());
     yield put(loading(false));
-    yield put(print({ msg: errorStrings[payload] }));
     yield put(inputLock(false));
   } catch (e: any) {
     const { message }: TerminalError = yield call(getTypedError, e);
@@ -87,19 +172,14 @@ function* changeStatusWorker({ payload }: IActionChangeStatus) {
   }
 }
 
-function* watchChangeStatus() {
-  yield takeEvery(ActionType.STATUS_CHANGED, changeStatusWorker);
-}
-
-function cancelOnStatusChange(generator: (...args: any[]) => void) {
-  return function* cancellableGenerator(...args: any[]) {
-    yield race({
-      task: call(generator, ...args),
-      cancel: take(ActionType.STATUS_CHANGED),
-    });
-  };
+function* watchConnectWeb3() {
+  yield takeEvery(ActionType.CONNECT_WEB3, connectWeb3Worker);
 }
 
 export {
-  watchSubscribe, watchUnsubscribe, watchChangeStatus, cancelOnStatusChange,
+  watchSubscribe,
+  watchUnsubscribe,
+  watchDisconnectWeb3,
+  watchConnectWeb3,
+  cancelOnDisconnectWeb3,
 };

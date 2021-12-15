@@ -1,7 +1,7 @@
 import { BigNumber, ethers } from 'ethers';
 import path from 'path';
 import { claimsRoute } from 'config/config';
-import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
+import { IClaimObject } from 'utils/API/web3/make-claim';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 
 interface MerkleDistributorInfo {
@@ -43,21 +43,20 @@ const checkPermissions = async (address: string): Promise<User> => {
   return claims[address];
 };
 
-const isClaimed = async (claimObj: Partial<IClaimObject>, { index }: User) => {
-  const safeClaimObj = await makeClaim(claimObj);
-
-  const claimed = await safeClaimObj.miningAccount.isClaimed(index);
+const isClaimed = async (claimObj: IClaimObject, { index }: User) => {
+  const claimed = await claimObj.miningAccount.isClaimed(index);
   if (claimed) {
     throw new TerminalError({ code: 'ALREADY_CLAIMED' });
   }
-
-  return safeClaimObj;
 };
 
 const claim = async ({ miningAccount }: IClaimObject, { index, proof }: User) => {
   const salt = BigNumber.from(
     ethers.utils.keccak256(
-      BigNumber.from(await miningAccount.signer.getAddress()).mul(121).add(123).toHexString(),
+      BigNumber.from(await miningAccount.signer.getAddress())
+        .mul(121)
+        .add(123)
+        .toHexString(),
     ),
   );
 

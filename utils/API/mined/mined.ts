@@ -1,13 +1,8 @@
-import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
+import { IClaimObject } from 'utils/API/web3/make-claim';
 
-const countClaims = async (claimObj: Partial<IClaimObject>) => {
-  const safeClaimObj = await makeClaim(claimObj);
-
-  const query = await safeClaimObj.miningAccount.queryFilter(
-    safeClaimObj.miningAccount.filters.Claimed(),
-  );
-
-  return [safeClaimObj, query.length];
+const countClaims = async (claimObj: IClaimObject) => {
+  const query = await claimObj.miningAccount.queryFilter(claimObj.miningAccount.filters.Claimed());
+  return query.length;
 };
 
 export default countClaims;

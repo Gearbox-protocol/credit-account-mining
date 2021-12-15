@@ -14,18 +14,23 @@ interface IActionUnsubscribe {
   type: ActionType.UNSUBSCRIBE;
 }
 
-interface IActionResetStatus {
-  type: ActionType.RESET_STATUS;
+interface IActionSetConnection {
+  type: ActionType.SET_CONNECTION;
+  payload: boolean;
 }
 
-type ChangeErrors = Extract<
+type DisconnectEvents = Extract<
 TerminalErrorCodes,
 'DISCONNECTED' | 'CHAIN_CHANGED' | 'ACCOUNT_CHANGED'
 >;
 
-interface IActionChangeStatus {
-  type: ActionType.STATUS_CHANGED;
-  payload: ChangeErrors;
+interface IActionconnectWeb3 {
+  type: ActionType.CONNECT_WEB3;
+}
+
+interface IActionWeb3Disconnected {
+  type: ActionType.DISCONNECTED_WEB3;
+  payload: DisconnectEvents;
 }
 
 const setSubscription = (s: boolean): IActionSetSubscription => ({
@@ -41,29 +46,36 @@ const unsubscribe = (): IActionUnsubscribe => ({
   type: ActionType.UNSUBSCRIBE,
 });
 
-const resetStatus = (): IActionResetStatus => ({
-  type: ActionType.RESET_STATUS,
+const setConnection = (s: boolean): IActionSetConnection => ({
+  type: ActionType.SET_CONNECTION,
+  payload: s,
 });
 
-const changeStatus = (s: ChangeErrors): IActionChangeStatus => ({
-  type: ActionType.STATUS_CHANGED,
+const connectWeb3 = (): IActionconnectWeb3 => ({
+  type: ActionType.CONNECT_WEB3,
+});
+
+const disconnectedWeb3 = (s: DisconnectEvents): IActionWeb3Disconnected => ({
+  type: ActionType.DISCONNECTED_WEB3,
   payload: s,
 });
 
 export type SubscriptionActions =
   | IActionSubscribe
   | IActionUnsubscribe
-  | IActionResetStatus
-  | IActionChangeStatus
-  | IActionSetSubscription;
+  | IActionconnectWeb3
+  | IActionWeb3Disconnected
+  | IActionSetSubscription
+  | IActionSetConnection;
 
 export type {
   IActionSubscribe,
   IActionUnsubscribe,
-  IActionResetStatus,
-  IActionChangeStatus,
+  IActionconnectWeb3,
+  IActionWeb3Disconnected,
   IActionSetSubscription,
+  IActionSetConnection,
 };
 export {
-  subscribe, unsubscribe, resetStatus, changeStatus, setSubscription,
+  subscribe, unsubscribe, connectWeb3, disconnectedWeb3, setSubscription, setConnection,
 };

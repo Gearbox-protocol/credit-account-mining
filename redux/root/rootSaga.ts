@@ -2,7 +2,8 @@ import {
   watchPrint, watchClear, watchLock, watchLoading,
 } from 'redux/terminal/terminalSaga';
 import {
-  watchChangeStatus,
+  watchDisconnectWeb3,
+  watchConnectWeb3,
   watchSubscribe,
   watchUnsubscribe,
 } from 'redux/subscription/subscriptionSaga';
@@ -31,7 +32,8 @@ export default function* rootSaga() {
     watchInitCounter(),
     watchResetCounter(),
 
-    watchChangeStatus(),
+    watchDisconnectWeb3(),
+    watchConnectWeb3(),
     watchSubscribe(),
     watchUnsubscribe(),
 

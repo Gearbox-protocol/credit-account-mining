@@ -8,11 +8,11 @@ import connectMetamask from 'utils/API/web3/connect-metamask';
 import {
   checkPermissions, isClaimed, claim, waitTransactionEnd, User,
 } from 'utils/API/join/join';
-import { IClaimObject } from 'utils/API/web3/make-claim';
+import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
-import { cancelOnStatusChange } from 'redux/subscription/subscriptionSaga';
+import { cancelOnDisconnectWeb3 } from 'redux/subscription/subscriptionSaga';
 import { playVideo, setVisited } from 'redux/terminalApp/terminalAppAction';
-import { setClaimObject, setUser, setAddress } from 'redux/web3/web3Action';
+import { setUser, setAddress } from 'redux/web3/web3Action';
 import { IState } from 'redux/root/rootReducer';
 import { controllerJoinContinue } from '../actions/terminalControllerUserActions';
 import {
@@ -77,7 +77,7 @@ function* controllerIsGaryWorker() {
 }
 
 function* watchControllerIsGary() {
-  yield takeEvery([ActionType.IS_GARY], cancelOnStatusChange(controllerIsGaryWorker));
+  yield takeEvery([ActionType.IS_GARY], cancelOnDisconnectWeb3(controllerIsGaryWorker));
 }
 
 function* controllerJoinContinueWorker() {
@@ -87,17 +87,17 @@ function* controllerJoinContinueWorker() {
 
     const {
       web3: { claimObject, user, address },
-      subscription: { statusChanged },
+      subscription: { web3Connected },
     } = (yield select()) as IState;
-    if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
+    if (!web3Connected) throw new TerminalError({ code: 'ACTION_ABORTED' });
     if (!address) throw new TerminalError({ code: 'UNEXPECTED_ERROR', details: 'No address' });
+    const safeClaim: IClaimObject = claimObject || (yield makeClaim({}));
 
     yield put(print({ msg: messages.permissionCheckingStarted }));
     const safeUser: User = yield call(checkPermissions, address);
     yield put(print({ msg: messages.amountOfMineAccounts }));
 
-    const safeClaim: IClaimObject = yield call(isClaimed, claimObject || {}, safeUser);
-    if (!claimObject) yield put(setClaimObject(safeClaim));
+    yield call(isClaimed, safeClaim, safeUser);
     if (!user) yield put(setUser(safeUser));
 
     yield put(controllerGoto('choice'));
@@ -115,7 +115,7 @@ function* controllerJoinContinueWorker() {
 }
 
 function* watchControllerJoinContinue() {
-  yield takeEvery([ActionType.JOIN_CONTINUE], cancelOnStatusChange(controllerJoinContinueWorker));
+  yield takeEvery([ActionType.JOIN_CONTINUE], cancelOnDisconnectWeb3(controllerJoinContinueWorker));
 }
 
 function* controllerJoinAcceptedWorker() {
@@ -124,12 +124,11 @@ function* controllerJoinAcceptedWorker() {
 
     const {
       web3: { claimObject, user },
-      subscription: { metamaskSubscribed, statusChanged },
+      subscription: { web3Connected },
     } = (yield select()) as IState;
-    if (!claimObject || !user || !metamaskSubscribed) {
+    if (!claimObject || !user || !web3Connected) {
       throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
-    if (statusChanged) throw new TerminalError({ code: 'ACTION_ABORTED' });
 
     yield put(loading(true));
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(

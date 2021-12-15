@@ -1,3 +1,4 @@
+import { IClaimObject } from 'utils/API/web3/make-claim';
 import ActionType from './terminalAppActionTypes';
 
 interface IActionSetAppLoading {
@@ -27,10 +28,12 @@ interface IActionSetClaimedCount {
 
 interface IActionInitCounter {
   type: ActionType.INIT_COUNTER;
+  payload: IClaimObject;
 }
 
 interface IActionResetCounter {
   type: ActionType.RESET_COUNTER;
+  payload: IClaimObject;
 }
 
 interface IActionIncCounter {
@@ -62,12 +65,14 @@ const setClaimedCount = (payload: number): IActionSetClaimedCount => ({
   payload,
 });
 
-const initCounter = (): IActionInitCounter => ({
+const initCounter = (payload: IClaimObject): IActionInitCounter => ({
   type: ActionType.INIT_COUNTER,
+  payload,
 });
 
-const resetCounter = (): IActionResetCounter => ({
+const resetCounter = (payload: IClaimObject): IActionResetCounter => ({
   type: ActionType.RESET_COUNTER,
+  payload,
 });
 
 const incCounter = (): IActionIncCounter => ({
