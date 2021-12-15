@@ -19,7 +19,8 @@ type TerminalErrorCodes =
   | 'CHAIN_CHANGED'
   | 'DISCONNECTED'
   | 'UNEXPECTED_ERROR'
-  | 'ACTION_ABORTED';
+  | 'ACTION_ABORTED'
+  | 'NO_MORE_CLAIMS';
 
 const errorStrings: Record<TerminalErrorCodes, string> = {
   get COMMAND_NOT_FOUND() {
@@ -70,6 +71,9 @@ const errorStrings: Record<TerminalErrorCodes, string> = {
   Unexpected Error
   `,
   ACTION_ABORTED: '',
+  NO_MORE_CLAIMS: `
+  No more claims allowed
+  `,
 };
 
 export type { TerminalErrorCodes };

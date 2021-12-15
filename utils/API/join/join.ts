@@ -1,7 +1,8 @@
 import { BigNumber, ethers } from 'ethers';
 import path from 'path';
-import { claimsRoute } from 'config/config';
+import { claimsRoute, claimMaxCount } from 'config/config';
 import { IClaimObject } from 'utils/API/web3/make-claim';
+import countClaims from 'utils/API/mined/mined';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 
 interface MerkleDistributorInfo {
@@ -50,18 +51,24 @@ const isClaimed = async (claimObj: IClaimObject, { index }: User) => {
   }
 };
 
-const claim = async ({ miningAccount }: IClaimObject, { index, proof }: User) => {
-  const salt = BigNumber.from(
-    ethers.utils.keccak256(
-      BigNumber.from(await miningAccount.signer.getAddress())
-        .mul(121)
-        .add(123)
-        .toHexString(),
-    ),
-  );
+const claim = async (claimObj: IClaimObject, { index, proof }: User) => {
+  try {
+    const salt = BigNumber.from(
+      ethers.utils.keccak256(
+        BigNumber.from(await claimObj.miningAccount.signer.getAddress())
+          .mul(121)
+          .add(123)
+          .toHexString(),
+      ),
+    );
 
-  const res = await miningAccount.claim(index, salt, proof);
-  return [res, res.hash];
+    const res = await claimObj.miningAccount.claim(index, salt, proof);
+    return [res, res.hash];
+  } catch (e) {
+    const totalClaimed = await countClaims(claimObj);
+    if (totalClaimed >= claimMaxCount) throw new TerminalError({ code: 'NO_MORE_CLAIMS' });
+    throw e;
+  }
 };
 
 const waitTransactionEnd = async (transaction: ethers.ContractTransaction) => {

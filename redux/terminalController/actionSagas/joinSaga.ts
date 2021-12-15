@@ -11,7 +11,7 @@ import {
 import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { cancelOnDisconnectWeb3 } from 'redux/web3/web3Saga';
-import { playVideo, setVisited } from 'redux/terminalApp/terminalAppAction';
+import { playVideo, setVisited, setAllClaimed } from 'redux/terminalApp/terminalAppAction';
 import { setUser, setAddress } from 'redux/web3/web3Action';
 import { IState } from 'redux/root/rootReducer';
 import { controllerJoinContinue } from '../actions/terminalControllerUserActions';
@@ -154,7 +154,9 @@ function* controllerJoinAcceptedWorker() {
     const { message, code }: TerminalError = yield call(getTypedError, e);
     yield put(print({ msg: message }));
     yield put(inputLock(false));
+
     if (code === 'DENIED_BY_USER') yield put(controllerAddAction(OptionalActions.MINE));
+    if (code === 'NO_MORE_CLAIMS') yield put(setAllClaimed(true));
   }
 }
 

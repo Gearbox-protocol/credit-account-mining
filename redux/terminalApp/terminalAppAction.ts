@@ -1,4 +1,3 @@
-import { IClaimObject } from 'utils/API/web3/make-claim';
 import ActionType from './terminalAppActionTypes';
 
 interface IActionSetAppLoading {
