@@ -21,23 +21,9 @@ interface IActionSetVisited {
   payload: boolean;
 }
 
-interface IActionSetClaimedCount {
-  type: ActionType.SET_CLAIMED_COUNT;
-  payload: number;
-}
-
-interface IActionInitCounter {
-  type: ActionType.INIT_COUNTER;
-  payload: IClaimObject;
-}
-
-interface IActionResetCounter {
-  type: ActionType.RESET_COUNTER;
-  payload: IClaimObject;
-}
-
-interface IActionIncCounter {
-  type: ActionType.INC_CLAIMED_COUNT;
+interface IActionSetAllClaimed {
+  type: ActionType.SET_ALL_CLAIMED;
+  payload: boolean;
 }
 
 const setPageLoading = (payload: boolean): IActionSetAppLoading => ({
@@ -60,23 +46,9 @@ const setVisited = (payload: boolean): IActionSetVisited => ({
   payload,
 });
 
-const setClaimedCount = (payload: number): IActionSetClaimedCount => ({
-  type: ActionType.SET_CLAIMED_COUNT,
+const setAllClaimed = (payload: boolean): IActionSetAllClaimed => ({
+  type: ActionType.SET_ALL_CLAIMED,
   payload,
-});
-
-const initCounter = (payload: IClaimObject): IActionInitCounter => ({
-  type: ActionType.INIT_COUNTER,
-  payload,
-});
-
-const resetCounter = (payload: IClaimObject): IActionResetCounter => ({
-  type: ActionType.RESET_COUNTER,
-  payload,
-});
-
-const incCounter = (): IActionIncCounter => ({
-  type: ActionType.INC_CLAIMED_COUNT,
 });
 
 export type TerminalAppActions =
@@ -84,27 +56,15 @@ export type TerminalAppActions =
   | IActionSetHydration
   | IActionPlayVideo
   | IActionSetVisited
-  | IActionSetClaimedCount
-  | IActionInitCounter
-  | IActionResetCounter
-  | IActionIncCounter;
+  | IActionSetAllClaimed;
+
 export type {
   IActionSetAppLoading,
   IActionSetHydration,
   IActionPlayVideo,
   IActionSetVisited,
-  IActionSetClaimedCount,
-  IActionInitCounter,
-  IActionResetCounter,
-  IActionIncCounter,
+  IActionSetAllClaimed,
 };
 export {
-  setPageLoading,
-  setPageHydration,
-  playVideo,
-  setVisited,
-  setClaimedCount,
-  initCounter,
-  incCounter,
-  resetCounter,
+  setPageLoading, setPageHydration, playVideo, setVisited, setAllClaimed,
 };

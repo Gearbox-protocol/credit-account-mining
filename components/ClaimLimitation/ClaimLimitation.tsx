@@ -3,15 +3,14 @@ import { IState } from 'redux/root/rootReducer';
 import { useSelector } from 'react-redux';
 import Block from 'components/Block/Block';
 import Button from 'components/Button/Button';
-import { claimMaxCount } from 'config/config';
 import * as Styled from './ClaimLimitation.styled';
 
 interface IClaimLimitationProps {}
 
 function ClaimLimitation({ children }: PropsWithChildren<IClaimLimitationProps>) {
-  const { claimedCount } = useSelector((state: IState) => state.terminalApp);
+  const { allClaimed } = useSelector((state: IState) => state.terminalApp);
 
-  const show = claimedCount < claimMaxCount;
+  const show = !allClaimed;
   return (
     <>
       {!show && (

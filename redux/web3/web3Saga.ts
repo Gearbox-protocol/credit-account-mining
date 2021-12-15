@@ -2,7 +2,6 @@ import {
   put, takeEvery, select, race, call, take,
 } from 'redux-saga/effects';
 import { store } from 'redux/store';
-import { initCounter, resetCounter } from 'redux/terminalApp/terminalAppAction';
 import { setClaimObject, setAddress, setUser } from 'redux/web3/web3Action';
 import { controllerGotoRoot } from 'redux/terminalController/actions/terminalControllerActions';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
@@ -107,8 +106,6 @@ function* web3DeepDisconnect({ payload }: IActionWeb3Disconnected) {
     if (web3Connected && claimObject) {
       yield put(setConnection(false));
 
-      yield put(resetCounter(claimObject));
-
       yield put(setClaimObject(null));
       yield put(setUser(null));
       yield put(setAddress(null));
@@ -157,7 +154,6 @@ function* connectWeb3Worker() {
     } = (yield select()) as IState;
 
     const safeClaim: IClaimObject = yield call(makeClaim, claimObject || {});
-    yield put(initCounter(safeClaim));
     yield put(setClaimObject(safeClaim));
 
     yield put(setConnection(true));

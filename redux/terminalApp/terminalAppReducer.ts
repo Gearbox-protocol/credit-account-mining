@@ -5,19 +5,19 @@ import { TerminalAppActions } from './terminalAppAction';
 import ActionType from './terminalAppActionTypes';
 
 interface ITerminalAppState extends DefaultRootState {
-  claimedCount: number;
   appLoading: boolean;
   playVideo: boolean;
   appHydrated: boolean;
   visited: boolean;
+  allClaimed: boolean;
 }
 
 const terminalAppDefaultState = {
-  claimedCount: 0,
   appLoading: false,
   appHydrated: false,
   playVideo: false,
   visited: isVisited(),
+  allClaimed: false,
 };
 
 const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
@@ -33,10 +33,8 @@ const terminalAppReducer: Reducer<ITerminalAppState, TerminalAppActions> = (
       return { ...state, playVideo: action.payload };
     case ActionType.SET_VISITED:
       return { ...state, visited: action.payload };
-    case ActionType.SET_CLAIMED_COUNT:
-      return { ...state, claimedCount: action.payload };
-    case ActionType.INC_CLAIMED_COUNT:
-      return { ...state, claimedCount: state.claimedCount + 1 };
+    case ActionType.SET_ALL_CLAIMED:
+      return { ...state, allClaimed: action.payload };
     default:
       return state;
   }
