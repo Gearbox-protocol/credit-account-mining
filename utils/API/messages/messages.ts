@@ -71,7 +71,7 @@ const messages = {
   You have 1 credit accounts to mine
   `,
   claim: `
-  Do you wish to mine a Credit Account? Type ${Prefix.PREFIX}${MineChoiceActions.YES} to proceed or ${Prefix.PREFIX}${MineChoiceActions.NO} to reject. 
+  Do you wish to mine a Credit Account? 
 
   By participating in Gearbox Credit Account mining, I agree to the Terms of Service (https://gearbox.fi/terms) and confirm that I have read and understood the Privacy Notice (https://gearbox.fi/privacy) and Risk Disclosure Statement (https://gearbox.fi/risks).
   
@@ -81,6 +81,8 @@ const messages = {
   - I am not subject to any sanctions administered or enforced by any country, government or international authority, and that I am not acting in the interests of such persons;
   - I understand that if I fail to maintain sufficient collateral when using the Gearbox Protocol, my credit account(s) may be liquidated, in which case a penalty may be charged by the protocol.
   - I acknowledge that Gearbox App and related software are experimental, and that the use of experimental software may result in complete loss of my funds.
+  
+  Type ${Prefix.PREFIX}${MineChoiceActions.YES} to proceed or ${Prefix.PREFIX}${MineChoiceActions.NO} to reject. 
   
   Just to make sure once again… you understand what’s about to happen, right? 
 
