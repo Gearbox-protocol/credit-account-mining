@@ -17,8 +17,9 @@ function Index() {
     <Layout
       layoutParams={{
         title: 'Credit account mining | Gearbox',
-        description: 'Gearbox credit account mining app',
-        keyWords: 'Gearbox, crypto, redit account mining',
+        description:
+          'Composable leverage starts with Credit Account Mining. Gear up and join Gearbox DAO!',
+        keyWords: 'Gearbox, crypto, credit account mining',
         url: 'https://credit-mining.gearbox.finance',
       }}
     >
