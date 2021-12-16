@@ -1,21 +1,28 @@
 import fs from 'fs';
 import path from 'path';
 import {
-  MerkleDistributorInfo, ClaimsInfo, keyFromAddress, filename,
+  MerkleDistributorInfo,
+  ClaimsInfo,
+  keyFromAddress,
+  getFilename,
+  formatAddress,
 } from 'utils/API/join/join';
 
 type MerkleRaw = Omit<MerkleDistributorInfo, 'contract'> & { claims: ClaimsInfo };
 type MerkleSorted = Record<string, ClaimsInfo>;
 
 const split = (merkleRaw: MerkleRaw) => {
-  const merleSplit: MerkleSorted = {};
+  const merkleSplit: MerkleSorted = {};
+
   Object.entries(merkleRaw.claims).forEach(([address, user]) => {
-    const key = keyFromAddress(address);
-    if (!merleSplit[key]) merleSplit[key] = {};
-    merleSplit[key][address] = user;
+    const formattedAddress = formatAddress(address);
+    const key = keyFromAddress(formattedAddress);
+
+    if (!merkleSplit[key]) merkleSplit[key] = {};
+    merkleSplit[key][formattedAddress] = user;
   });
 
-  return merleSplit;
+  return merkleSplit;
 };
 
 type ClaimsPair = [keyof MerkleSorted, MerkleSorted[string]];
@@ -23,7 +30,7 @@ type ClaimsPair = [keyof MerkleSorted, MerkleSorted[string]];
 const writeTo = (merkleRoute: string) => ([key, claims]: ClaimsPair) => {
   const claimsJson = JSON.stringify(claims);
 
-  fs.writeFile(path.join(merkleRoute, filename(key)), claimsJson, 'utf8', (err) => {
+  fs.writeFile(path.join(merkleRoute, getFilename(key)), claimsJson, 'utf8', (err) => {
     if (err) throw err;
   });
 };
@@ -34,8 +41,8 @@ const readFrom = (merkleRoute: string) => {
   return merkleRaw;
 };
 
-const ensureFolderExistence = (Folder: string) => {
-  fs.mkdir(Folder, { recursive: true }, (err) => {
+const ensureFolderExistence = (folder: string) => {
+  fs.mkdir(folder, { recursive: true }, (err) => {
     if (err) throw err;
   });
 };
@@ -49,10 +56,10 @@ function main() {
 
   ensureFolderExistence(merkleRoute);
   const merkleRaw = readFrom(merkleSource);
-  const merleSplit = split(merkleRaw);
+  const merkleSplit = split(merkleRaw);
   const writeClaims = writeTo(merkleRoute);
 
-  Object.entries(merleSplit).forEach(writeClaims);
+  Object.entries(merkleSplit).forEach(writeClaims);
 }
 
 // start script
