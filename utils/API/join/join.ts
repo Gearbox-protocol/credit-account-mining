@@ -6,7 +6,6 @@ import countClaims from 'utils/API/mined/mined';
 import { TerminalError } from 'utils/API/errors/TerminalError/TerminalError';
 
 interface MerkleDistributorInfo {
-  merkleRoot: string;
   contract: string;
 }
 

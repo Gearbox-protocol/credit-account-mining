@@ -1,7 +1,6 @@
 import { MerkleDistributorInfo } from 'utils/API/join/join';
 
 const distributorInfo: MerkleDistributorInfo = {
-  merkleRoot: process.env.NEXT_PUBLIC_MERKLE_ROOT || '',
   contract: process.env.NEXT_PUBLIC_CONTRACT || '',
 };
 
