@@ -10,7 +10,7 @@
 
 0. Open command shell you like
 1. git clone https://github.com/Gearbox-protocol/credit-account-mining.git
-2. cd retro-css-shell-demo
+2. cd credit-account-mining
 3. npm install / yarn
 4. Rename env.sample to .env
 5. npm run dev / yarn dev
