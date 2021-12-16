@@ -13,9 +13,9 @@ enum Prefix {
 }
 
 enum Links {
-  ABOUT = '<>link<>',
-  WALLETS_TO_PARTICIPATE = '<>link<>',
-  CLAIM = '<>link<>',
+  ABOUT = 'https://medium.com/gearbox-protocol/credit-account-mining-guide-fueling-up-for-the-launch-abc17fbddbad',
+  WALLETS_TO_PARTICIPATE = 'https://github.com/Gearbox-protocol/launch-snapshot#credit-account-mining-snapshot',
+  CLAIM = 'https://medium.com/gearbox-protocol/credit-account-mining-guide-fueling-up-for-the-launch-abc17fbddbad',
 }
 
 const etherscanPrefix = network === '42' ? 'kovan.' : '';
