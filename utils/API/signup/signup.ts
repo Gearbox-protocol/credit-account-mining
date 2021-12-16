@@ -35,7 +35,7 @@ const signup = async ({ miningAccount }: IClaimObject, address: string) => {
   const signature = await miningAccount.signer.signMessage(agreement);
 
   const result = await axios.post<AgreementResponse>(getFullUrl('/api/signup'), {
-    address,
+    account: address,
     signature,
   });
 
