@@ -981,10 +981,10 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@diesellabs/gearbox-sdk@>=0.0.222":
-  version "0.0.222"
-  resolved "https://registry.yarnpkg.com/@diesellabs/gearbox-sdk/-/gearbox-sdk-0.0.222.tgz#aa5e1c4f9fc4bdf53e3a71d0b4a50a79383d8515"
-  integrity sha512-icKn4DAojGVrgFKxsImHfO0+U4jXas7qsUk4YKvxWl2wL3/DVhDs5NKYjUM69Lb+WO1sk4xrfK8iz1HXx46qjQ==
+"@diesellabs/gearbox-sdk@^0.0.223":
+  version "0.0.223"
+  resolved "https://registry.yarnpkg.com/@diesellabs/gearbox-sdk/-/gearbox-sdk-0.0.223.tgz#cff8c62e9598c34d47e6c32229cb7499104a6786"
+  integrity sha512-vFjJCdShYKWlf6dec8xTsedy87pX/zRcGlr5/B2DLTvHP1SjmUCtuYru/nh1n9kj8ETO7SEDjZrWnDKlbtuGwA==
   dependencies:
     decimal.js-light "^2.5.1"
     moment "^2.29.1"
