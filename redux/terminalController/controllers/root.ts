@@ -18,10 +18,14 @@ type Controller = {
   userActions?: UserActions;
   children: Record<string, Controller> | null;
 };
+const cmdPrefix = '>';
 
 const optionalActions: UserActions = {
   [OptionalActions.MINE]: controllerJoinAccepted,
+  [cmdPrefix + OptionalActions.MINE]: controllerJoinAccepted,
 };
+
+
 
 const root: Controller = {
   userActions: {
@@ -29,6 +33,10 @@ const root: Controller = {
     [RootControllerActions.JOIN]: controllerJoin,
     [RootControllerActions.MINED]: controllerMined,
     [RootControllerActions.LINKS]: controllerLinks,
+    [cmdPrefix + RootControllerActions.HELP]: controllerHelp,
+    [cmdPrefix + RootControllerActions.JOIN]: controllerJoin,
+    [cmdPrefix + RootControllerActions.MINED]: controllerMined,
+    [cmdPrefix + RootControllerActions.LINKS]: controllerLinks,
   },
   children: {
     join,

@@ -11,7 +11,7 @@ const EmptyTerminal = () => (
         playing={true}
         controls={false}
         loop={true}
-        muted={true}
+        muted={false}
         width="100%"
         height="100%"
       />

@@ -18,7 +18,7 @@ function Index() {
       layoutParams={{
         title: 'Credit account mining | Gearbox',
         description: 'Gearbox credit account mining app',
-        keyWords: 'Gearbox, crypto, redit account mining',
+        keyWords: 'Gearbox, crypto, credit account mining',
         url: 'https://credit-mining.gearbox.finance',
       }}
     >

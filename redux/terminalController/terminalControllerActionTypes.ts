@@ -27,6 +27,7 @@ enum RootControllerActions {
   JOIN = 'join',
   MINED = 'mined',
   LINKS = 'links',
+
 }
 
 enum MineChoiceActions {
