@@ -37,6 +37,18 @@ const processMetamaskError = (e: IMetamaskError): TerminalError => {
 
 const processAxiosError = (e: AxiosError) => {
   if (e.response) {
+    const { status } = e.response;
+
+    if (status === 404) {
+      return new TerminalError({
+        code: 'REJECTED',
+      });
+    }
+    if (status === 429) {
+      return new TerminalError({
+        code: 'ENDPOINT_IS_BUSY',
+      });
+    }
     return new TerminalError({
       code: 'UNEXPECTED_ERROR',
       details: `Response with status: ${e.response.status}`,

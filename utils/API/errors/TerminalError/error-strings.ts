@@ -20,7 +20,9 @@ type TerminalErrorCodes =
   | 'DISCONNECTED'
   | 'UNEXPECTED_ERROR'
   | 'ACTION_ABORTED'
-  | 'NO_MORE_CLAIMS';
+  | 'NO_MORE_CLAIMS'
+  | 'REJECTED'
+  | 'ENDPOINT_IS_BUSY';
 
 const errorStrings: Record<TerminalErrorCodes, string> = {
   get COMMAND_NOT_FOUND() {
@@ -73,6 +75,12 @@ const errorStrings: Record<TerminalErrorCodes, string> = {
   ACTION_ABORTED: '',
   NO_MORE_CLAIMS: `
   No more claims allowed
+  `,
+  REJECTED: `
+  Request rejected
+  `,
+  ENDPOINT_IS_BUSY: `
+  Endpoint is busy
   `,
 };
 
