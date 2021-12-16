@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios';
 import { TerminalError, TerminalErrorCodes } from './TerminalError/TerminalError';
 import errorStrings from './TerminalError/error-strings';
 
@@ -25,17 +26,38 @@ const isMetamaskError = (e: any): e is IMetamaskError => {
 
 const processMetamaskError = (e: IMetamaskError): TerminalError => {
   const terminalCode = MetamaskDictionary[e.code];
-  return terminalCode
-    ? new TerminalError({ code: terminalCode, name: 'Metamask error' })
-    : new TerminalError({
+  if (terminalCode) {
+    return new TerminalError({ code: terminalCode, name: 'Metamask error' });
+  }
+  return new TerminalError({
+    code: 'UNEXPECTED_ERROR',
+    name: 'Metamask error',
+  });
+};
+
+const processAxiosError = (e: AxiosError) => {
+  if (e.response) {
+    return new TerminalError({
       code: 'UNEXPECTED_ERROR',
-      name: 'Metamask error',
+      details: `Response with status: ${e.response.status}`,
     });
+  }
+  if (e.request) {
+    return new TerminalError({
+      code: 'UNEXPECTED_ERROR',
+      details: 'Request error',
+    });
+  }
+  return new TerminalError({
+    code: 'UNEXPECTED_ERROR',
+    details: 'Unknown data fetching error',
+  });
 };
 
 const getTypedError = (e: any): TerminalError => {
   if (isTerminalError(e)) return e;
   if (isMetamaskError(e)) return processMetamaskError(e);
+  if (axios.isAxiosError(e)) return processAxiosError(e);
 
   return new TerminalError({ code: 'UNEXPECTED_ERROR', details: e.message });
 };

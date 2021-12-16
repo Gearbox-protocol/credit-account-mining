@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from 'ethers';
 import path from 'path';
+import axios from 'axios';
 import { claimsRoute, claimMaxCount } from 'config/config';
 import { IClaimObject } from 'utils/API/web3/make-claim';
 import countClaims from 'utils/API/mined/mined';
@@ -24,15 +25,8 @@ const getClaims = async (address: string): Promise<ClaimsInfo> => {
   const file = getFilename(key);
   const filePath = path.join(claimsRoute, file);
 
-  const resp = await fetch(filePath);
-  if (!resp.ok) {
-    throw new TerminalError({
-      code: 'UNEXPECTED_ERROR',
-      details: `Response with status: ${resp.status}`,
-    });
-  }
-  const claims: ClaimsInfo = await resp.json();
-  return claims;
+  const result = await axios.get<ClaimsInfo>(filePath);
+  return result.data;
 };
 
 const checkPermissions = async (address: string): Promise<User> => {

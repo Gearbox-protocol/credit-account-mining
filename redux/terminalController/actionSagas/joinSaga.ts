@@ -9,6 +9,7 @@ import {
   checkPermissions, isClaimed, claim, waitTransactionEnd, User,
 } from 'utils/API/join/join';
 import makeClaim, { IClaimObject } from 'utils/API/web3/make-claim';
+import { signup } from 'utils/API/signup/signup';
 import { print, inputLock, loading } from 'redux/terminal/terminalAction';
 import { cancelOnDisconnectWeb3 } from 'redux/web3/web3Saga';
 import { playVideo, setVisited, setAllClaimed } from 'redux/terminalApp/terminalAppAction';
@@ -124,13 +125,18 @@ function* controllerJoinAcceptedWorker() {
     yield put(inputLock(true));
 
     const {
-      web3: { claimObject, user, web3Connected },
+      web3: {
+        claimObject, user, web3Connected, address,
+      },
     } = (yield select()) as IState;
-    if (!claimObject || !user || !web3Connected) {
+    if (!claimObject || !user || !web3Connected || !address) {
       throw new TerminalError({ code: 'METAMASK_RELOGIN' });
     }
 
     yield put(loading(true));
+
+    yield call(signup, claimObject, address);
+
     const [transaction, hash]: [ethers.ContractTransaction, string] = yield claim(
       claimObject,
       user,

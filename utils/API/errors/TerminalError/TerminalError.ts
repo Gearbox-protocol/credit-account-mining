@@ -1,4 +1,3 @@
-import { isDev } from 'config/config';
 import errorStrings, { TerminalErrorCodes } from './error-strings';
 
 type ErrorNames = 'Metamask error' | 'Terminal error';
@@ -32,7 +31,7 @@ class TerminalError extends Error {
     this.details = details;
 
     const isUnexpected = code === 'UNEXPECTED_ERROR';
-    if (isDev && details && isUnexpected) console.error(details);
+    if (details && isUnexpected) console.error(details);
   }
 }
 
