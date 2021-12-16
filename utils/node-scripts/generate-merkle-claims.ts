@@ -5,11 +5,12 @@ import {
   ClaimsInfo,
   keyFromAddress,
   getFilename,
-  formatAddress,
 } from 'utils/API/join/join';
 
 type MerkleRaw = Omit<MerkleDistributorInfo, 'contract'> & { claims: ClaimsInfo };
 type MerkleSorted = Record<string, ClaimsInfo>;
+
+const formatAddress = (address: string) => address.toLowerCase();
 
 const split = (merkleRaw: MerkleRaw) => {
   const merkleSplit: MerkleSorted = {};

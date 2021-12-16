@@ -32,7 +32,7 @@ const connectMetamask = async () => {
     throw new TerminalError({ code: 'GET_ADDRESS_FAILED' });
   }
 
-  return getAddress(account);
+  return getAddress(account).toLocaleLowerCase();
 };
 
 export default connectMetamask;

@@ -16,9 +16,8 @@ interface User {
 
 type ClaimsInfo = Record<string, User>;
 
-const formatAddress = (address: string) => address.toLowerCase();
-const keyFromAddress = (address: string) => formatAddress(address).slice(2, 4);
-const getFilename = (key: string) => `${key.toLowerCase()}.json`;
+const keyFromAddress = (address: string) => address.slice(2, 4);
+const getFilename = (key: string) => `${key}.json`;
 
 const getClaims = async (address: string): Promise<ClaimsInfo> => {
   const key = keyFromAddress(address);
@@ -37,12 +36,11 @@ const getClaims = async (address: string): Promise<ClaimsInfo> => {
 };
 
 const checkPermissions = async (address: string): Promise<User> => {
-  const formattedAddress = formatAddress(address);
-  const claims = await getClaims(formattedAddress);
-  if (!(formattedAddress in claims)) {
+  const claims = await getClaims(address);
+  if (!(address in claims)) {
     throw new TerminalError({ code: 'PERMISSION_DENIED' });
   }
-  return claims[formattedAddress];
+  return claims[address];
 };
 
 const isClaimed = async ({ miningAccount }: IClaimObject, { index }: User) => {
@@ -81,11 +79,5 @@ export type {
   IClaimObject, User, MerkleDistributorInfo, ClaimsInfo,
 };
 export {
-  checkPermissions,
-  isClaimed,
-  claim,
-  waitTransactionEnd,
-  keyFromAddress,
-  getFilename,
-  formatAddress,
+  checkPermissions, isClaimed, claim, waitTransactionEnd, keyFromAddress, getFilename,
 };
