@@ -1,5 +1,16 @@
 # Gearbox credit account mining UI
 
+Welcome to Credit Accoung Mining!
+
+This ceremony is dedicated to distirbuting GEAR in the hands of early degens and tech-savvy memnbers from other protocols’ governance systems. 5,000 Credit Accounts to mine. 55,000+ eligible wallets. 2.4M in gas costs to deploy each one. In total 5% GEAR distributed. Become one of the early DAO members & decide the future of composable leverage 2.0! FCFS.
+
+Find all the info: https://docs.gearbox.finance/overview/launch-phases/credit-account-mining
+
+UI for this ceremony: https://credit-mining.gearbox.finance/
+
+GEAR token: https://etherscan.io/token/0xba3335588d9403515223f109edc4eb7269a9ab5d
+AccountMining: https://etherscan.io/address/0x7B1AAF21AC0D420666B5966338FF9aEe763C29DF#code
+
 ## Requirements:
 
 1. [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
